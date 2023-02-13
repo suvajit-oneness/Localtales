@@ -1,0 +1,245 @@
+/* 
+    ================================================
+    Media Queries
+    ================================================
+*/
+
+@media only screen and (max-width: 1200px) {
+    .banner h1{
+        font-size: 70px;
+    }
+    .inner_banner h6{
+        font-size: 32px;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    .banner{
+        background: url('../img/banner.png'), #f7f7f7a3;
+        background-blend-mode: overlay;
+    }
+    .navbar-dark .navbar-toggler {
+        color: #000;
+        border-color: transparent !important;
+        font-size: 28px !important;
+    }
+    .header {
+        background: #fff;
+        padding: 20px 15px;
+    }
+    .btn-login {
+        width: 138px;
+    }
+    .btn_buseness{
+        width: auto;
+    }
+    button:focus {
+        outline: 0;
+    }
+    .inner_banner {
+        padding-top: 45px;
+        padding-bottom: 45px;
+    }
+    .articles_inbanner .card {
+        height: auto;
+    }
+    .articles_inbanner .form-control {
+        margin-bottom: 8px;
+    }
+    .latest_ar .bst_dimg img {
+        height: auto;
+    }
+    .Bestdeals.post_code .card-body{
+        padding: 15px 0 !important;
+    }
+    .page-title h3 {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom:15px;
+    }
+    .cafe-listing-nav span {
+        font-size: 15px;
+    }
+    .cafe-card .card h4 {
+        font-size: 17px;
+        font-weight: 700;
+        margin-bottom: 16px;
+    }
+    .cafe-card .location {
+        font-size: 13px;
+    }
+    .cafe-card .rating {
+        font-size: 12px;
+        /*width: calc(100% - 245px);*/
+    }
+    .cafe-listing-nav ul li a i {
+        font-size: 17px;
+        padding: 10px;
+        margin: 0 3px;
+    }
+    .map_section .form-control {
+        margin-bottom: 8px;
+    }
+    .page_title h4 {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+    .map_section .card {
+        position: relative;
+        top: -38px;
+        width: 100%;
+    }
+    .map_section {
+        padding: 25px 0 0 0;
+    }
+    .map_section .container{
+        padding: 0;
+    }
+    .navbar-collapse{
+        margin-top: 13px;
+        border-top: 1px solid rgb(217, 217, 217);
+        padding-top: 13px;
+    }
+    .navbar-dark .navbar-nav .nav-link {
+        padding: 10px 15px;
+    }
+    .form-inline{
+        padding-top: 25px;
+    }
+    .avatar p{
+        margin-top: 0;
+    }
+    .banner h1 span {
+        text-shadow: 1px 1px 0 #261d16, 1px -1px 0 #261d16, -1px 1px 0 #261d16, -1px -1px 0 #261d16, 1px 0px 0 #261d16, 0px 1px 0 #261d16, -1px 0px 0 #261d16, 0px -1px 0 #261d16;
+        color: #f7f7f7;
+    }
+    .img-col img{
+        padding: 0;
+        right: -38px;
+    }
+    .help_body {
+        padding: 60px 0 60px 0;
+    }
+    .help_list li {
+        width: calc((100% - 90px)/2);
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .page-title h2{
+        font-size: 32px;
+    }
+    .banner h1{
+        font-size: 64px;
+    }
+    .banner h3{
+        font-size: 26px;
+    }
+    .banner h5{
+        font-size: 21px;
+    }
+    .first-set > .toggle{
+        padding: 10px 15px;
+    }
+    .faq-accordion h3, .set h6{
+        font-size: 18px;
+    }
+    .right_card_sec .card-body{
+        padding: 15px 0 !important;
+    }    
+    .img-col img{
+        position: static;
+        height: 350px;
+        object-fit: scale-down;
+        transform: scale(0.9);
+    }
+    .faq-card h3{
+        text-decoration: none;
+    }
+    
+}
+
+@media only screen and (max-width: 575px) {
+    .play-section,.available-section{
+        padding: 40px 0;
+    }
+    .banner .main-btn{
+        margin-top: 25px;
+        width: 100%;
+    }
+    .page-title h2{
+        font-size: 26px;
+    }
+    .banner h1{
+        font-size: 54px;
+    }
+    .banner h3{
+        font-size: 24px;
+    }
+    .best_deal h4 {
+        font-size: 20px;
+    }
+    header .logo, .navbar-brand{
+        width: 170px;
+    }
+    .banner{
+        padding: 160px 0 80px;
+    }
+    p{
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 24px;
+    }
+    .help_list li {
+        width: 100% !important;
+    }
+
+}
+
+@media only screen and (max-width: 480px) {
+    .banner h1{
+        font-size: 42px;
+    }
+    .banner h3{
+        font-size: 18px;
+    }
+    .banner h5{
+        font-size: 16px;
+    }
+    .banner{
+        padding: 120px 0 60px;
+    }
+    .main-btn{
+        display: block;
+        font-size: 14px;
+        padding: 15px;
+    }
+    .inner_banner h6{
+        font-size: 26px;
+    }
+    .contact-text .addresses{
+        padding: 30px;
+    }
+    .form-sec h5{
+        font-size: 20px;
+    }
+    .second-set .toggle .plus-sign-icon{
+        font-size: 12px;
+        box-shadow: 0 0.1rem 0.125rem rgb(68 68 74 / 35%) !important;
+        padding: 3px;
+    }
+    .toggle h5 i{font-size: 13px;}
+    .toggle h5{font-size: 14px;}
+    .faq-accordion h3, .set h6{
+        font-size: 16px;
+    }
+    .right_card_sec .card-img{
+        height: 280px;
+    }
+}
+@media only screen and (max-width: 360px){
+    .contact-text .addresses{
+        padding: 20px 25px;
+    }
+}
