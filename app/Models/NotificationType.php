@@ -11,9 +11,9 @@ class NotificationType extends Model
 
     public function notificationReceiveUser() {
         if(Auth::guard('user')->check()) {
-            return $this->hasMany(NotificationReceiveUser::class, 'notification_type_id', 'id')->where('user_id', Auth::guard('user')->user()->id);
+            return $this->hasMany(NotificationReceiveUser::class, 'notification_id', 'id')->where('user_id', Auth::guard('user')->user()->id);
         } else {
-            return $this->hasMany(NotificationReceiveUser::class, 'notification_type_id', 'id');
+            return $this->hasMany(NotificationReceiveUser::class, 'notification_id', 'id');
         }
     }
     

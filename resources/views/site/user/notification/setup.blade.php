@@ -25,7 +25,7 @@
                                         <li><p class="small mb-0">{{$notification['description']}}</p></li>
                                     </ul>
                                     <label class="switch">
-                                        <input type="checkbox" {{ (count($notification['notification_receive_user']) > 0) ? 'checked' : '' }} onchange="here()">
+                                        <input type="checkbox" {{ (count($notification['notification_receive_user']) > 0) ? 'checked' : '' }} onchange="here({{$notification['id']}})">
                                         <span class="slider round"></span>
                                     </label>
                                 </div>
@@ -40,8 +40,23 @@
 
 @push('scripts')
     <script>
-        function here() {
-            alert()
+        function here(notificationId) {
+            $.ajax({
+                url: "{{ route('user.notification.toggle') }}",
+                type: "POST",
+                data: {
+                    '_token': '{{csrf_token()}}',
+                    notification_id: notificationId,
+                    user_id: '{{auth()->guard("user")->user()->id}}',
+                },
+                success: function(resp) {
+                    if (resp.status == 200) {
+                        toastFire('success', resp.message);
+                    } else {
+                        toastFire('warning', resp.message);
+                    }
+                }
+            });
         }
     </script>
 @endpush

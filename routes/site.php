@@ -93,6 +93,7 @@ Route::group(['middleware' => ['auth:user']], function () {
 
     // notification
     Route::get('/notification/setup', 'Site\UserNotificationController@setup')->name('user.notification.setup');
+    Route::post('/notification/toggle', 'Site\UserNotificationController@toggle')->name('user.notification.toggle');
 });
 
 // help

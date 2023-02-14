@@ -46,7 +46,31 @@
   <script src="{{ asset('b2b/js/bootstrap.min.js') }}"></script>
   <script type="text/javascript" src="{{ asset('b2b/js/slick.min.js') }}"></script>
   <script src="{{ asset('b2b/js/custom.js') }}"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="{{ asset('b2b/js/ckeditor.js')}}"></script>
+
+  <script>
+    function toastFire(type = 'success', title, body = '') {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            showCloseButton: true,
+            timer: 2000,
+            timerProgressBar: false,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+
+        Toast.fire({
+            icon: type,
+            title: title,
+            // text: body
+        })
+    }
+  </script>
 
   @stack('scripts')
 
