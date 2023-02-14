@@ -17,11 +17,15 @@ Route::get('suburb/{slug}', 'Site\SuburbController@detail')->name('suburb-detail
 
 // directory
 Route::get('directory','Site\DirectoryController@index')->name('directory');
+Route::get('directory/{slug}','Site\DirectoryController@detail')->name('directory.detail');
 
+// collection
+Route::get('/collection', 'Site\CollectionController@index')->name('collection.home');
+Route::get('/collection/{slug}', 'Site\CollectionController@detail')->name('collection');
 
-
-
-
+// category
+Route::get('category','Site\CategoryController@index')->name('category-home');
+Route::get('category/{slug}','Site\CategoryController@detail')->name('category');
 
 
 
@@ -90,10 +94,8 @@ Route::get('faq','Site\ContentController@faq')->name('faq');
 
 
 
-Route::get('category/{slug}','Site\ContentController@category')->name('category');
-Route::get('category','Site\ContentController@categoryindex')->name('category-home');
 
-Route::get('/collection', 'Front\CollectionController@index')->name('collection.home');
+
 //jobs
 Route::get('jobs','Site\JobController@index')->name('front.job.index');
 Route::get('jobs/{slug}','Site\JobController@details')->name('front.job.details');
@@ -104,7 +106,7 @@ Route::post('/apply/job', 'Site\JobController@jobapply')->name('apply');
 // old collection detail page with id & slug
 Route::get('/collection/{id}/{slug}', 'Front\IndexController@collection')->name('collection');
 // new collection detail page with id & slug
-Route::get('/collection/{slug}', 'Front\IndexController@collectionUpdated')->name('collection');
+
 
 Route::get('/business-signup', 'Front\IndexController@businesssignup')->name('business.signup');
 Route::get('/business-signup/{slug}', 'Front\IndexController@businessform')->name('business.form');
@@ -137,7 +139,7 @@ Route::get('directory-list-2','Site\BusinessController@index2');
 Route::post('directory/related','Site\BusinessController@relatedDirectory')->name('directory.related');
 Route::get('directory/{id}/{slug}','Site\BusinessController@details');
 Route::get('directory-page/{id}/{slug}','Front\IndexController@page');
-Route::get('directory/{slug}','Site\BusinessController@detailsUpdated');
+
 Route::get('category/{id?}/directory', 'Front\IndexController@categoryWiseDirectory')->name('category.directory');
 Route::post('/review/create', 'Front\IndexController@reviewstore')->name('review');
 Route::get('site-save-user-directory/{id}','Site\BusinessController@saveUserBusiness');

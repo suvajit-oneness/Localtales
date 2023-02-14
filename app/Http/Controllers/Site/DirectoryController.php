@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 use App\Models\Directory;
+use App\Models\Userbusiness;
+use App\Models\Review;
 
 class DirectoryController extends BaseController
 {
@@ -19,7 +21,6 @@ class DirectoryController extends BaseController
         $directory = Directory::where('address','LIKE','%' . $value)->paginate(18);
 
         if (isset($request->code) || isset($request->keyword) || isset($request->name)) {
-            // dd($request->all());
             $category = $request->directory_category;
             $code = $request->code;
             $keyword = $request->keyword;
@@ -54,6 +55,32 @@ class DirectoryController extends BaseController
             }
         }
 
-        return view('site.business.index3', compact('directoryList'));
+        return view('site.directory.index', compact('directoryList'));
+    }
+
+    public function detail(Request $request, $slug)
+    {
+        $business = Directory::where('slug', $slug)->first();
+        $id = $business->id;
+        $businessSaved = 0;
+
+        if(Auth::guard('user')->check()){
+            $user_id = Auth::guard('user')->user()->id;
+            $ip = $_SERVER['REMOTE_ADDR'];
+
+            $businessSavedResult = Userbusiness::where('directory_id', $id)->where('user_id', $user_id)->where('ip', $ip)->get();
+
+
+            if(count($businessSavedResult)>0) {
+                $businessSaved = 1;
+            } else {
+                $businessSaved = 0;
+            }
+        }
+
+        $review =  Review::where('directory_id', $id)->get();
+        $this->setPageTitle($business->title, 'Directory Details : '.$business->title);
+
+        return view('site.directory.detail', compact('business', 'businessSaved', 'review'));
     }
 }

@@ -40,21 +40,6 @@ class CollectionController extends BaseController {
         }
 
         return view('site.collection.index', compact('data', 'request'));
-
-        /* $this->setPageTitle('Collection ', 'Collection page');
-
-        if (!empty($request->pin_code) || !empty($request->keyword) || !empty($request->suburb) || !empty($request->category)) {
-
-        $pinCode = (isset($request->pin_code) && $request->pin_code!='')?$request->pin_code:'';
-        $suburb = (isset($request->suburb) && $request->suburb!='')?$request->suburb:'';
-         $category = (isset($request->category) && $request->category!='')?$request->category:'';
-        $keyword = (isset($request->keyword) && $request->keyword!='')?$request->keyword:'';
-         $data = $this->collectionRepository->searchCollectionData($pinCode,$keyword,$suburb,$category);
-         
-         } else {
-            $data = Collection::where('status',1)->paginate(40);
-        }
-        return view('site.collection.index', compact('data', 'request')); */
     }
     
     public function searchDirectoryData($categoryId,$keyword,$pinCode,$establish_year,$monday,$tuesday,$wednesday,$thursday,$friday,$saturday,$sunday,$public_holiday){
