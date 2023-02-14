@@ -13,31 +13,19 @@
         <div class="container position-relative">
             <h1 class="mb-4">Resources</h1>
             <div class="page-search-block filterSearchBoxWraper">
-
                 <form action="" id="checkout-form">
-
                     <div class="filterSearchBox">
-
                         <div class="row">
-
                             <div class="col-5 col-sm fcontrol position-relative">
-
                                 <div class="dropdown">
-
                                     <div class="form-floating drop-togg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
                                         <input id="postcodefloting" type="text" class="form-control pl-3" name="key_details" placeholder="Postcode/ State" value="{{ request()->input('key_details') }}" autocomplete="off">
-
                                          <input type="hidden" name="type" value="{{ request()->input('type') }}">
                                         <input type="hidden" name="code" value="{{ request()->input('code') }}">
                                         <label for="postcodefloting">Category</label>
-
                                     </div>
-
                                     <div class="respDrop"></div>
-
                                 </div>
-
                             </div>
                             <div class="col-5 col-sm">
                                 <div class="form-floating">
@@ -84,10 +72,10 @@
                 <div class="swiper Bestdeals">
                     <div class="swiper-wrapper">
                     @foreach($blogs as $blogCategorykey => $blog)
-                    @php
-                        if($blog->image =='') { continue; }
-                    @endphp
-                    {{-- {{ dd($blog) }} --}}
+                        @php
+                            if($blog->image =='') { continue; }
+                        @endphp
+                             {{-- {{ dd($blog) }} --}}
                         <div class="swiper-slide jQueryEqualHeight">
                             <div class="card blogCart border-0">
                                 <div class="bst_dimg">
@@ -100,51 +88,48 @@
                                         @endphp
                                         <a href="{!! URL::to('article/'.$blog->slug) !!}" class="location_btn w-100"><img src="{{URL::to('/').'/Demo/'}}{{$demo}}" class="card-img-top"></a>
                                     @endif
-                                        <div class="dateBox">
-                                                    <span class="date">
-                                                        {{ date('d', strtotime($blog->updated_at)) }}
-                                                    </span>
-                                                    <span class="month">
-                                                        {{ date('M', strtotime($blog->updated_at)) }}
-                                                    </span>
-                                                    <span class="year">
-                                                        {{ date('Y', strtotime($blog->updated_at)) }}
-                                                    </span>
-                                        </div>
-                                     </div>
+                                    <div class="dateBox">
+                                        <span class="date">
+                                            {{ date('d', strtotime($blog->updated_at)) }}
+                                        </span>
+                                        <span class="month">
+                                            {{ date('M', strtotime($blog->updated_at)) }}
+                                        </span>
+                                        <span class="year">
+                                            {{ date('Y', strtotime($blog->updated_at)) }}
+                                        </span>
+                                    </div>
+                                </div>
                                 <div class="card-body">
                                     <div class="card-body-top">
                                         <h5 class="card-title mb-0">
                                             <a href="{!! URL::to('article/'.$blog->slug) !!}" class="location_btn">{{$blog->title}}</a>
                                         </h5>
-                                          @if($blog->blog_category_id)
-                                        <div class="article_badge_wrap mt-3 mb-1">
-
-                                            <a href="">
-                                            @php
-                                                $cat = $blog->blog_category_id;
-                                                $displayCategoryName = '';
-                                                foreach(explode(',', $cat) as $catKey => $catVal) {
-                                                    $catDetails = DB::table('blog_categories')->where('id', $catVal)->first();
-                                                     if($catDetails !=''){
-                                                    $displayCategoryName .= '<a href="'.route("article.category", $catDetails->slug).'">'.'<span class="badge p-1" style="font-size: 10px;">'.$catDetails->title.'</span>'.'</a>  ';
-                                                    }
-                                                }
-                                                echo $displayCategoryName;
-                                            @endphp
-
-                                            </a>
-
-                                        </div>
+                                        @if($blog->blog_category_id)
+                                            <div class="article_badge_wrap mt-3 mb-1">
+                                                <a href="">
+                                                    @php
+                                                        $cat = $blog->blog_category_id;
+                                                        $displayCategoryName = '';
+                                                        foreach(explode(',', $cat) as $catKey => $catVal) {
+                                                            $catDetails = DB::table('blog_categories')->where('id', $catVal)->first();
+                                                            if($catDetails !=''){
+                                                            $displayCategoryName .= '<a href="'.route("article.category", $catDetails->slug).'">'.'<span class="badge p-1" style="font-size: 10px;">'.$catDetails->title.'</span>'.'</a>  ';
+                                                            }
+                                                        }
+                                                        echo $displayCategoryName;
+                                                    @endphp
+                                                </a>
+                                            </div>
                                         @endif
                                     </div>
                                     <div class="card-body-bottom">
-                                       <a href="{!! URL::to('article/'. $blog->slug) !!}" class="readMoreBtn">Read More</a>
-                                   </div>
+                                        <a href="{!! URL::to('article/'. $blog->slug) !!}" class="readMoreBtn">Read More</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        @endforeach
+                    @endforeach
                     </div>
                 </div>
             </div>
@@ -173,15 +158,15 @@
                     @foreach($latestblogs as  $key => $blog)
                         <div class="swiper-slide jQueryEqualHeight">
                             <div class="card blogCart border-0">
-                              <div class="bst_dimg">
-                                     @if($blog->image)
-                                    <a href="{!! URL::to('article/'.$blog->slug) !!}" class="location_btn w-100"><img src="{{URL::to('/').'/Blogs/'}}{{$blog->image}}" class="card-img-top" alt="ltItem"></a>
-                                     @else
-                                     @php
-                                        $demoImage=DB::table('demo_images')->where('title', '=', 'article')->get();
-                                        $demo=$demoImage[0]->image;
-                                    @endphp
-                                         <a href="{!! URL::to('article/'.$blog->slug) !!}" class="location_btn w-100"><img src="{{URL::to('/').'/Demo/'}}{{$demo}}" class="card-img-top"></a>
+                                <div class="bst_dimg">
+                                    @if($blog->image)
+                                        <a href="{!! URL::to('article/'.$blog->slug) !!}" class="location_btn w-100"><img src="{{URL::to('/').'/Blogs/'}}{{$blog->image}}" class="card-img-top" alt="ltItem"></a>
+                                    @else
+                                        @php
+                                            $demoImage=DB::table('demo_images')->where('title', '=', 'article')->get();
+                                            $demo=$demoImage[0]->image;
+                                        @endphp
+                                        <a href="{!! URL::to('article/'.$blog->slug) !!}" class="location_btn w-100"><img src="{{URL::to('/').'/Demo/'}}{{$demo}}" class="card-img-top"></a>
                                     @endif
                                     <div class="dateBox">
                                         <span class="date">{{$blog->updated_at->format('d')}}</span>
@@ -190,137 +175,46 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                  <div class="card-body-top">
+                                    <div class="card-body-top">
                                         <h5 class="card-title mb-0">
                                             <a href="{!! URL::to('article/'. $blog->slug) !!}" class="location_btn">{{$blog->title}}</a>
-
                                         </h5>
-
                                         @if($blog->blog_category_id)
+                                            <div class="article_badge_wrap mt-3 mb-1">
+                                                @php
+                                                    $cat = $blog->blog_category_id ?? '';
+                                                    $displayCategoryName = '';
+                                                    foreach(explode(',', $cat) as $catKey => $catVal) {
+                                                        $catDetails = DB::table('blog_categories')->where('id', $catVal)->first();
+                                                        if($catDetails == ''){
+                                                            $displayCategoryName .= '';
+                                                        } else{
+                                                        $displayCategoryName .= '<a href="'.route("article.category", $catDetails->slug).'">'.'<span class="badge p-1" style="font-size: 10px;">'.$catDetails->title.'</span>'.'</a>  ';
+                                                    }
 
-
-
-                                        <div class="article_badge_wrap mt-3 mb-1">
-
-
-
-
-
-                                            @php
-
-
-
-                                                $cat = $blog->blog_category_id ?? '';
-
-
-
-                                                $displayCategoryName = '';
-
-
-
-                                                foreach(explode(',', $cat) as $catKey => $catVal) {
-
-
-
-                                                    $catDetails = DB::table('blog_categories')->where('id', $catVal)->first();
-
-                                                      if($catDetails == ''){
-
- $displayCategoryName .= '';
-
-                                                      } else{
-
-                                                    $displayCategoryName .= '<a href="'.route("article.category", $catDetails->slug).'">'.'<span class="badge p-1" style="font-size: 10px;">'.$catDetails->title.'</span>'.'</a>  ';
-
-                                                 }
-
-                                                }
-
-
-
-                                                echo $displayCategoryName;
-
-
-
-                                            @endphp
-
-
-
-                                        </div>
-
-
-
+                                                    }
+                                                    echo $displayCategoryName;
+                                                @endphp
+                                            </div>
                                         @endif
-
-
-
                                     </div>
-
-
-
                                     <div class="card-body-bottom">
-
-
-
                                        <a href="{!! URL::to('article/'. $blog->slug) !!}" class="readMoreBtn">Read More</a>
-
-
-
                                    </div>
-
-
-
                                 </div>
-
-
-
                             </div>
-
-
-
                         </div>
-
-
-
                         @endforeach
-
-
-
                     </div>
-
-
-
                 </div>
-
-
-
             </div>
-
-
-
         </div>
-
-
-
     </section>
-
-
-
-
-
-
-
     {{-- CATEGORIES --}}
-
-
-
     @foreach($categories as $categoryKey => $categoryValue)
-
         @php
             // BOLGS UNDER CATEGORIES
-
             $blogsUnderCategory = \DB::table('blogs')->where('blog_category_id', 'like', '%'.$categoryValue->id.'%')->where('status', 1)->where('image','!=','')->orderby('updated_at','desc')->limit(8)->get();
-
         @endphp
         {{-- SHOW THE CATEGORIES WHICH HAVE BLOGS IN THEM --}}
         @if ($blogsUnderCategory->count() > 0)
@@ -353,234 +247,67 @@
                                             <a href="{!! URL::to('article/'.$blogValue->slug) !!}" class="location_btn w-100"><img src="{{URL::to('/').'/Blogs/'}}{{$blogValue->image}}" class="card-img-top" alt="ltItem"></a>
                                         @else
                                             @php
-
                                             $demoImage=DB::table('demo_images')->where('title', '=', 'article')->get();
-
                                             $demo=$demoImage[0]->image;
-
-
-
                                             @endphp
-
-
-
                                             <a href="{!! URL::to('article/'.$blogValue->slug) !!}" class="location_btn w-100"><img src="{{URL::to('/').'/Demo/'}}{{$demo}}" class="card-img-top"></a>
-
-
-
                                         @endif
-
-
-
                                         <div class="dateBox">
-
-
-
                                             <span class="date">
-
-
-
                                                 {{ date('d', strtotime($blogValue->updated_at)) }}
-
-
-
                                             </span>
-
-
-
                                             <span class="month">
-
-
-
                                                 {{ date('M', strtotime($blogValue->updated_at)) }}
-
-
-
                                             </span>
-
-
-
                                             <span class="year">
-
-
-
                                                 {{ date('Y', strtotime($blogValue->updated_at)) }}
-
-
-
                                             </span>
-
-
-
-                                            {{-- <span class="date">{{$blogValue->created_at->format('d')}}</span>
-
-
-
-                                            <span class="month">{{$blogValue->created_at->format('M')}}</span>
-
-
-
-                                            <span class="year">{{$blogValue->created_at->format('Y')}}</span> --}}
-
-
-
                                         </div>
-
-
-
                                     </div>
-
-
-
                                     <div class="card-body">
-
-
-
                                         <div class="card-body-top">
-
-
-
                                             <h5 class="card-title"><a href="{!! URL::to('article/'.$blogValue->slug) !!}" class="location_btn">{{ $blogValue->title }}</a></h5>
-
-
-
-
-
-
-
                                             @if($blogValue->blog_category_id)
-
-
-
-                                            <div class="article_badge_wrap mt-3 mb-1">
-                                              @if(is_array($blogValue->blog_category_id) && count($blogValue->blog_category_id)>0)
-                                                <a href="{!! URL::to('article/category/'.$blog->category->slug) !!}">
-                                               @endif
-                                                @php
-
-
-
-                                                    $cat = $blogValue->blog_category_id;
-
-
-
-
-
-
-
-                                                    $displayCategoryName = '';
-
-
-
-                                                    foreach(explode(',', $cat) as $catKey => $catVal) {
-
-
-
+                                                <div class="article_badge_wrap mt-3 mb-1">
+                                                    @if(is_array($blogValue->blog_category_id) && count($blogValue->blog_category_id)>0)
+                                                        <a href="{!! URL::to('article/category/'.$blog->category->slug) !!}">
+                                                    @endif
+                                                    @php
+                                                        $cat = $blogValue->blog_category_id;
+                                                        $displayCategoryName = '';
+                                                        foreach(explode(',', $cat) as $catKey => $catVal) {
                                                         $catDetails = DB::table('blog_categories')->where('id', $catVal)->first();
-if($catDetails == ''){
+                                                        if($catDetails == ''){
+                                                        $displayCategoryName .= '';
+                                                        } else{
 
- $displayCategoryName .= '';
-
-                                                      } else{
-
-
-
-
-
-
-                                                        $displayCategoryName .= '<a href="'.route("article.category", $catDetails->slug).'">'.'<span class="badge p-1" style="font-size: 10px;">'.$catDetails->title.'</span>'.'</a>  ';
-
-
-}
-                                                    }
-
-
-
-                                                    echo $displayCategoryName;
-
-
-
-                                                @endphp
-
-                                                </a>
-
-                                            </div>
-
-
-
+                                                            $displayCategoryName .= '<a href="'.route("article.category", $catDetails->slug).'">'.'<span class="badge p-1" style="font-size: 10px;">'.$catDetails->title.'</span>'.'</a>  ';
+                                                        }
+                                                        }
+                                                        echo $displayCategoryName;
+                                                    @endphp
+                                                    </a>
+                                                </div>
                                             @endif
-
-
-
-
-
-
-
                                         </div>
-
-
-
                                         <div class="card-body-bottom">
-
-
-
                                             <!--<span class="tag_text">{{ $blogValue->tag }}</span>-->
-
-
-
                                             <a href="{!! URL::to('article/'. $blogValue->slug) !!}" class="readMoreBtn">Read More</a>
-
-
-
                                         </div>
-
-
-
                                     </div>
-
-
-
                                 </div>
-
-
-
                             </div>
-
-
-
                         @endforeach
-
-
-
                         </div>
-
-
-
                     </div>
-
-
-
                 </div>
-
-
-
             </div>
-
-
-
         </section>
-
-
-
         @endif
-
-
     @endforeach
-
 @endsection
 
 @push('scripts')
-
     <script type="text/javascript">
         // category swiper slider js
         @foreach($categories as $categoryKey => $categoryValue)
@@ -660,262 +387,34 @@ if($catDetails == ''){
 
 
 					content += '<option value="" selected>'+displayCollection+'</option>';
-
-
-
 					$.each(result.data.subcategory, (key, value) => {
-
-
-
 						content += '<option value="'+value.subcategory_id+'">'+value.subcategory_title+'</option>';
-
-
-
 					});
-
-
-
 					$(slectTag).html(content).attr('disabled', false);
-
-
-
                 }
-
-
-
 			});
-
-
-
         });
-
-
-
-
-
-
-
         $(document).on('change', '#cat_level2', () => {
-
-
-
             var value = $('#cat_level2').val();
-
-
-
-
-
-
-
 			$.ajax({
-
-
-
 				url: '{{url("/")}}/api/tertiarycategory/'+value,
-
-
-
                 method: 'GET',
-
-
-
                 success: function(result) {
-
-
-
                     var content = '';
-
-
-
                     var slectTag = 'select[name="blog_tertiary_category_id"]';
-
-
-
                     var displayCollection = (result.data.cat_name == "all") ? "All Subcategory" : " Select";
-
-
-
-
-
-
-
                     content += '<option value="" selected>'+displayCollection+'</option>';
-
-
-
                     $.each(result.data.tertiarycategory, (key, value) => {
-
-
-
                         content += '<option value="'+value.tertiarycategory_id+'">'+value.tertiarycategory_title+'</option>';
 
-
-
                     });
-
-
-
                     $(slectTag).html(content).attr('disabled', false);
-
-
 
                 }
 
-
-
 			});
 
-
-
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // state, suburb, postcode data fetch
-
-
-
-       /* $('input[name="key_details"]').on('keyup', function() {
-
-            var $this = 'input[name="key_details"]'
-
-            if ($($this).val().length > 0) {
-
-                $('input[name="keyword"]').val($($this).val())
-
-                $.ajax({
-
-                    url: '{{ route('user.category') }}',
-
-                    method: 'post',
-
-                    data: {
-
-                        '_token': '{{ csrf_token() }}',
-
-                        code: $($this).val(),
-
-                    },
-
-                    success: function(result) {
-
-                        var content = '';
-
-
-
-                        if (result.error === false) {
-
-                            // content += `<div class="dropdown-menu show w-100 postcode-dropdown" aria-labelledby="dropdownMenuButton">`;
-
-                            content += `<div class="dropdown-menu show">`;
-
-
-
-                            $.each(result.data, (key, value) => {
-
-                                if (value.cat1.length > 0 || value.cat2.length > 0 || value.cat3.length > 0) {
-
-                                    if (value.cat1.length > 0) {
-
-                                        content += `<h6 class="dropdown-header">Primary</h6>`;
-
-
-
-                                        $.each(value.cat1, (key1, value1) => {
-
-                                            content += `<a class="dropdown-item" href="javascript: void(0)" onclick="fetchCode(${value1.id}, '${value1.title}', '${value1.type}')"><strong>${value1.title}</strong></a>`;
-
-                                        })
-
-                                    }
-
-
-
-                                    if (value.cat2.length > 0) {
-
-                                        content += `<h6 class="dropdown-header">Secondary</h6>`;
-
-
-
-                                        $.each(value.cat2, (key2, value2) => {
-
-                                            content += `<a class="dropdown-item" href="javascript: void(0)" onclick="fetchCode(${value2.id}, '${value2.title}', '${value2.type}')"><strong>${value2.title}</strong></a>`;
-
-                                        })
-
-                                    }
-
-
-
-                                    if (value.cat3.length > 0) {
-
-                                        content += `<h6 class="dropdown-header">Tertiary</h6>`;
-
-
-
-                                        $.each(value.cat3, (key3, value3) => {
-
-                                            content += `<a class="dropdown-item" href="javascript: void(0)" onclick="fetchCode(${value3.id}, '${value3.title}', '${value3.type}')"><strong>${value3.title}</strong></a>`;
-
-                                        })
-
-                                    }
-
-                                }
-
-                            });
-
-                            content += `</div>`;
-
-                        } else {
-
-                            content += `<div class="dropdown-menu show"><a href="javascript: void(0)" class="dropdown-item">${result.message}</a></div>`;
-
-                        }
-
-
-
-                        $('.respDrop').html(content);
-
-                    }
-
-                });
-
-            } else {
-
-                $('.respDrop').text('');
-
-            }
-
-        });
-
-
-
-        function fetchCode(keyword, details, type) {
-
-            // $('.respDrop > dropdown-menu').hide()
-
-            // $('.respDrop > dropdown-menu').dropdown('hide')
-
-            $('.respDrop').text('')
-
-            $('input[name="keyword"]').val(keyword)
-            $('input[name="type"]').val(type)
-            $('input[name="key_details"]').val(details)
-
-        }*/
 
         $('body').on('click', function() {
             //code
@@ -928,8 +427,7 @@ if($catDetails == ''){
 
             @php
                 $primaryCat = \DB::table('blog_categories')->where('status', 1)->orderby('title')->get();
-                // $primarySubCat = \DB::table('sub_categories')->where('status', 1)->orderby('title')->get();
-                // $tertiaryCat = \DB::table('sub_category_levels')->where('status', 1)->orderby('title')->get();
+              
 
                 $resp = [];
 
@@ -1043,7 +541,4 @@ if($catDetails == ''){
             $('input[name="code"]').val(code)
         }
     </script>
-
-
-
 @endpush

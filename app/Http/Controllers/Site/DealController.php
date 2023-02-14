@@ -56,10 +56,7 @@ class DealController extends BaseController
         $keyword = $request->keyword;
         $type = $request->type;
         $name = $request->name;
-        //$minPrice = (isset($request->min_price) && $request->min_price!='')?$request->min_price:'';
-       // $maxPrice = (isset($request->max_price) && $request->max_price!='')?$request->max_price:'';
-
-        //$deals = $this->dealRepository->getDealsByPinCode($pinCode);
+       
         if (!empty($keyword)) {
             //$keywordQuery = "AND address like '%$keyword' ";
             $deals = DB::table('deals')->whereRaw("full_address like '%$keyword'")->paginate(18)->appends(request()->query());
@@ -208,11 +205,6 @@ class DealController extends BaseController
             }
 
         }
-        
-        
-        
-       
-        
         $resp = [];
 
         foreach($displayRelated as $deal) {
@@ -268,7 +260,7 @@ class DealController extends BaseController
      * @param $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function details($slug)
+    public function detail($slug)
     {
         $deal = Deal::where('slug',$slug)->first();
         //$deal = $deals[0];

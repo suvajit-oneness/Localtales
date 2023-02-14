@@ -4,8 +4,6 @@
 
 namespace App\Http\Controllers\Site;
 
-
-
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Contracts\DirectoryContract;
@@ -14,18 +12,14 @@ use Illuminate\Support\Facades\Validator;
 use App\Contracts\BusinessContract;
 use App\Contracts\DirectoryCategoryContract;
 use Hash;
-// use App\Models\DirectoryCategory;
+use App\Models\Review;
 use App\Models\EventOrganiser;
 use App\Http\Controllers\BaseController;
-
 use App\Models\Directory;
-use App\Models\Review;
 use App\Models\Userbusiness;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Contracts\UserContract;
-
-
 class BusinessController extends BaseController
 
 {
@@ -927,6 +921,17 @@ class BusinessController extends BaseController
         //return $this->responseRedirectBack('Directory Category added successfully', 'success', false, false);
     }
     
+    public function reviewstore(Request $request)
+    {
 
+        $business = new Review();
+        $business->name = $request->name;
+        $business->directory_id = $request->directory_id;
+        $business->email = $request->email;
+        $business->rating = $request->rating;
+        $business->comment = $request->comment;
+        $business->save();
+        return redirect()->back()->with('success', 'Review Added Successfully');
+    }
 }
 

@@ -26,7 +26,7 @@
                 <div class="col">
                     <div class="form_holder">
                         <h3>Login Now</h3>
-                      <form action="{{ route('site.login.post') }}" method="POST" role="form">
+                      <form action="{{ route('front.user.login.check') }}" method="POST" role="form">
                         @if(session()->has('verified'))
                             <div class="alert alert-success">
                                 Verified successfully
@@ -50,15 +50,8 @@
                                     <button type="submit" class="btn btn-orange m-0">Login</button>
                                 </div>
                             </div>
-                           <!-- <div class="col-sm-6 text-right">
-                                <a href="#" class="">Forgot Password?</a>
-                            </div>-->
                         </div>
-                        <!-- <div class="row px-3">
-                            <div class="custom-control custom-checkbox custom-control-inline"> <input id="chk1" type="checkbox" name="chk" class="custom-control-input"> <label for="chk1" class="custom-control-label text-sm text-dark">Remember me</label> </div>
-                        </div> -->
-                        <!-- <div class="row mb-3 px-3">  </div> -->
-                        <div class="w-100">Don't have an account? <a class="text-orange " href="{{ route('site.register') }}">Register</a></div>
+                        <div class="w-100">Don't have an account? <a class="text-orange " href="{{ route('front.user.register') }}">Register</a></div>
                         <div class="w-100"><a class="text-orange " href="{!! URL::to('business/login') !!}">Business Login</a></div>
                         <div class="w-100"><a class="text-orange " href="{!! URL::to('eventorganiser/login') !!}">Event Organiser Login</a></div>
                     </form>

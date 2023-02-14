@@ -97,7 +97,7 @@ return [
         ],
         'businesses' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Business::class,
+            'model' => App\Models\Directory::class,
         ]
 
         // 'users' => [

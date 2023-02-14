@@ -2,6 +2,8 @@
 namespace App\Repositories;
 use Illuminate\Support\Str;
 use App\Models\HelpCategory;
+use App\Models\HelpComment;
+use Auth;
 use App\Models\HelpArticle;
 use App\Models\HelpSubCategory;
 use App\Traits\UploadAble;
@@ -154,4 +156,27 @@ class HelpCategoryRepository extends BaseRepository implements HelpCategoryContr
     {
         return HelpArticle::where([['title', 'LIKE', '%' . $term . '%']])->paginate(25);
     }
+
+
+    public function help(array $params)
+    {
+        try {
+
+            $collection = collect($params);
+
+            $item = new HelpComment;
+            $item->user_id = Auth::guard('user')->user()->id ?? '';
+            $item->type = $collection['type'];
+            $item->user_name = $collection['user_name'];
+            $item->user_email = $collection['user_email'];
+            $item->comment = $collection['comment'] ?? '';
+             $item->page = $collection['page'];
+            $item->save();
+
+            return $item;
+        } catch (QueryException $exception) {
+            throw new InvalidArgumentException($exception->getMessage());
+        }
+    }
+
 }

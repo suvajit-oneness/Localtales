@@ -4,14 +4,14 @@
 @endsection
 @php
 if(!empty($blog->content)){
-$meta_description= strip_tags($blog->content);
-$meta_desc=explode(".",$meta_description);
+    $meta_description= strip_tags($blog->content);
+    $meta_desc=explode(".",$meta_description);
 // dd($meta_desc);
-if (!empty($meta_desc[1])) {
-    $description= $meta_desc[0]. "." .$meta_desc[1]. ".";
-} else {
-    $description= $meta_desc[0];
-}
+    if (!empty($meta_desc[1])) {
+        $description= $meta_desc[0]. "." .$meta_desc[1]. ".";
+    } else {
+        $description= $meta_desc[0];
+    }
 
 }
 else{
@@ -140,20 +140,6 @@ else{
                                 </ul>
                             </div>
                         </div>
-                         {{-- @if(count($tag)>0)
-                        <div class="row mt-2 articleDetails_tags align-items-center">
-                            <div class="col-auto pr-0">
-                                <h5>Tags:</h5>
-                            </div>
-                            <div class="col">
-                                    <div class="articleDetails_tags_wrap">
-                                    @foreach($tag as $tagKey => $tagVal)
-                                        <a href="{{ route("article.tag", $tagVal->slug) }}"><span>{{ ucwords($tagVal->tag) }} </span></a>
-                                    @endforeach
-                                    </div>
-                            </div>
-                        </div>
-                        @endif --}}
                     </div>
                 </div>
             </div>
@@ -165,46 +151,9 @@ else{
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 mb-4 mb-lg-0 article_content ck-content">
-                    {{-- {{ dd($blog->content) }} --}}
                     {!! $blog->content !!}
                 </div>
                 <div class="col-lg-4 art-aside">
-                    <?php /* ?>
-                    <div class="become p-4">
-                        @if($blog->sticky_image !=null)
-                            <div class="p-3" style="background-image: url('{{URL::to('/').'/Blogs/'.$blog->sticky_image}}');">
-                        @else
-                            <div class="p-3" style="background-image: url('{{URL::to('/').'/front/img/aside.png'}}');">
-                        @endif
-                        <div class="become-text">
-                            <h3>
-                               {{$blog->heading}}
-                            </h3>
-                            {!! $blog->sticky_content !!}
-                            @if($blog->btn_text)
-                            <a href=" {{$blog->btn_link}}" class="btn main-btn"> {{$blog->btn_text}}</a>
-                            @else
-                            @endif
-                        </div>
-                    </div>
-                    <?php */ ?>
-                    {{-- <div class="sticky_block">
-                        <figure>
-                            @if($blog->sticky_image !=null)
-                                <img src="{{URL::to('/').'/Blogs/'.$blog->sticky_image}}">
-                            @else
-                                <img src="{{URL::to('/').'/front/img/aside.png'}}">
-                            @endif
-                        </figure>
-                        <figcaption>
-                            <h4>{{$blog->heading}}</h4>
-                            {!! $blog->sticky_content !!}
-                            @if($blog->btn_text)
-                                <a href=" {{$blog->btn_link}}" class="btn main-btn"> {{$blog->btn_text}}</a>
-                            @else
-                            @endif
-                        </figcaption>
-                    </div> --}}
                     <div class="become p-4">
                         @if($blog->sticky_image !=null)
                             <div class="p-3" style="background-image: url('{{URL::to('/').'/Blogs/'.$blog->sticky_image}}');">
@@ -235,25 +184,7 @@ else{
                     {!! $blog->content !!}
                 </div>
                 <div class="col-lg-4 art-aside">
-                    <?php /* ?>
-                    <div class="become p-4">
-                        @if($blog->sticky_image !=null)
-                            <div class="p-3" style="background-image: url('{{URL::to('/').'/Blogs/'.$blog->sticky_image}}');">
-                        @else
-                            <div class="p-3" style="background-image: url('{{URL::to('/').'/front/img/aside.png'}}');">
-                        @endif
-                        <div class="become-text">
-                            <h3>
-                               {{$blog->heading}}
-                            </h3>
-                            {!! $blog->sticky_content !!}
-                            @if($blog->btn_text)
-                            <a href=" {{$blog->btn_link}}" class="btn main-btn"> {{$blog->btn_text}}</a>
-                            @else
-                            @endif
-                        </div>
-                    </div>
-                    <?php */ ?>
+                   
                     <div class="sticky_block">
                         <figure>
                             @if($blog->sticky_image !=null)

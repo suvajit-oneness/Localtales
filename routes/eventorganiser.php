@@ -3,6 +3,18 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\EventOrganiser;
+
+//event organiser 
+Route::group(['prefix' => 'eventorganiser'], function () {
+	Route::get('login', 'EventOrganiser\LoginController@showLoginForm')->name('eventorganiser.login');
+    Route::post('login/check', 'EventOrganiser\LoginController@login')->name('eventorganiser.login.post');
+	Route::get('logout', 'EventOrganiser\LoginController@logout')->name('eventorganiser.logout');
+});
+//event organiser registration
+
+Route::get('/eventorganiser/registration', 'Site\EventRegistrationController@index')->name('event.registration');
+Route::post('/eventorganiser/registration/create', 'Site\EventRegistrationController@store')->name('event.registration.store');
+
 Route::group(['prefix' => 'eventorganiser'], function () {
    
 	Route::group(['middleware' => ['auth:eventorganiser']], function () {

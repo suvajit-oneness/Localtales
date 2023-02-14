@@ -42,7 +42,7 @@ class LoginController extends BaseController
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function showLoginForm()
+    public function login()
     {
         return view('site.auth.login');
     }
@@ -52,7 +52,7 @@ class LoginController extends BaseController
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function login(Request $request)
+    public function check(Request $request)
     {
         //dd($request->all());
         $this->validate($request, [
@@ -113,44 +113,5 @@ class LoginController extends BaseController
         return redirect()->route('index');
     }
 
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function register(){
-        return view('site.auth.register' );
-    }
-
-    /**
-     * This method is for user registration
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function userCreate(Request $request){
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'mobile' => 'required|digits:10',
-            'password' => 'required|string|min:6',
-        ]);
-
-       /* if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
-        }*/
-
-        $params = $request->except('_token');
-
-        $user = $this->userRepository->createUser($params);
-
-        if (!$user) {
-            return $this->responseRedirectBack('Error occurred while creating account.', 'error', true, true);
-        }
-        $remember_me = $request->has('remember') ? true : false;
-
-        if (Auth::guard('user')->attempt([
-            'email' => $request->email,
-            'password' => $request->password
-        ], $remember_me)) {
-            return redirect()->intended(route('site.dashboard'))->with('success','Your account has been added successfully');;
-        }
-    }
+    
 }

@@ -272,7 +272,7 @@ class EventController extends BaseController
      * @param $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function details($slug)
+    public function detail($slug)
     {
         $eventData=Event::where('slug',$slug)->get();
         $events = $this->eventRepository->detailsEvent($eventData[0]->id);

@@ -26,7 +26,7 @@
                 <div class="col">
                     <div class="form_holder">
                         <h3>Register Now</h3>
-                      <form action="{{ route('site.register.post') }}" method="POST" role="form">
+                      <form action="{{ route('front.user.register.store') }}" method="POST" role="form">
                         @if(session()->has('success'))
                             <div class="alert alert-success">
                                 {{ session()->get('success') }}
@@ -88,9 +88,7 @@
                                 <!-- <a href="#" class="">Forgot Password?</a> -->
                             </div>
                         </div>
-                        <div class="w-100">Already have an account? <a class="text-orange " href="{{ route('site.login') }}">Login</a></div>
-                        <!-- <div class="row mb-3 px-3"> <button type="submit" class="btn btn-blue text-center">Register</button> </div>
-                        <div class="row mb-4 px-3"> <small class="font-weight-bold text-muted">Already have an account? <a class="text-orange " href="{{ route('site.login') }}">Login</a></small> </div> -->
+                        <div class="w-100">Already have an account? <a class="text-orange " href="{{ route('front.user.login') }}">Login</a></div>
                       </form>
                     </div>
                 </div>

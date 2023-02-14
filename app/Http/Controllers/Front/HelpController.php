@@ -100,9 +100,8 @@ class HelpController extends BaseController
 
         $validator = Validator::make($request->all(), [
            'user_name'      =>   'required|string|min:1',
-            'user_email'      =>  'required|string|min:1',
-            'comment'      =>  'required|string|min:1',
-
+           'user_email'      =>  'required|string|min:1',
+            'comment'      =>   'required_if:type,==,No',
         ]);
 
         if (!$validator->fails()) {
@@ -116,7 +115,7 @@ class HelpController extends BaseController
                     'page'    => $request->page ?? ''
                 );
 
-                $data = $this->PincodeRepository->help($params);
+                $data = $this->HelpcategoryRepository->help($params);
 
                 if ($data) {
                     return response()->json(['error' => false, 'message' => 'Comment added']);
