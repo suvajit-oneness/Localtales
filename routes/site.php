@@ -27,17 +27,19 @@ Route::get('/collection/{slug}', 'Site\CollectionController@detail')->name('coll
 Route::get('category','Site\CategoryController@index')->name('category-home');
 Route::get('category/{slug}','Site\CategoryController@detail')->name('category');
 
+//article
+Route::get('article', 'Site\ArticleController@index')->name('article.index');
+Route::get('article/{slug}','Site\ArticleController@detail')->name('article.detail');
 
-
-
-
-
-
-
-
-// Route::get('/','Site\HomeController@index')->name('site.home');
+//login
+Route::get('login', 'Site\LoginController@showLoginForm')->name('site.login');
+Route::post('site-login', 'Site\LoginController@login')->name('site.login.post');
+Route::get('register', 'Site\LoginController@register')->name('site.register');
+Route::post('site-register', 'Site\LoginController@userCreate')->name('site.register.post');
+Route::get('site-logout', 'Site\LoginController@logout')->name('site.logout');
 Route::get('events','Site\EventController@index');
 Route::get('events/{slug}','Site\EventController@details');
+
 //deals
 Route::get('deals','Site\DealController@index');
 Route::get('deals/{slug}','Site\DealController@details');
@@ -54,12 +56,7 @@ Route::post('update/password', 'Site\BusinessController@updatePassword')->name('
 Route::get('business/review', 'Site\BusinessController@review')->name('business.review');
 Route::get('/business/{dirId}/category/{catId}/delete', 'Site\BusinessController@deleteCat')->name('business.directory.category.delete');
 
-//login
-Route::get('login', 'Site\LoginController@showLoginForm')->name('site.login');
-Route::post('site-login', 'Site\LoginController@login')->name('site.login.post');
-Route::get('register', 'Site\LoginController@register')->name('site.register');
-Route::post('site-register', 'Site\LoginController@userCreate')->name('site.register.post');
-Route::get('site-logout', 'Site\LoginController@logout')->name('site.logout');
+
 
 Route::group(['middleware' => ['auth:user']], function () {
     Route::get('/dashboard', 'Site\DashboardController@index')->name('site.dashboard');
@@ -119,9 +116,7 @@ Route::post('/business-signup-page/create', 'Front\IndexController@pagestore')->
 Route::get('/thank-you', 'Front\IndexController@createStepThree')->name('products.create.step.three');
 Route::post('directory/create-step-three', 'Front\IndexController@postCreateStepThree')->name('products.create.step.three.post');
 Route::post('business/form/{slug}', 'Front\IndexController@businessformUpdate')->name('business.form.update');
-//article
-Route::get('article/{slug}','Site\ArticleController@details');
-Route::get('/article', 'Site\ArticleController@index')->name('article.index');
+
 //article category
 Route::get('/article/category/{slug}', 'Site\ArticleCategoryController@index')->name('article.category');
 //article sub category

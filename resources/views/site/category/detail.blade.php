@@ -1,7 +1,59 @@
 @extends('site.app')
 @section('title')
-    {{ $pageTitle }}
-@endsection
+
+@php
+    if ($type == 'primary') {
+        if(!empty($data[0]->description)) {
+            $stripped_desc = strip_tags($data[0]->description);
+            $meta_desc = explode(".", $stripped_desc);
+            $description = $meta_desc[0]. "." .$meta_desc[1]. "."  ?? '';
+        } else {
+            $description = '';
+        }
+
+        $title = $data[0]->meta_title;
+    } else {
+        if(!empty($data[0]->child_description)) {
+            $stripped_desc = strip_tags($data[0]->child_description);
+            $meta_desc = explode(".", $stripped_desc);
+            $description = $meta_desc[0]. "." .$meta_desc[1]. "."  ?? '';
+        } else {
+            $description = '';
+        }
+
+        $title = str_replace('CATEGORY', $data[0]->child_category, seoManagement('directory_secondary_category_detail')->title);
+    }
+@endphp
+
+@section('title'){{$title}}@endsection
+@section('description'){{$description}}@endsection
+
+{{-- @php
+$meta_title=DB::table('seo_management')->where('page', '=', 'category')->get();
+$title=$meta_title[0]->title;
+if ($type == 'primary'){
+if(!empty($data[0]->description)){
+$meta_description= strip_tags($data[0]->description);
+$meta_desc=explode(".",$meta_description);
+$description= $meta_desc[0]. "." .$meta_desc[1]. "."  ?? '';
+}
+else{
+    $description= '';
+}
+}else{
+if(!empty($data[0]->child_description)){
+$meta_description= strip_tags($data[0]->child_description);
+$meta_desc=explode(".",$meta_description);
+$description= $meta_desc[0]. "." .$meta_desc[1]. "."  ?? '';
+}
+else{
+    $description= '';
+}
+}
+@endphp
+ {{$title}}
+ @stop
+ @section('description', $description) --}}
 
 @if ($type != 'primary')
     @php
@@ -15,7 +67,7 @@
                     $address = $business->address ?? '';
 
                     if ($directoryLattitude == null || $directoryLongitude == null) {
-                        $url = 'https://maps.google.com/maps/api/geocode/json?address=' . urlencode($address) . '&key=AIzaSyDbT-LjisuP4CnRb3BKWdeJzB4tNYKWPXM';
+                        $url = 'https://maps.google.com/maps/api/geocode/json?address=' . urlencode($address) . '&key=';
 
                         $ch = curl_init();
                         curl_setopt($ch, CURLOPT_URL, $url);
@@ -54,7 +106,7 @@
 
 @section('content')
     <section class="inner_banner articles_inbanner"
-        @if ($type == 'primary') @if ($data[0]->parent_category_image)
+        @if ($type == 'primary') @if (!empty($data[0]->parent_category_image))
             style="background: url({{ URL::to('/') . '/categories/' }}{{ $data[0]->parent_category_image }})"height: 350px;object-fit: cover
         @else
             @php
@@ -63,7 +115,7 @@
             @endphp
             style="background: url({{ URL::to('/') . '/Demo/' . $demo }})"height: 350px;object-fit: cover @endif>
     @else
-        @if ($data[0]->child_category_image)
+        @if (!empty($data[0]->child_category_image))
             style="background: url({{ URL::to('/') . '/admin/uploads/directorysubcategory/images/' }}{{ $data[0]->child_category_image }})"height:
             350px;object-fit: cover
         @else
@@ -80,9 +132,9 @@
         <div class="container position-relative">
             <div class="row m-0 mb-4">
                 @if ($type == 'primary')
-                    <h1>{{ $data[0]->parent_category }}</h1>
+                    <h1>{{ $data[0]->parent_category  ?? ''}}</h1>
                 @else
-                    <h1>{{ $data[0]->child_category }}</h1>
+                    <h1>{{ $data[0]->child_category ?? '' }}</h1>
                 @endif
             </div>
             <div class="page-search-block filterSearchBoxWraper" style="bottom: -83px;">
@@ -131,13 +183,15 @@
                 <li><a href="{{ route('category-home') }}">Category</a></li>
                 <li>/</li>
                 @if ($type == 'secondary')
-                    <li><a href="{!! URL::to('category/' . $data[0]->parent_category_slug) !!}">{{ $data[0]->parent_category }}</a></li>
+                @if(!empty($data[0]->parent_category))
+                    <li><a href="{!! URL::to('category/' . $data[0]->parent_category_slug) !!}">{{ $data[0]->parent_category  ?? ''}}</a></li>
                     <li>/</li>
                 @endif
+                @endif
                 @if ($type == 'primary')
-                    <li class="active">{{ $data[0]->parent_category }}</li>
+                    <li class="active">{{ $data[0]->parent_category  ?? ''}}</li>
                 @else
-                    <li class="active">{{ $data[0]->child_category }}</li>
+                    <li class="active">{{ $data[0]->child_category  ?? ''}}</li>
                 @endif
             </ul>
         </div>
@@ -445,7 +499,7 @@
                                 {{-- @endforeach --}}
                             </div>
                             <div class="d-flex justify-content-center mt-4">
-                                {{-- {{ $directoryList->appends($_GET)->links() }} --}}
+                                 {{ $directoryList->appends($_GET)->links() }}
                             </div>
                         </div>
 
@@ -557,7 +611,7 @@
                                 </ul>
                                 <div class="col-12">
                                     <div class="d-flex justify-content-center mt-4">
-                                        {{-- {{ $directoryList->appends($_GET)->links() }} --}}
+                                         {{ $directoryList->appends($_GET)->links() }}
                                     </div>
                                 </div>
                             </div>
@@ -626,7 +680,7 @@
 @endsection
 
 @push('scripts')
-    <script src="https://maps.google.com/maps/api/js?key=AIzaSyDbT-LjisuP4CnRb3BKWdeJzB4tNYKWPXM" type="text/javascript">
+    <script src="https://maps.google.com/maps/api/js?key=" type="text/javascript">
     </script>
 
     <script>
@@ -634,14 +688,17 @@
             @php
                 $locations = [];
                 foreach ($directories as $business) {
-                    $img = 'https://maps.googleapis.com/maps/api/streetview?size=640x640&location=' . $business->latitude . ',' . $business->longitude . '&fov=120&heading=0&key=AIzaSyDbT-LjisuP4CnRb3BKWdeJzB4tNYKWPXM';
 
-                    // $page_link = URL::to('directory/'.$business->id.'/'.strtolower(preg_replace("/[^a-zA-Z0-9]+/", "-", $business->name)));
-                    $page_link = URL::to('directory/' . $business->slug);
+                    if ( !empty($business->latitude) && !empty($business->longitude) ) {
+                        $img = 'https://maps.googleapis.com/maps/api/streetview?size=640x640&location=' . $business->latitude . ',' . $business->longitude . '&fov=120&heading=0&key=';
 
-                    // $data = array($business->name,floatval($business->latitude),floatval($business->longitude),$business->address,$img,$page_link);
-                    $data = [$business->name, floatval($business->latitude), floatval($business->longitude), $business->address, $page_link];
-                    array_push($locations, $data);
+                        // $page_link = URL::to('directory/'.$business->id.'/'.strtolower(preg_replace("/[^a-zA-Z0-9]+/", "-", $business->name)));
+                        $page_link = URL::to('directory/' . $business->slug);
+
+                        // $data = array($business->name,floatval($business->latitude),floatval($business->longitude),$business->address,$img,$page_link);
+                        $data = [$business->name, floatval($business->latitude), floatval($business->longitude), $business->address, $page_link];
+                        array_push($locations, $data);
+                    }
                 }
             @endphp
 
@@ -748,59 +805,8 @@
         @endif
     </script>
 
-    //
-    <script>
-        //     // state, suburb, postcode data fetch
-        //     $('input[name="key_details"]').on('keyup', function() {
-        //         var $this = 'input[name="key_details"]'
 
-        //         if ($($this).val().length > 0) {
-        //             $.ajax({
-        //                 url: '{{ route('user.postcode') }}',
-        //                 method: 'post',
-        //                 data: {
-        //                     '_token': '{{ csrf_token() }}',
-        //                     code: $($this).val(),
-        //                 },
-        //                 success: function(result) {
-        //                     var content = '';
 
-        //                     if (result.error === false) {
-        //                         content += `<div class="dropdown-menu show w-100 postcode-dropdown" aria-labelledby="dropdownMenuButton">`;
-
-        //                         $.each(result.data, (key, value) => {
-        //                         	if(value.type == 'pin') {
-        //                                 content += `<a class="dropdown-item" href="javascript: void(0)" onclick="fetchCode(${value.pin}, '${value.pin}', '${value.type}')"><strong>${value.pin}</strong></a>`;
-        //                         	} else if(value.type == 'suburb') {
-        //                         		content += `<a class="dropdown-item" href="javascript: void(0)" onclick="fetchCode('${value.suburb}', '${value.suburb}, ${value.short_state} ${value.pin}', '${value.type}')"><strong>${value.suburb}</strong>, ${value.pin}, ${value.short_state} </a>`;
-        //                             } else {
-        //                                 content += ``;
-        //                             }
-        //                         })
-
-        //                         if(result.data.length == 1) {
-        //                             content = '';
-        //                         }
-
-        //                         content += `</div>`;
-        //                     } else {
-        //                         content += `<div class="dropdown-menu show w-100 postcode-dropdown" aria-labelledby="dropdownMenuButton"><li class="dropdown-item">${result.message}</li></div>`;
-        //                     }
-        //                     $('.respDrop').html(content);
-        //                 }
-        //             });
-        //         } else {
-        //             $('.respDrop').text('');
-        //         }
-        //     });
-
-        //     function fetchCode1(keyword, details, type) {
-        //         $('.postcode-dropdown').hide()
-        //         $('input[name="keyword"]').val(keyword)
-        //         $('input[name="key_details"]').val(details)
-        //     }
-        //
-    </script>
     <script>
         $('body').on('click', function() {
             //code
@@ -850,19 +856,19 @@
                             content += `<div class="dropdown-menu show w-100 postcode-dropdown">`;
 
                             $.each(result.data, (key, value) => {
-                                var type = '';
+                                var type = type1 = type2 = '';
                                 if (value.type == "primary") {
                                     type1 = 'primary';
                                     type2 = 'secondary';
                                 } else if(value.type == "secondary") {
                                     type1 = 'secondary';
                                     type2 = 'business';
-                                }
-                                else{
+                                } else{
                                     type1 = 'business';
                                     type2 = '';
                                 }
-                                console.log(type2);
+                                // console.log(type1);
+                                // console.log(type2);
                                 var url = "";
                                 // if (type1 == 'primary') {
                                 //     url = `{{ url('/') }}/category/${value.slug}`;
@@ -875,7 +881,7 @@
                                 } else {
                                     url = `{{ url('/') }}/directory/${value.slug}`;
                                 }
-                                if (type2 == 'business') {
+                                if (type1 == 'business') {
                                     url = `{{ url('/') }}/directory/${value.slug}`;
                                 } else {
                                     url = `{{ url('/') }}/directory/${value.slug}`;

@@ -4,9 +4,6 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use App\Contracts\BlogContract;
-use App\Contracts\PincodeContract;
-use App\Contracts\SearchContract;
-use App\Contracts\SuburbContract;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController;
 use App\Models\ArticleFaq;
@@ -26,103 +23,48 @@ class ArticleController extends BaseController
      */
     protected $blogRepository;
     /**
-     * @var SearchContract
-     */
-    protected $SearchRepository;
-    /**
-     * @var PincodeContract
-     */
-    protected $PincodeRepository;
-    /**
-     * @var SuburbContract
-     */
-    protected $SuburbRepository;
-
-
-    /**
      * PageController constructor.
      * @param BlogContract $blogRepository
-     * @param SearchContract $SearchRepository
      */
-    public function __construct(BlogContract $blogRepository, SearchContract $SearchRepository,PincodeContract $PincodeRepository ,SuburbContract $SuburbRepository ){
+    public function __construct(BlogContract $blogRepository){
         $this->blogRepository = $blogRepository;
-        $this->SearchRepository = $SearchRepository;
-        $this->PincodeRepository = $PincodeRepository;
-        $this->SuburbRepository = $SuburbRepository;
     }
-
+    //this method is use for display categories
     public function index(Request $request) {
-            //dd($blogs);
-             if (!empty($request->title)) {
+        if (!empty($request->title)) {
+            $blogs = DB::table('blogs')
+            ->whereRaw("blog_category_id LIKE '%".$request->code."%' AND (title LIKE '%".$request->title."%') ")
+            ->orWhereRaw("blog_sub_category_id LIKE '%".$request->code."%' AND (title LIKE '%".$request->title."%') ")
+            ->orWhereRaw("blog_tertiary_category_id LIKE '%".$request->code."%' AND (title LIKE '%".$request->title."%') ")
+            ->orWhereRaw("title LIKE '%".$request->code."%' AND (title LIKE '%".$request->title."%') ")
+            ->orderBy('updated_at','desc')
+            ->get();
+        } 
+        else {
+            if ($request->type=='primary') {
                 $blogs = DB::table('blogs')
-                ->whereRaw("blog_category_id LIKE '%".$request->code."%' AND (title LIKE '%".$request->title."%') ")
-                ->orWhereRaw("blog_sub_category_id LIKE '%".$request->code."%' AND (title LIKE '%".$request->title."%') ")
-                ->orWhereRaw("blog_tertiary_category_id LIKE '%".$request->code."%' AND (title LIKE '%".$request->title."%') ")
-                ->orWhereRaw("title LIKE '%".$request->code."%' AND (title LIKE '%".$request->title."%') ")
+                ->where('blog_category_id', 'like', '%'.$request->code.'%')
+                ->orWhere('title', 'like', '%'.$request->code.'%')
                 ->orderBy('updated_at','desc')
                 ->get();
-             } else {
-                if ($request->type=='primary') {
-                    $blogs = DB::table('blogs')
-                    ->where('blog_category_id', 'like', '%'.$request->code.'%')
-                    ->orWhere('title', 'like', '%'.$request->code.'%')
-                    ->orderBy('updated_at','desc')
-                    ->get();
-                }elseif ($request->type=='secondary') {
-                    $blogs = DB::table('blogs')
-                    ->where('blog_sub_category_id', 'like', '%'.$request->code.'%')
-                    ->orWhere('title', 'like', '%'.$request->code.'%')
-                    ->orderBy('updated_at','desc')
-                    ->get();
-                }
-                 else {
-                    $blogs = DB::table('blogs')
-                    ->where('blog_tertiary_category_id', 'like', '%'.$request->code.'%')
-                    ->orWhere('title', 'like', '%'.$request->code.'%')
-                    ->orderBy('updated_at','desc')
-                    ->get();
-                }
-
-             }
-
-           /* if (!empty($request->title)) {
+            }
+            elseif ($request->type=='secondary') {
                 $blogs = DB::table('blogs')
-                ->whereRaw("blog_category_id LIKE '%".$request->keyword."%' AND (title LIKE '%".$request->title."%') ")
-                ->orWhereRaw("blog_sub_category_id LIKE '%".$request->keyword."%' AND (title LIKE '%".$request->title."%') ")
-                ->orWhereRaw("blog_tertiary_category_id LIKE '%".$request->keyword."%' AND (title LIKE '%".$request->title."%') ")
-                ->orWhereRaw("title LIKE '%".$request->keyword."%' AND (title LIKE '%".$request->title."%') ")
-                ->orderBy('title')
+                ->where('blog_sub_category_id', 'like', '%'.$request->code.'%')
+                ->orWhere('title', 'like', '%'.$request->code.'%')
+                ->orderBy('updated_at','desc')
                 ->get();
-
-             else{
-                if($request->type=='cat_level1'){
-
+            }
+            else {
                 $blogs = DB::table('blogs')
-                ->where('blog_category_id', 'like', '%'.$request->keyword.'%')
-                ->orWhere('title', 'like', '%'.$request->keyword.'%')
-                ->orderBy('title')
+                ->where('blog_tertiary_category_id', 'like', '%'.$request->code.'%')
+                ->orWhere('title', 'like', '%'.$request->code.'%')
+                ->orderBy('updated_at','desc')
                 ->get();
-                }
-                elseif($request->type=='cat_level2')
-                {
-                    $blogs = DB::table('blogs')
-                ->where('blog_sub_category_id', 'like', '%'.$request->keyword.'%')
-                ->orWhere('title', 'like', '%'.$request->keyword.'%')
-                ->orderBy('title')
-                ->get();
-                }
-                else{
-                    $blogs = DB::table('blogs')
-                    ->where('blog_tertiary_category_id', 'like', '%'.$request->keyword.'%')
-                    ->orWhere('title', 'like', '%'.$request->keyword.'%')
-                    ->orderBy('title')
-                    ->get();
-                }
-            }*/
-        //$latestblogs = $this->blogRepository->latestBlogs();
+            }
+
+        }
         $latestblogs = Blog::orderBy('updated_at','desc')->where('status',1)->take(8)->get();
-        $pin=$this->PincodeRepository->listPincode();
-        $suburb=$this->SuburbRepository->listSuburb();
         $categories = BlogCategory::orderBy('title')->where('status',1)->get();
         $cat=$request->key_details ?? '';
         $catItem=BlogCategory::where('title', 'like', '%'.$cat.'%')->where('status',1)->get();
@@ -134,15 +76,15 @@ class ArticleController extends BaseController
         $subcategories = SubCategory::orderBy('title')->where('status',1)->get();
         $tertiarycategories = SubCategoryLevel::orderBy('title')->where('status',1)->get();
     	$this->setPageTitle('Blog List', 'List of blogs');
-        return view('site.blog.index', compact('blogs','latestblogs','categories','pin','request','primaryCat','subcatItem','tercatcatItem','subcategories','tertiarycategories'));
+        return view('site.blog.index', compact('blogs','latestblogs','categories','request','primaryCat','subcatItem','tercatcatItem','subcategories','tertiarycategories'));
     }
 
-    /**
-     * @param $id
+    /** this method is use for show detail of category
+     * @param $request
      * @param $slug
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function details($slug)
+    public function detail(Request $request,$slug)
     {
         $blogs = $this->blogRepository->detailsBlog($slug);
         $blog = $blogs[0];
@@ -164,7 +106,8 @@ class ArticleController extends BaseController
      * @param $slug
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function categoryWiseList($id,$slug){
+    public function categoryWiseList($id,$slug)
+    {
         $blogs = $this->blogRepository->categoryWiseBlogs($id);
         $latestBlogs = $this->blogRepository->latestBlogs();
         $categories = $this->blogRepository->getBlogcategories();
@@ -172,10 +115,13 @@ class ArticleController extends BaseController
         return view('site.blog.category_wise', compact('blogs','latestBlogs','categories'));
     }
 
-
-    public function articletag(Request $request,$tag){
-
-        //dd($tag);
+    /** this method is use for show tag of article
+     * @param $request
+     * @param $tag
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function articletag(Request $request,$tag)
+    {
         $articleTag=DB::table('blog_tags')->where('slug',$tag)->get();
         $id=$tag[0]->id ?? '';
         if ( !empty($request->keyword) ) {
@@ -189,19 +135,16 @@ class ArticleController extends BaseController
         }
         else{
             $blogs= Blog::where('slug', 'like', '%'.$tag.'%')->where('status', 1)->get();
-            //dd($blogs);
 
         }
         $latestblogs = $this->blogRepository->latestBlogs();
-       $categories = BlogCategory::orderBy('title')->get();
-       $subcategories = SubCategory::orderBy('title')->get();
-       $tertiarycategories = SubCategoryLevel::orderBy('title')->get();
-       $pin=$this->PincodeRepository->listPincode();
-       $suburb=$this->SuburbRepository->listSuburb();
+        $categories = BlogCategory::orderBy('title')->get();
+        $subcategories = SubCategory::orderBy('title')->get();
+        $tertiarycategories = SubCategoryLevel::orderBy('title')->get();
+        $pin=$this->PincodeRepository->listPincode();
+        $suburb=$this->SuburbRepository->listSuburb();
     	$this->setPageTitle('Blog List', 'List of blogs');
         return view('site.blog.article-tag', compact('blogs','latestblogs','categories','pin','suburb','subcategories','tertiarycategories','articleTag'));
-
-
     }
 }
 
