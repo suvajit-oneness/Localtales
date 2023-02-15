@@ -19,7 +19,7 @@ Route::group(['prefix' => 'business'], function () {
 	Route::group(['middleware' => ['auth:business']], function () {
 		Route::get('/', function () {
 	      	return view('business.dashboard.index');
-	    })->name('business.dashboard');
+	    })->name('business.dashboard')->middleware(['auth', 'is_verify_email']);
 		Route::get('/profile', function () {
 			return view('business.auth.edit_profile');
 		})->name('business.profile');
@@ -30,6 +30,8 @@ Route::group(['prefix' => 'business'], function () {
 		Route::post('/category/search', 'Business\UserController@searchCat')->name('business.category.search');
 		Route::post('/category/store', 'Business\UserController@storeCat')->name('business.category.store');
 		Route::get('/{dirId}/category/{catId}/delete', 'Business\UserController@deleteCat')->name('business.category.delete');
+		/* New Added Routes */
+		Route::get('account/verify/{token}', 'Business\UserController@verifyAccount')->name('user.verify'); 
 		Route::group(['prefix'  =>   'event'], function() {
 			Route::get('/', 'Business\EventController@index')->name('business.event.index');
 			Route::get('/create', 'Business\EventController@create')->name('business.event.create');

@@ -50,7 +50,8 @@
                                     <h6><span>1</span>Business Contact Details:</h6>
                                     <div class="did-floating-label-content">
                                     <input type="text" name="name" value="@if(request()->input('name')){{request()->input('name')}} @endif" id="inputSearchTextFilter" class="did-floating-input" autofocus required>
-                                        <label class="did-floating-label">Business Name</label>
+                                        <label class="did-floating-label">Business Name <span class="m-l-5 text-danger">
+                                            *</span></label>
                                         <p class="small text-danger" id="businessNameErr"></p>
                                     </div>
                                     <div class="did-floating-label-content">
@@ -61,7 +62,8 @@
                                             }
                                         }
                                         @endphp" >
-                                        <label class="did-floating-label">Trading Name</label>
+                                        <label class="did-floating-label">Trading Name <span class="m-l-5 text-danger">
+                                            *</span></label>
                                         <p class="small text-danger" id="tradingNameErr"></p>
                                     </div>
                                     <div class="did-floating-label-content">
@@ -72,7 +74,8 @@
                                                         }
                                                     }
                                                     @endphp" >
-                                        <label class="did-floating-label">Business Email</label>
+                                        <label class="did-floating-label">Business Email <span class="m-l-5 text-danger">
+                                            *</span></label>
                                         <p class="small text-danger" id="businessEmailErr"></p>
                                     </div>
                                     <div class="did-floating-label-content">
@@ -83,7 +86,8 @@
                                                         }
                                                     }
                                                     @endphp" >
-                                        <label class="did-floating-label">Business Phone</label>
+                                        <label class="did-floating-label">Business Phone <span class="m-l-5 text-danger">
+                                            *</span></label>
                                         <p class="small text-danger" id="businessPhoneErr"></p>
                                     </div>
                                     <div class="did-floating-label-content">
@@ -94,7 +98,8 @@
                                                         }
                                                     }
                                                     @endphp" >
-                                        <label class="did-floating-label">Business Address</label>
+                                        <label class="did-floating-label">Business Address <span class="m-l-5 text-danger">
+                                            *</span></label>
                                         <p class="small text-danger" id="businessAddressErr"></p>
                                     </div>
                                     <div class="did-floating-label-content">
@@ -105,7 +110,8 @@
                                                         }
                                                     }
                                                     @endphp" >
-                                        <label class="did-floating-label">Website</label>
+                                        <label class="did-floating-label">Website <span class="m-l-5 text-danger">
+                                            *</span></label>
                                         <p class="small text-danger" id="businessWebsiteErr"></p>
                                     </div>
                                     <div class="d-flex justify-content-end mt-4 mb-4">
@@ -122,7 +128,8 @@
                                                         }
                                                     }
                                                     @endphp" >
-                                        <label class="did-floating-label">Name</label>
+                                        <label class="did-floating-label">Name <span class="m-l-5 text-danger">
+                                            *</span></label>
                                         <p class="small text-danger" id="NameErr"></p>
                                     </div>
                                     <div class="did-floating-label-content">
@@ -133,7 +140,8 @@
                                                         }
                                                     }
                                                     @endphp" >
-                                        <label class="did-floating-label">Email Address</label>
+                                        <label class="did-floating-label">Email Address <span class="m-l-5 text-danger">
+                                            *</span></label>
                                         <p class="small text-danger" id="EmailErr"></p>
                                     </div>
                                     <div class="did-floating-label-content">
@@ -144,7 +152,8 @@
                                                         }
                                                     }
                                                     @endphp" >
-                                        <label class="did-floating-label">Phone Number</label>
+                                        <label class="did-floating-label">Phone Number <span class="m-l-5 text-danger">
+                                            *</span></label>
                                         <p class="small text-danger" id="PhoneErr"></p>
                                     </div>
                                     <div class="d-flex justify-content-end mt-4 mb-4">
@@ -155,37 +164,141 @@
                                 <div class="div1" id="st3">
                                     <h6><span>3</span>Business Overview:</h6>
                                     <div class="did-floating-label-content">
-                                    <select class="did-floating-input" name="category_id">
+                                    <select class="form-control" name="category_id[]" multiple>
                                             <option value="" hidden selected>Select Category...</option>
                                             @foreach ($dircategory as $index => $item)
-                                                <option value="{{$item->id}}">{{ $item->parent_category }}</option>
+                                                <option value="{{$item->id}}">{{ $item->child_category }}</option>
                                             @endforeach
-                                        </select>
-                                        @error('category_id') <p class="small text-danger">{{ $message }}</p> @enderror
-                                        <label class="did-floating-label">Categories</label>
+                                    </select>
+                                    @error('category_id') <p class="small text-danger">{{ $message }}</p> @enderror
+                                        <label class="did-floating-label">Categories <span class="m-l-5 text-danger">
+                                            *</span></label>
                                     </div>
                                     <div class="did-floating-label-content">
                                     <textarea class="did-floating-input" rows="4" name="description" id="description" onblur="validateDes(this.value)" value="{{ old('description') }}"/>@error('description') {{ $message ?? '' }} @enderror</textarea>
-                                    <label class="did-floating-label">Description</label>
+                                    <label class="did-floating-label">Description <span class="m-l-5 text-danger">
+                                        *</span></label>
                                     <p class="small text-danger" id="DescServiceErr"></p>
                                     </div>
                                     <div class="did-floating-label-content">
                                     <textarea class="did-floating-input" rows="4" name="service_description" id="service_description" onblur="validateSer(this.value)" value="{{ old('service_description') }}"/>@error('service_description') {{ $message ?? '' }} @enderror</textarea>
-                                    <label class="did-floating-label">Service Description</label>
+                                    <label class="did-floating-label">Service Description <span class="m-l-5 text-danger">
+                                        *</span></label>
                                     <p class="small text-danger" id="ServiceErr"></p>
                                     </div>
+                                    <p class="text dark">Opening Hours</p>
                                     <div class="did-floating-label-content did-error-input">
-                                        <select class="did-floating-select" name="opening_hour">
-
-                                          <option value="">9 am - 6 pm</option>
-                                          <option value="" selected>11 am - 8 pm</option>
-
-                                        </select>
-                                        <label class="did-floating-label">Opening Hours</label>
+                                        <input class="did-floating-input @error('monday') is-invalid @enderror" type="text" name="monday" id="monday" onblur="validateWebsite(this.value)" value="@php
+                                        if (request()->input('monday')) {
+                                            if (request()->input('monday') != 'undefined') {
+                                                echo request()->input('monday');
+                                            }
+                                        }
+                                        @endphp" >
+                                        <label class="did-floating-label">Monday <span class="m-l-5 text-muted">
+                                            (optional)</span></label>
                                     </div>
-                                    <div class="did-floating-label-content">
-                                    <input class="did-floating-input" type="text" name="twitter_link" onblur="validateSoc(this.value)">
-                                        <label class="did-floating-label">Social Media</label>
+                                    <div class="did-floating-label-content did-error-input">
+                                        <input class="did-floating-input @error('tuesday') is-invalid @enderror" type="text" name="tuesday" id="tuesday" onblur="validateWebsite(this.value)" value="@php
+                                        if (request()->input('tuesday')) {
+                                            if (request()->input('tuesday') != 'undefined') {
+                                                echo request()->input('tuesday');
+                                            }
+                                        }
+                                        @endphp" >
+                                        <label class="did-floating-label">Tuesday<span class="m-l-5 text-muted">
+                                            (optional)</span></label>
+                                    </div>
+                                    <div class="did-floating-label-content did-error-input">
+                                        <input class="did-floating-input @error('wednesday') is-invalid @enderror" type="text" name="wednesday" id="wednesday" onblur="validateWebsite(this.value)" value="@php
+                                        if (request()->input('wednesday')) {
+                                            if (request()->input('wednesday') != 'undefined') {
+                                                echo request()->input('wednesday');
+                                            }
+                                        }
+                                        @endphp" >
+                                        <label class="did-floating-label">Wednesday<span class="m-l-5 text-muted">
+                                            (optional)</span></label>
+                                    </div>
+                                    <div class="did-floating-label-content did-error-input">
+                                        <input class="did-floating-input @error('thursday') is-invalid @enderror" type="text" name="thursday" id="thursday" onblur="validateWebsite(this.value)" value="@php
+                                        if (request()->input('thursday')) {
+                                            if (request()->input('thursday') != 'undefined') {
+                                                echo request()->input('thursday');
+                                            }
+                                        }
+                                        @endphp" >
+                                        <label class="did-floating-label">Thursday<span class="m-l-5 text-muted">
+                                            (optional)</span></label>
+                                    </div>
+                                    <div class="did-floating-label-content did-error-input">
+                                        <input class="did-floating-input @error('friday') is-invalid @enderror" type="text" name="friday" id="friday" onblur="validateWebsite(this.value)" value="@php
+                                        if (request()->input('friday')) {
+                                            if (request()->input('friday') != 'undefined') {
+                                                echo request()->input('friday');
+                                            }
+                                        }
+                                        @endphp" >
+                                        <label class="did-floating-label">Friday<span class="m-l-5 text-muted">
+                                            (optional)</span></label>
+                                    </div>
+                                    <div class="did-floating-label-content did-error-input">
+                                        <input class="did-floating-input @error('saturday') is-invalid @enderror" type="text" name="saturday" id="saturday" onblur="validateWebsite(this.value)" value="@php
+                                        if (request()->input('saturday')) {
+                                            if (request()->input('saturday') != 'undefined') {
+                                                echo request()->input('saturday');
+                                            }
+                                        }
+                                        @endphp" >
+                                        <label class="did-floating-label">Saturday<span class="m-l-5 text-muted">
+                                            (optional)</span></label>
+                                    </div>
+                                    <div class="did-floating-label-content did-error-input">
+                                        <input class="did-floating-input @error('sunday') is-invalid @enderror" type="text" name="sunday" id="sunday" onblur="validateWebsite(this.value)" value="@php
+                                        if (request()->input('sunday')) {
+                                            if (request()->input('sunday') != 'undefined') {
+                                                echo request()->input('sunday');
+                                            }
+                                        }
+                                        @endphp" >
+                                        <label class="did-floating-label">Sunday<span class="m-l-5 text-muted">
+                                            (optional)</span></label>
+                                    </div>
+                                    <div class="did-floating-label-content did-error-input">
+                                        <input class="did-floating-input @error('public_holiday') is-invalid @enderror" type="text" name="public_holiday" id="public_holiday" onblur="validateWebsite(this.value)" value="@php
+                                        if (request()->input('public_holiday')) {
+                                            if (request()->input('public_holiday') != 'undefined') {
+                                                echo request()->input('public_holiday');
+                                            }
+                                        }
+                                        @endphp" >
+                                        <label class="did-floating-label">Public Holiday<span class="m-l-5 text-muted">
+                                            (optional)</span></label>
+                                    </div>
+                                    <p class="text dark">Social Media Link</p>
+                                    <div class="did-floating-label-content did-error-input">
+                                    <span>
+                                        <i class="fab fa-facebook-f"></i>
+                                    </span>
+                                    <input class="did-floating-input" type="text" name="facebook_link" onblur="validateSoc(this.value)">
+                                        <label class="did-floating-label">Facebook<span class="m-l-5 text-muted">
+                                            (optional)</span></label>
+                                    </div>
+                                    <div class="did-floating-label-content did-error-input">
+                                        <span>
+                                            <i class="fab fa-twitter"></i>
+                                        </span>
+                                        <input class="did-floating-input" type="text" name="twitter_link" onblur="validateSoc(this.value)">
+                                        <label class="did-floating-label">Twitter<span class="m-l-5 text-muted">
+                                            (optional)</span></label>
+                                    </div>
+                                    <div class="did-floating-label-content did-error-input">
+                                        <span>
+                                                <i class="fab fa-instagram"></i>
+                                        </span>
+                                        <input class="did-floating-input" type="text" name="instagram_link" onblur="validateSoc(this.value)">
+                                        <label class="did-floating-label">Instagram<span class="m-l-5 text-muted">
+                                            (optional)</span></label>
                                     </div>
                                     <div class="d-flex justify-content-end mt-4 mb-4">
                                         <a type="button" href="{{ URL::to('/') }}" class="btn btn-login btn_buseness" >Back</a> 

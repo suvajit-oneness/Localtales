@@ -15,6 +15,7 @@ use App\Models\DirectoryCategory;
 use App\Models\MailTemplate;
 use App\Models\PinCode;
 use App\Models\Review;
+use App\Models\UserVerify;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -67,16 +68,31 @@ class SignupController extends BaseController
         // $business->pin = $request->pin;
         $business->description = $request->description;
         $business->service_description = $request->service_description;
-        $business->category_id = $request->category_id;
-        $business->opening_hour = $request->opening_hour;
+        $business->category_id = implode(',',$request->category_id);
+        $business->monday = $request->monday;
+        $business->tuesday = $request->tuesday;
+        $business->wednesday = $request->wednesday;
+        $business->thursday = $request->thursday;
+        $business->friday = $request->friday;
+        $business->saturday = $request->saturday;
+        $business->sunday = $request->sunday;
+        $business->public_holiday = $request->public_holiday;
         $business->primary_name = $request->primary_name;
         $business->primary_email = $request->primary_email;
         $business->primary_phone = $request->primary_phone;
         $business->website = $request->website;
+        $business->facebook_link = $request->facebook_link;
         $business->twitter_link = $request->twitter_link;
+        $business->instagram_link = $request->instagram_link;
         $business->password = bcrypt('Welcome@2022');
         $saved = $business->save();
 
+        $token = Str::random(64);
+  
+        UserVerify::create([
+              'business_id' => $business->id, 
+              'token' => $token
+            ]);
         if ($saved) {
             $template = MailTemplate::where('type', 'like', '%' . 'business-signup' . '%')->first();
             $data["email"] = $request->email;
@@ -85,7 +101,7 @@ class SignupController extends BaseController
             $data["image"] = $template->is_image;
             $data["url"] = URL::to('/') . '/' . 'business/login';
 
-            Mail::send('frontend.business.mail-template', $data, function ($message) use ($data) {
+            Mail::send('frontend.business.mail-template', ['token' => $token],$data, function ($message) use ($data) {
                 $message->to($data["email"], $data["email"])
                     ->subject($data["title"]);
 
@@ -101,6 +117,33 @@ class SignupController extends BaseController
         $directory = $request->session()->get('directory');
 
         return view('business.auth.thankyou', compact('directory'));
+    }
+
+
+    /**
+     * Write code on Method
+     *
+     * @return response()
+     */
+    public function verifyAccount($token)
+    {
+        $verifyUser = UserVerify::where('token', $token)->first();
+  
+        $message = 'Sorry your email cannot be identified.';
+  
+        if(!is_null($verifyUser) ){
+            $user = $verifyUser->business;
+              
+            if(!$user->is_email_verified) {
+                $verifyUser->business->is_email_verified = 1;
+                $verifyUser->business->save();
+                $message = "Your e-mail is verified. You can now login.";
+            } else {
+                $message = "Your e-mail is already verified. You can now login.";
+            }
+        }
+  
+      return redirect()->route('business.login')->with('message', $message);
     }
     //signup for individual business
     public function view(Request $request, $slug)

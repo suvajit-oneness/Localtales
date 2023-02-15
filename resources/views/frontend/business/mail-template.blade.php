@@ -20,5 +20,9 @@
     <p class="text-align-center"> Email : {{$email}}</p>
     <p class="text-align-center"> Password : Welcome@2022</p>
     <p>Thank you</p>
+    <h1>Email Verification Mail</h1>
+  
+    Please verify your email with bellow link: 
+    <a href="{{ route('user.verify', $token) }}">Verify Email</a>
 </body>
 </html>

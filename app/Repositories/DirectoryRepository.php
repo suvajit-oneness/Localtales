@@ -212,8 +212,12 @@ class DirectoryRepository extends BaseRepository implements DirectoryContract
      * @return mixed
      */
     public function getDirectorycategories(){
-        // $categories = DB::table('business_categories')->orderBy('title')->get();
-        $categories = DirectoryCategory::where('type',1)->orderBy('parent_category')->get();
+          $categories = DB::select("SELECT * from directory_categories
+          WHERE `type` = 0 AND
+          child_category IS NOT NULL
+          GROUP BY child_category
+          ORDER BY child_category");
+        //$categories = DirectoryCategory::where('type',0)->where('child_category','!=','NULL')->orderBy('child_category')->groupBy('child_category')->get();
         // dd($categories[1]);
 
         return $categories;

@@ -4,13 +4,17 @@ namespace App\Models;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+//use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\AdminResetPasswordNotification;
+
 class Directory extends Authenticatable implements MustVerifyEmail
 {
+   // use HasFactory, Notifiable;
+   use Notifiable;
     protected $fillable = [
-        'name', 'image','email','password','mobile','address','pin','lat','lon','description','service_description','opening_hour','website','facebook_link','twitter_link','instagram_link','url','public_holiday','status'
+        'name', 'image','email','is_email_verified','password','mobile','address','pin','lat','lon','description','service_description','opening_hour','website','facebook_link','twitter_link','instagram_link','url','public_holiday','status'
     ];
     /**
      * The attributes that are mass assignable.
@@ -28,6 +32,14 @@ class Directory extends Authenticatable implements MustVerifyEmail
         'password', 'remember_token',
     ];
 
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
     public function category() {
         return $this->belongsTo('App\Models\DirectoryCategory', 'category_id', 'id');
     }
@@ -53,9 +65,7 @@ class Directory extends Authenticatable implements MustVerifyEmail
         ];
         return $resp;
     }
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+   
 
     public function sendPasswordResetNotification($token)
     {
