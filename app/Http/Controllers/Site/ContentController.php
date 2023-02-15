@@ -398,6 +398,7 @@ class ContentController extends BaseController
         $this->setPageTitle('Terms Of Use', 'Local Tales - Terms Of Use');
         $about = $this->AboutRepository->listaboutus();
         $term = Setting::where('key', 'terms')->get();
+
         return view('site.about.term',compact('about','term'));
     }
 
@@ -409,6 +410,7 @@ class ContentController extends BaseController
         $this->setPageTitle('Privacy Policy', 'Local Tales - Privacy Policy');
         $about = $this->AboutRepository->listaboutus();
         $privacy = Setting::where('key', 'Privacy')->get();
+
         return view('site.about.privacy',compact('about','privacy'));
     }
 

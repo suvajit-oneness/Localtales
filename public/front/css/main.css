@@ -5623,3 +5623,11 @@ select.did-floating-select::-ms-expand {
 .map-top {
     margin-top: 50px;
 }
+
+.terms p span {
+    font-family: 'GT Walsheim Pro' !important;
+}
+
+.privacy-policy p span {
+    font-family: 'GT Walsheim Pro' !important;
+}
