@@ -83,7 +83,7 @@ class DirectoryController extends BaseController
 
         return view('site.directory.detail', compact('business', 'businessSaved', 'review'));
     }
-
+    //related directory
     public function relatedDirectory(Request $request)
 
     {
@@ -348,6 +348,19 @@ class DirectoryController extends BaseController
         }
         return response()->json(['error' => false, 'resp' => $resp]);
 
+    }
+    //store review
+    public function reviewstore(Request $request)
+    {
+
+        $business = new Review();
+        $business->name = $request->name;
+        $business->directory_id = $request->directory_id;
+        $business->email = $request->email;
+        $business->rating = $request->rating;
+        $business->comment = $request->comment;
+        $business->save();
+        return redirect()->back()->with('success', 'Review Added Successfully');
     }
 
 }

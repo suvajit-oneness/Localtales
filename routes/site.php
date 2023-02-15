@@ -18,12 +18,13 @@ Route::get('suburb/{slug}', 'Site\SuburbController@detail')->name('suburb-detail
 // directory
 Route::get('directory','Site\DirectoryController@index')->name('directory');
 Route::get('directory/{slug}','Site\DirectoryController@detail')->name('directory.detail');
-Route::post('directory/related','Site\BusinessController@relatedDirectory')->name('directory.related');
+Route::post('directory/related','Site\DirectoryController@relatedDirectory')->name('directory.related');
+Route::post('/review/create', 'Front\DirectoryController@reviewstore')->name('review');
 
 // directory categories ajax fetch
 Route::post('/directory/category/ajax', 'Api\PostcodeController@category')->name('directory.category.ajax');
-Route::post('claim-user-collection/{id}','Front\HelpController@claimbusiness')->name('user.claim.business');
-Route::post('/review/create', 'Front\BusinessController@reviewstore')->name('review');
+//Route::post('claim-user-collection/{id}','Front\HelpController@claimbusiness')->name('user.claim.business');
+
 
 // collection
 Route::get('/collection', 'Site\CollectionController@index')->name('collection.home');
@@ -90,31 +91,6 @@ Route::get('logout', 'Site\LoginController@logout')->name('user.logout');
 // user dashboard
 Route::group(['middleware' => ['auth:user']], function () {
     Route::get('/dashboard', 'Site\UserController@index')->name('site.dashboard');
-
-    // notification
-    Route::get('/notification/setup', 'Site\UserNotificationController@setup')->name('user.notification.setup');
-    Route::post('/notification/toggle', 'Site\UserNotificationController@toggle')->name('user.notification.toggle');
-});
-
-// help
-Route::name('front.help.')->prefix('help')->group(function() {
-	Route::get('/', 'Front\HelpController@index')->name('index');
-    Route::get('/category/{slug}', 'Front\HelpController@subcat')->name('subcat');
-	Route::get('/article/{slug}', 'Front\HelpController@detail')->name('detail');
-});
-
-Route::post('/claim/ajax', 'Front\HelpController@claimAjax')->name('add.claim.ajax');
-
-//raise query
-Route::get('/raise/query','Front\QueryController@createQuery')->name('user.raise.query');
-Route::post('/raise/query', 'Front\QueryController@storeQuery')->name('user.raise.query.store');
-
-Route::post('/user/help/comment', 'Front\HelpController@store')->name('front.help.store');
-Route::post('/add/ajax', 'Front\HelpController@helpAjax')->name('add.help.ajax');
-
-// user dashboard
-Route::group(['middleware' => ['auth:user']], function () {
-    // Route::get('/dashboard', 'Site\UserController@index')->name('site.dashboard');
     Route::get('saved-collection','Site\UserController@savedCollection')->name('site.dashboard.saved_collection');
     Route::get('/{id}/delete', 'Site\UserController@removeSavedCollection')->name('site.dashboard.collection.delete');
     Route::get('saved-deals','Site\UserController@savedDeals')->name('site.dashboard.saved_deals');
@@ -136,7 +112,26 @@ Route::group(['middleware' => ['auth:user']], function () {
     Route::get('site-delete-user-directory/{id}','Site\BusinessController@deleteUserBusiness');
     Route::get('site-save-user-collection/{id}','Front\IndexController@saveUserCollection');
     Route::get('site-delete-user-collection/{id}','Front\IndexController@deleteUserCollection');
+    // notification
+    Route::get('/notification/setup', 'Site\UserNotificationController@setup')->name('user.notification.setup');
+    Route::post('/notification/toggle', 'Site\UserNotificationController@toggle')->name('user.notification.toggle');
 });
+
+// help
+Route::name('front.help.')->prefix('help')->group(function() {
+	Route::get('/', 'Front\HelpController@index')->name('index');
+    Route::get('/category/{slug}', 'Front\HelpController@subcat')->name('subcat');
+	Route::get('/article/{slug}', 'Front\HelpController@detail')->name('detail');
+});
+
+Route::post('/claim/ajax', 'Front\HelpController@claimAjax')->name('add.claim.ajax');
+
+//raise query
+Route::get('/raise/query','Front\QueryController@createQuery')->name('user.raise.query');
+Route::post('/raise/query', 'Front\QueryController@storeQuery')->name('user.raise.query.store');
+
+Route::post('/user/help/comment', 'Front\HelpController@store')->name('front.help.store');
+Route::post('/add/ajax', 'Front\HelpController@helpAjax')->name('add.help.ajax');
 
 //Route::get('directory/{id}/{slug}','Site\BusinessController@details');
 //Route::get('directory-page/{id}/{slug}','Front\IndexController@page');
