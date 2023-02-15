@@ -34,6 +34,13 @@
     @endfor
 
     <url>
+        <loc>{{ url('/') }}/sitemap_sitemap/collection</loc>
+        {{-- <lastmod>{{date('Y-m-d H:i:s')}}</lastmod> --}}
+        <lastmod>{{date('c', $currentDate)}}</lastmod>
+        <priority>0.8</priority>
+    </url>
+
+    <url>
         <loc>{{ url('/') }}/sitemap_sitemap/articlecategory</loc>
         {{-- <lastmod>{{date('Y-m-d H:i:s')}}</lastmod> --}}
         <lastmod>{{date('c', $currentDate)}}</lastmod>

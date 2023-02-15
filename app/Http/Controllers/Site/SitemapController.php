@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\BaseController;
 use App\Models\Directory;
+use App\Models\Collection;
 use App\Models\BlogCategory;
 use App\Models\Blog;
 use App\Models\PinCode;
@@ -36,19 +37,16 @@ class SitemapController extends BaseController
             $url_page = substr($current_url, -5);
             // Use preg_match_all() function to check match
             preg_match_all('!\d+!', $url_page, $numbersOnly);
-            $currentPage = $numbersOnly[0][0];
-
-            // dd($currentPage);
+            $currentPage = (int) $numbersOnly[0][0];
 
             // max directory page limit
-            $directoryCount = Directory::count();
+            $directoryCount = Directory::where('status', 1)->count();
             $totalDirectoryPages = (int) floor($directoryCount / $per_page);
 
-            if ($currentPage > 0 && $currentPage < $totalDirectoryPages) {
-                $offset = ($currentPage - 1) * $per_page;
+            // dd($currentPage, $totalDirectoryPages);
 
-                // dd($offset);
-                // DB::enableQueryLog();
+            if ($currentPage > 0 && $currentPage <= $totalDirectoryPages) {
+                $offset = ($currentPage - 1) * $per_page;
 
                 $data = Directory::select('name', 'slug', 'created_at')
                 ->where('status', 1)
@@ -61,6 +59,17 @@ class SitemapController extends BaseController
             } else {
                 return response()->view('site.404');
             }
+        }
+
+        // collection
+        elseif (strpos($slug, 'collection') !== false) {
+            $type = 'collection';
+
+            $data = Collection::select('title', 'slug', 'created_at')
+            // ->where('status', 1)
+            ->orderBy('id', 'desc')
+            ->get()
+            ->toArray();
         }
 
         // article category
