@@ -145,7 +145,7 @@ Route::get('/sitemap_sitemap/{slug?}', 'Site\SitemapController@detail');
 Route::view('/404', 'site.404')->name('404');
 
 Route::get('search','Site\ArticleController@index')->name('site.search');
-//Route::post('directory-search','Site\ContentController@search')->name('directory.search');
+Route::post('directory-search','Site\ContentController@search')->name('directory.search');
 //Route::get('directory-list-3','Site\BusinessController@index');
 //Route::get('directory-list-2','Site\BusinessController@index2');
 ?>
