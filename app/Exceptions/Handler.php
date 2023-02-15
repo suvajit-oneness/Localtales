@@ -68,8 +68,11 @@ class Handler extends ExceptionHandler
             case 'eventorganiser':
                     $login = 'eventorganiser.login';
                     break;
+            case 'business':
+                $login = 'business.login';
+                break;
             default:
-                $login = 'login';
+                $login = 'front.user.login';
                 break;
         }
         return redirect()->guest(route($login));

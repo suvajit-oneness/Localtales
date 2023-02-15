@@ -57,6 +57,10 @@ return [
             'driver' => 'session',
             'provider' => 'businesses',
         ],
+        'eventorganiser' => [
+            'driver' => 'session',
+            'provider' => 'eventorganisers',
+        ],
         'user' => [
             'driver' => 'session',
             'provider' => 'users',
@@ -98,12 +102,11 @@ return [
         'businesses' => [
             'driver' => 'eloquent',
             'model' => App\Models\Directory::class,
+        ],
+        'eventorganiser' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\EventOrganiser::class,
         ]
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*

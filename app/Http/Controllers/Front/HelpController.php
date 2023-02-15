@@ -101,7 +101,7 @@ class HelpController extends BaseController
         $validator = Validator::make($request->all(), [
            'user_name'      =>   'required|string|min:1',
            'user_email'      =>  'required|string|min:1',
-            'comment'      =>   'required_if:type,==,No',
+            'comment'      =>   'required_if:type,==,no',
         ]);
 
         if (!$validator->fails()) {
