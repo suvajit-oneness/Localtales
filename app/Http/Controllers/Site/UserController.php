@@ -18,6 +18,8 @@ use App\Models\ApplyJob;
 use App\Models\Job;
 use App\Models\JobUser;
 use App\Models\Activity;
+use App\Models\Userbusiness;
+use App\Models\UserCollection;
 use sendNotification;
 
 class UserController extends BaseController
@@ -64,11 +66,37 @@ class UserController extends BaseController
         $this->userRepository = $userRepository;
         $this->notificationRepository = $notificationRepository;
     }
+
 	public function index() {
         $businesses = Userbusiness::where('user_id', Auth::guard('user')->user()->id)->get();
         $collection = UserCollection::where('user_id', Auth::guard('user')->user()->id)->get();
 
         return view('site.user.dashboard', compact('businesses', 'collection'));
+    }
+
+    public function savedCollection() {
+        $userId = auth()->guard('user')->user()->id;
+        $collection = $this->businessRepository->UserCollection($userId);
+        $this->setPageTitle('Saved collection', 'Saved collection');
+
+        return view('site.user.saved-collection', compact('collection'));
+    }
+
+    public function savedDirectory() {
+        $userId = auth()->guard('user')->user()->id;
+        $businesses = $this->businessRepository->UserBusinesses($userId);
+        $this->setPageTitle('Saved Directories', 'Saved Directories');
+
+        return view('site.user.saved-directory', compact('businesses'));
+    }
+
+    public function savedJob() {
+        $userId = auth()->guard('user')->user()->id;
+        $jobs = JobUser::where('user_id',$userId)->get();
+        $this->setPageTitle('Saved job', 'Saved job');
+
+        // return view('site.dashboard.saved_jobs' , compact('job'));
+        return view('site.user.saved-job', compact('jobs'));
     }
 
 
@@ -125,13 +153,7 @@ class UserController extends BaseController
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function savedDirectories(){
-        $userId = Auth::user()->id;
-        $businesses = $this->businessRepository->UserBusinesses($userId);
-
-        $this->setPageTitle('Saved Directories', 'Saved Directories');
-        return view('site.dashboard.saved_businesses' , compact('businesses'));
-    }
+    
 
     /**
      * @param $id
@@ -145,16 +167,6 @@ class UserController extends BaseController
             return $this->responseRedirectBack('Error occurred while deleting directory.', 'error', true, true);
         }
         return $this->responseRedirect('site.dashboard.saved_businesses', 'You have successfully removed this directory from your list' ,'success',false, false);
-    }
- /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function savedCollection(){
-        $userId = Auth::user()->id;
-        $collection = $this->businessRepository->UserCollection($userId);
-        //dd($collection->collectionDetails);
-        $this->setPageTitle('Saved collection', 'Saved collection');
-        return view('site.dashboard.saved_events' , compact('collection'));
     }
 
     /**
@@ -216,14 +228,7 @@ class UserController extends BaseController
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function savedJob(){
-        $userId = auth()->guard('user')->user()->id;
-     
-        $job = JobUser::where('user_id',$userId)->get();
-        //dd($collection->collectionDetails);
-        $this->setPageTitle('Saved job', 'Saved job');
-        return view('site.dashboard.saved_jobs' , compact('job'));
-    }
+    
 
     /**
      * @param $id

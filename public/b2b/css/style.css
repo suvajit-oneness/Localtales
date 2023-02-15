@@ -3708,3 +3708,47 @@ input:checked+.slider:before {
 .notification-box h4 {
     color: #111;
 }
+
+.custom-control-input:checked~.custom-control-label::before {
+    color: #fff;
+    border-color: #ff5e51;
+    background-color: #ff5e53;
+    box-shadow: 0 0 10px transparent;
+}
+
+.custom-control-input:not(:disabled):active~.custom-control-label::before {
+    color: #fff;
+    background-color: #ff5e5347;
+    border-color: #ff5e5347;
+}
+
+input:focus, textarea:focus {
+    border: 1px solid #ff5e53;
+}
+
+.custom-control-input:focus:not(:checked)~.custom-control-label::before {
+    border-color: #ff5e5347;
+}
+
+.custom-control-input:focus~.custom-control-label::before {
+    box-shadow: 0 0 0 0.2rem #ff5e5347;
+}
+
+.btn-danger {
+    color: #fff;
+    background-color: #ff5e53;
+    border-color: #ff5e53;
+}
+
+.btn-danger:hover {
+    color: #fff;
+    background-color: #202020;
+    border-color: #202020;
+}
+
+.btn-danger.focus, .btn-danger:focus, .btn-danger:not(:disabled):not(.disabled).active, .btn-danger:not(:disabled):not(.disabled):active, .show>.btn-danger.dropdown-toggle {
+    color: #fff;
+    background-color: #c1382f;
+    border-color: #c1382f;
+    box-shadow: 0 0 0 0.2rem rgb(255 94 83 / 43%);
+}

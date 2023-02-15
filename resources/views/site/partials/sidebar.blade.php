@@ -37,7 +37,7 @@
           {{-- <li><a href="{{ route('site.dashboard.saved_deals') }}"><i class="fa fa-heart"></i> Saved Deals</a></li> --}}
            <li><a href="{{ route('site.dashboard.saved_businesses') }}"><i class="fa fa-heart"></i> Saved Directories</a></li>
            <li><a href="{{ route('site.dashboard.saved_job') }}"><i class="fa fa-bell"></i> Saved Jobs</a></li>
-           <li><a href="{{ route('site.dashboard.applied_job') }}"><i class="fa fa-cogs"></i> Applied Jobs</a></li>
+           {{-- <li><a href="{{ route('site.dashboard.applied_job') }}"><i class="fa fa-cogs"></i> Applied Jobs</a></li> --}}
            <li><a href="{{ route('user.notification.setup') }}"><i class="fa fa-cogs"></i> Notification setup</a></li>
         </ul>
         <ul class="nav navbar-nav mt-auto">

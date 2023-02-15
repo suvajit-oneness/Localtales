@@ -11,9 +11,39 @@
     </div>
     <div class="row">
         <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="justify-content-end">
+                        <p class="text-muted mb-0">Select How you want to receive notifications</p>
+
+                        <div class="d-flex mt-3">
+                            <div class="mr-4">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="type-email">
+                                    <label class="custom-control-label" for="type-email">Email</label>
+                                </div>
+                            </div>
+                            <div class="mr-4">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="type-push">
+                                    <label class="custom-control-label" for="type-push">Push Notification</label>
+                                </div>
+                            </div>
+                            <div class="mr-4">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="type-app">
+                                    <label class="custom-control-label" for="type-app">In-app Notification</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
             <div class="notification-content">
                 <div class="alert alert-light notification-box" role="alert">
-
                     @foreach ($data as $key => $heading)
                         <div class="notification-box-inner">
                             <h4>{{$heading['title']}}</h4>

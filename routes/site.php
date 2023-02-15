@@ -92,12 +92,16 @@ Route::get('logout', 'Site\LoginController@logout')->name('user.logout');
 Route::group(['middleware' => ['auth:user']], function () {
     Route::get('/dashboard', 'Site\UserController@index')->name('site.dashboard');
     Route::get('saved-collection','Site\UserController@savedCollection')->name('site.dashboard.saved_collection');
+    Route::get('saved-directory','Site\UserController@savedDirectory')->name('site.dashboard.saved_businesses');
+    Route::get('saved-job','Site\UserController@savedJob')->name('site.dashboard.saved_job');
+
+
+
     Route::get('/{id}/delete', 'Site\UserController@removeSavedCollection')->name('site.dashboard.collection.delete');
     Route::get('saved-deals','Site\UserController@savedDeals')->name('site.dashboard.saved_deals');
     Route::get('saved-deals/{id}/delete', 'Site\UserController@removeSavedDeals')->name('site.dashboard.deal.delete');
-    Route::get('saved-directory','Site\UserController@savedDirectories')->name('site.dashboard.saved_businesses');
     Route::get('saved-directory/{id}/delete', 'Site\UserController@removeSavedDirectories')->name('site.dashboard.directory.delete');
-    Route::get('site-edit-profile', 'Site\UserController@editUserProfile')->name('site.dashboard.editProfile');
+    Route::get('profile/edit', 'Site\UserController@editUserProfile')->name('site.dashboard.editProfile');
     Route::post('site-update-profile', 'Site\UserController@updateProfile')->name('site.dashboard.updateProfile');
     Route::get('notification-list', 'Site\UserController@notificationList')->name('site.dashboard.notificationList');
     Route::get('setting', 'Site\UserController@setting')->name('site.dashboard.setting');
@@ -105,7 +109,6 @@ Route::group(['middleware' => ['auth:user']], function () {
     Route::get('loop-like/{id}','Site\UserController@loopLike');
     Route::get('site-save-user-event/{id}','Site\UserController@saveUserEvent');
     Route::get('site-delete-user-event/{id}','Site\UserController@deleteUserEvent');
-    Route::get('saved-job','Site\UserController@savedJob')->name('site.dashboard.saved_job');
     Route::get('/job/{slug}/delete', 'Site\UserController@removeSavedJob')->name('site.dashboard.job.delete');
     Route::get('applied/job','Site\UserController@appliedJob')->name('site.dashboard.applied_job');
     Route::get('site-save-user-directory/{id}','Site\BusinessController@saveUserBusiness');
