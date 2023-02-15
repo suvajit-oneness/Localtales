@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Site;
 
-
 use App\Http\Controllers\Controller;
 use App\Contracts\EventContract;
 use App\Contracts\CategoryContract;
@@ -13,7 +12,9 @@ use App\Contracts\NotificationContract;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\Facades\Validator;
-use Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+
 use App\Models\ApplyJob;
 use App\Models\Job;
 use App\Models\JobUser;
@@ -97,6 +98,24 @@ class UserController extends BaseController
 
         return view('site.user.saved-job', compact('jobs'));
     }
+
+    public function allNotifications(){
+        $userId = auth()->guard('user')->user()->id;
+        $notifications = DB::table('notifications')->where('receiver_id', $userId)->latest('id')->get();
+
+        $this->setPageTitle('Notification List', 'Notification List');
+        return view('site.user.notification.index' , compact('notifications'));
+    }
+
+
+
+
+
+
+
+
+
+
 
 
       /**
@@ -216,12 +235,7 @@ class UserController extends BaseController
         return $this->responseRedirect('site.dashboard.editProfile', 'You have successfully updated your profile' ,'success',false, false);
     }
 
-    public function notificationList(){
-        $notifications = $this->notificationRepository->listNotifications();
-
-        $this->setPageTitle('Notification List', 'Notification List');
-        return view('site.auth.notifications' , compact('notifications'));
-    }
+    
     //save job
 
     /**

@@ -94,6 +94,7 @@ Route::group(['middleware' => ['auth:user']], function () {
     Route::get('saved-collection','Site\UserController@savedCollection')->name('site.dashboard.saved_collection');
     Route::get('saved-directory','Site\UserController@savedDirectory')->name('site.dashboard.saved_businesses');
     Route::get('saved-job','Site\UserController@savedJob')->name('site.dashboard.saved_job');
+    Route::get('notification', 'Site\UserController@allNotifications')->name('site.dashboard.notificationList');
 
 
 
@@ -103,7 +104,7 @@ Route::group(['middleware' => ['auth:user']], function () {
     Route::get('saved-directory/{id}/delete', 'Site\UserController@removeSavedDirectories')->name('site.dashboard.directory.delete');
     Route::get('profile/edit', 'Site\UserController@editUserProfile')->name('site.dashboard.editProfile');
     Route::post('site-update-profile', 'Site\UserController@updateProfile')->name('site.dashboard.updateProfile');
-    Route::get('notification-list', 'Site\UserController@notificationList')->name('site.dashboard.notificationList');
+    
     Route::get('setting', 'Site\UserController@setting')->name('site.dashboard.setting');
     Route::post('site/comments/create', 'Site\UserController@createComment')->name('site.comment.post');
     Route::get('loop-like/{id}','Site\UserController@loopLike');

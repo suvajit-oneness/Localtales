@@ -26,7 +26,7 @@
       <div id="navbar" class="top-rightmenu">
         <ul class="navbar-nav ml-aoto">
           <li>
-            <a href="{!! URL::to('notification-list') !!}"><i class="far fa-bell"></i></a>
+            <a href="{!! URL::to('notification') !!}"><i class="far fa-bell"></i></a>
           </li>
         </ul>
       </div>
