@@ -3722,7 +3722,8 @@ input:checked+.slider:before {
     border-color: #ff5e5347;
 }
 
-input:focus, textarea:focus {
+input:focus,
+textarea:focus {
     border: 1px solid #ff5e53;
 }
 
@@ -3746,7 +3747,11 @@ input:focus, textarea:focus {
     border-color: #202020;
 }
 
-.btn-danger.focus, .btn-danger:focus, .btn-danger:not(:disabled):not(.disabled).active, .btn-danger:not(:disabled):not(.disabled):active, .show>.btn-danger.dropdown-toggle {
+.btn-danger.focus,
+.btn-danger:focus,
+.btn-danger:not(:disabled):not(.disabled).active,
+.btn-danger:not(:disabled):not(.disabled):active,
+.show>.btn-danger.dropdown-toggle {
     color: #fff;
     background-color: #c1382f;
     border-color: #c1382f;
@@ -3759,4 +3764,37 @@ input:focus, textarea:focus {
 
 .sidebar--nav li:hover {
     background-color: #ff5e53;
+}
+
+.dropdown-options {
+    position: absolute;
+    min-width: 160px;
+    top: 39px;
+    right: -10px;
+    background-color: #fff;
+    opacity: 0;
+    display: none;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.dropdown-options.active {
+    opacity: 1;
+    display: block;
+}
+
+.dropdown-options ul li {
+    display: block;
+    border-bottom: 1px solid #d2d2d2;
+    color: #000;
+}
+
+.dropdown-options ul li:last-child {
+    border-bottom: 0;
+}
+
+.dropdown-options ul li a {
+    display: block;
+    font-size: 15px;
+    padding: 7px 15px;
+    color: #000 !important;
 }
