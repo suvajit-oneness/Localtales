@@ -12,7 +12,7 @@
 
     <div class="row">
         @forelse($jobs as $key => $item)
-            <div class="col-12 col-md-4 col-lg-4 col-sm-4 mb-3" style="padding-left:30px">
+            <div class="col-12 col-md-4 col-lg-4 col-sm-4 mb-3">
                 <div class="card save-grid">
                     <div class="card-body event-body">
                         <h5 class="card-title">{{ $item->job->title ?? ''}}</h5>
