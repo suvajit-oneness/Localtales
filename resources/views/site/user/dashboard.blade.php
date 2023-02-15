@@ -13,24 +13,28 @@
     <div class="row section-mg row-md-body no-nav">
         <div class="col-md-6 col-lg-3">
             <div class="card-body event-body">
-                <div class="widget-small primary coloured-icon">
-                    <i class="icon fa fa-briefcase fa-3x"></i>
-                    <div class="info">
-                        <p><b> {{count($businesses)}} </b></p>
-                        <h4>Favourite Business</h4>
+                <a href="{{url('/saved-directory')}}">
+                    <div class="widget-small primary coloured-icon">
+                        <i class="icon fa fa-briefcase fa-3x"></i>
+                        <div class="info">
+                            <p><b> {{count($businesses)}} </b></p>
+                            <h4>Favourite Directories</h4>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
         <div class="col-md-6 col-lg-3">
             <div class="card-body event-body">
-                <div class="widget-small info coloured-icon">
-                    <i class="icon fa fa-briefcase fa-3x"></i>
-                    <div class="info">
-                        <p><b> {{count($collection)}} </b></p>
-                        <h4>Favourite Collection</h4>
+                <a href="{{url('/saved-collection')}}">
+                    <div class="widget-small info coloured-icon">
+                        <i class="icon fa fa-briefcase fa-3x"></i>
+                        <div class="info">
+                            <p><b> {{count($collection)}} </b></p>
+                            <h4>Favourite Collections</h4>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </div>

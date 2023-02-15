@@ -1831,7 +1831,7 @@ body.msb-x .msb {
 
 .top-rightmenu ul li a {
     display: inline-block;
-    padding: 8px;
+    padding: 0px;
     font-size: 20px;
     color: #fff !important;
 }
@@ -3751,4 +3751,12 @@ input:focus, textarea:focus {
     background-color: #c1382f;
     border-color: #c1382f;
     box-shadow: 0 0 0 0.2rem rgb(255 94 83 / 43%);
+}
+
+.sidebar--nav li.active {
+    background-color: #ff5e53;
+}
+
+.sidebar--nav li:hover {
+    background-color: #ff5e53;
 }
