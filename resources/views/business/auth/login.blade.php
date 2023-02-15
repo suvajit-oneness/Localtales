@@ -25,29 +25,29 @@
                 <div class="col">
                     <div class="form_holder">
                         <h3>Login Now</h3>
-                        <form action="{{ route('business.login.post') }}" method="POST" role="form">
+                        <form action="{{ route('business.login.check') }}" method="POST" role="form">
                         @if(session()->has('verified'))
                             <div class="alert alert-success">
                                 Verified successfully
                             </div>
                         @endif
-                        @if(session()->has('error'))
-                            <div class="alert alert-danger">
-                                {{ session()->get('error') }}
-                            </div>
-                        @endif
+                       
                         @csrf
                         <div class="row px-3">
                             <label class="mb-1">Email Address</label>
                             <input class="mb-4" type="text" name="email" placeholder="Enter a valid email address">
+                            @error('email')
+                            <p class="small text-danger">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div class="row px-3">
                             <label class="mb-1">Password</label>
                             <input class="mb-4" type="password" name="password" placeholder="Enter password">
+                            @error('password')
+                            <p class="small text-danger">{{ $message }}</p>
+                            @enderror
                         </div>
-                        <!-- <div class="row px-3 mb-4">
-                            <div class="custom-control custom-checkbox custom-control-inline"> <input id="chk1" type="checkbox" name="chk" class="custom-control-input"> <label for="chk1" class="custom-control-label text-sm text-dark">Remember me</label> </div> <a href="#" class="ml-auto mb-0 text-sm text-primary">Forgot Password?</a>
-                        </div> -->
+                      
                         <div class="row mb-3 align-items-center">
                             <div class="col-sm-6">
                                 <div class="grid">
@@ -58,7 +58,7 @@
                                 <a href="#" class="">Forgot Password?</a>
                             </div> -->
                         </div>
-                        <div class="row mb-4 px-3"> <small class="font-weight-bold text-muted">Don't have an account? <a class="text-orange " href="{{ route('business.signup') }}">Register</a></small> </div>
+                        <div class="row mb-4 px-3"> <small class="font-weight-bold text-muted">Don't have an account? <a class="text-orange " href="{{ route('business.register') }}">Register</a></small> </div>
                       </form>
 
 
@@ -77,9 +77,38 @@
 <script src="{{ asset('b2b/js/bootstrap.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('b2b/js/slick.min.js') }}"></script>
 <script src="{{ asset('b2b/js/custom.js') }}"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+<script>
+    // sweetalert fires | type = success, error, warning, info, question
+    function toastFire(type = 'success', title, body = '') {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            showCloseButton: true,
+            timer: 2000,
+            timerProgressBar: false,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
 
+        Toast.fire({
+            icon: type,
+            title: title,
+            // text: body
+        })
+    }
 
+    // on session toast fires
+    @if (Session::get('success'))
+        toastFire('success', '{{ Session::get('success') }}');
+    @elseif (Session::get('failure'))
+        toastFire('warning', '{{ Session::get('failure') }}');
+    @endif
+</script>
 
 </body>
 </html>

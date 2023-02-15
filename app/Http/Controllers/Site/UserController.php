@@ -95,7 +95,6 @@ class UserController extends BaseController
         $jobs = JobUser::where('user_id',$userId)->get();
         $this->setPageTitle('Saved job', 'Saved job');
 
-        // return view('site.dashboard.saved_jobs' , compact('job'));
         return view('site.user.saved-job', compact('jobs'));
     }
 

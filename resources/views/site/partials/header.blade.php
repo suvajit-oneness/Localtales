@@ -42,7 +42,7 @@
               <a type="button" class="btn btn-login d-flex align-items-center justify-content-center" href="{!! URL::to('user/login') !!}" style="height: 35px;"><img src="{{ asset('front/img/login.svg')}}"> Login</a>
             @endif
 
-            <a type="button" class="btn btn-login btn_buseness" href="{{ route('business.signup')}}"><img src="{{ asset('front/img/briefcase.svg')}}"> Business Signup</a>
+            <a type="button" class="btn btn-login btn_buseness" href="{{ route('business.register')}}"><img src="{{ asset('front/img/briefcase.svg')}}"> Business Signup</a>
           </div>
         </div>
     </nav>

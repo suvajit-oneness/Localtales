@@ -483,7 +483,7 @@
 
                     <hr>
 
-                    <form action="{{ route('business.directory.category.store') }}" method="POST">@csrf
+                    <form action="{{ route('business.category.store') }}" method="POST">@csrf
                         {{-- @php
                                 $top10Categories = \App\Models\DirectoryCategory::select('id', 'child_category', 'title')->limit(20)->get()->toArray();
     
@@ -574,7 +574,7 @@
             // alert(val);
             $.ajax({
                 type: 'POST',
-                url: "{{ route('admin.directory.category.search') }}",
+                url: "{{ route('business.category.search') }}",
                 data: {
                     _token: '{{ csrf_token() }}',
                     val: val

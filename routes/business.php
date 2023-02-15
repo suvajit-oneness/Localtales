@@ -1,25 +1,36 @@
 <?php
 Route::group(['prefix' => 'business'], function () {
-	Route::get('login', 'Business\LoginController@showLoginForm')->name('business.login');
-    Route::post('login/check', 'Business\LoginController@login')->name('business.login.post');
-	Route::get('/signup', 'Business\SignupController@businesssignup')->name('business.signup');
-	Route::get('/signup/{slug}', 'Business\SignupController@businessform')->name('business.form');
-	Route::get('/registration', 'Business\SignupController@registrationform')->name('business.details');
-	//Route::get('/thankyou', 'Front\IndexController@thankyou')->name('thankyou');
-	Route::post('/create', 'Business\SignupController@businessstore')->name('business.store');
-	Route::post('/registration/form', 'Business\SignupController@store')->name('business.registration.store');
-	Route::post('/signup-page/create', 'Business\SignupController@pagestore')->name('business.signuppage.store');
-	Route::get('/thank-you', 'Business\SignupController@createStepThree')->name('products.create.step.three');
-	Route::post('directory/create-step-three', 'Business\SignupController@postCreateStepThree')->name('products.create.step.three.post');
-	Route::post('/form/{slug}', 'Business\SignupController@businessformUpdate')->name('business.form.update');
+	Route::get('login', 'Business\LoginController@login')->name('business.login');
+    Route::post('login/check', 'Business\LoginController@check')->name('business.login.check');
+	Route::get('/signup', 'Business\SignupController@register')->name('business.register');
+	Route::post('/register/store', 'Business\SignupController@store')->name('business.register.store');
+	Route::get('/thank-you', 'Business\SignupController@thankyou')->name('thank.you');
+    //signup for individual business
+	Route::get('/signup/{slug}', 'Business\SignupController@view')->name('business.form');
+	Route::post('/signup/update/{slug}', 'Business\SignupController@update')->name('business.form.update');
+
+
+	//registration form for council business
+	Route::get('/registration/form', 'Business\SignupController@registrationform')->name('business.details');
+	Route::post('/registration/form/store', 'Business\SignupController@registrationformstore')->name('business.registration.store');
+
 	Route::get('logout', 'Business\LoginController@logout')->name('business.logout');
 
 	Route::group(['middleware' => ['auth:business']], function () {
 		Route::get('/', function () {
 	      	return view('business.dashboard.index');
 	    })->name('business.dashboard');
-     
-	    Route::group(['prefix'  =>   'event'], function() {
+		Route::get('/profile', function () {
+			return view('business.auth.edit_profile');
+		})->name('business.profile');
+		Route::post('/profile/update','Business\UserController@profilestore')->name('business.profile.update');
+		Route::get('/change/password', 'Business\UserController@changePassword')->name('business.change.password');
+		Route::post('/update/password', 'Business\UserController@updatePassword')->name('business.updatePassword');
+	    Route::get('/review', 'Business\UserController@review')->name('business.review');
+		Route::post('/category/search', 'Business\UserController@searchCat')->name('business.category.search');
+		Route::post('/category/store', 'Business\UserController@storeCat')->name('business.category.store');
+		Route::get('/{dirId}/category/{catId}/delete', 'Business\UserController@deleteCat')->name('business.category.delete');
+		Route::group(['prefix'  =>   'event'], function() {
 			Route::get('/', 'Business\EventController@index')->name('business.event.index');
 			Route::get('/create', 'Business\EventController@create')->name('business.event.create');
 			Route::post('/store', 'Business\EventController@store')->name('business.event.store');
@@ -43,15 +54,4 @@ Route::group(['prefix' => 'business'], function () {
 	});
 });
 
-
-//business
-//business edit profile
-Route::get('/business/profile', function () {
-    return view('business.auth.edit_profile');
-})->name('business.profile');
-Route::post('business/profile/update','Site\BusinessController@profilestore')->name('business.profile.update');
-Route::get('business/change/password', 'Site\BusinessController@changePassword')->name('business.change.password');
-Route::post('update/password', 'Site\BusinessController@updatePassword')->name('business.updatePassword');
-Route::get('business/review', 'Site\BusinessController@review')->name('business.review');
-Route::get('/business/{dirId}/category/{catId}/delete', 'Site\BusinessController@deleteCat')->name('business.directory.category.delete');
 ?>

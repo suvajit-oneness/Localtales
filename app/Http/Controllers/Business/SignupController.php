@@ -43,65 +43,117 @@ class SignupController extends BaseController
         $this->BlogRepository = $BlogRepository;
         $this->businessRepository = $businessRepository;
     }
-    public function businesssignup(Request $request)
+    public function register(Request $request)
     {
         $this->setPageTitle('Business ', 'Business Signup');
         $dircategory = $this->DirectoryRepository->getDirectorycategories();
         $directory = $request->session()->get('directory');
-        return view('frontend.business.signup', compact('dircategory', 'directory'));
+        return view('business.auth.register', compact('dircategory', 'directory'));
     }
-    // public function createStepOne(Request $request)
-    // {
-    //     $product = $request->session()->get('product');
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:directories',
+            'mobile' => 'required|digits:10',
+            'password' => 'required|string|min:6',
+        ]);
+        $business = new Directory();
+        $business->name = $request->name;
+        $business->trading_name = $request->trading_name;
+        $business->email = $request->email;
+        $business->address = $request->address;
+        $business->mobile = $request->mobile;
+        // $business->pin = $request->pin;
+        $business->description = $request->description;
+        $business->service_description = $request->service_description;
+        $business->category_id = $request->category_id;
+        $business->opening_hour = $request->opening_hour;
+        $business->primary_name = $request->primary_name;
+        $business->primary_email = $request->primary_email;
+        $business->primary_phone = $request->primary_phone;
+        $business->website = $request->website;
+        $business->twitter_link = $request->twitter_link;
+        $business->password = bcrypt('Welcome@2022');
+        $saved = $business->save();
 
-    //     return view('products.create-step-one',compact('product'));
-    // }
-    public function businesssignuppage(Request $request, $id)
-    {
-        $this->setPageTitle('Business ', 'Business Signup');
-        $dircategory = $this->DirectoryRepository->getDirectorycategories();
-        $dir = Directory::where('id', $id)->get();
-        $directory = $dir[0];
-        return view('frontend.business.signuppage', compact('dircategory', 'directory'));
+        if ($saved) {
+            $template = MailTemplate::where('type', 'like', '%' . 'business-signup' . '%')->first();
+            $data["email"] = $request->email;
+            $data["title"] = $template->subject;
+            $data["body"] = $template->body;
+            $data["image"] = $template->is_image;
+            $data["url"] = URL::to('/') . '/' . 'business/login';
+
+            Mail::send('frontend.business.mail-template', $data, function ($message) use ($data) {
+                $message->to($data["email"], $data["email"])
+                    ->subject($data["title"]);
+
+            });
+            return redirect()->route('thank.you');
+        } else {
+            return $this->responseRedirectBack('Error occurred while registration.', 'error', true, true);
+        }
     }
-    public function registrationform(Request $request)
+
+    public function thankyou(Request $request)
     {
-        $this->setPageTitle('Business ', 'Business Signup');
-        $dircategory = $this->DirectoryRepository->getDirectorycategories();
-        return view('frontend.business.registration-form', compact('dircategory', ));
+        $directory = $request->session()->get('directory');
+
+        return view('business.auth.thankyou', compact('directory'));
     }
-    public function businessform(Request $request, $slug)
+    //signup for individual business
+    public function view(Request $request, $slug)
     {
         $this->setPageTitle('Business ', 'Business Signup');
         $dir = Directory::where('slug', $slug)->get();
         $directory = $dir[0];
         //dd($directory);
         $dircategory = $this->DirectoryRepository->getDirectorycategories();
-        return view('frontend.business.signuppage', compact('dircategory', 'directory'));
+        return view('business.auth.register-edit', compact('dircategory', 'directory'));
     }
-    public function businessstore(Request $request)
+     /**
+     * Show the step One Form for creating a new product.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function businessformUpdate(Request $request, $slug)
     {
-        $validatedData = $request->validate([
-            //  'name'      =>  'required|min:1',
-            'email' => 'required|email|min:1',
-            // 'password'      =>  'required|min:1',
-            'name' => 'required|string|min:1',
+        $dirId = Directory::where('slug', $slug)->get();
+        $id = $dirId[0]->id;
+        //dd($id->id);
+        $business = Directory::findOrFail($id);
+        $business->name = $request->name;
+        $business->trading_name = $request->trading_name;
+        $business->email = $request->email;
+        $business->address = $request->address;
+        $business->mobile = $request->mobile;
+        // $business->pin = $request->pin;
+        $business->description = $request->description;
+        $business->service_description = $request->service_description;
+        $business->category_id = $request->category_id;
+        $business->opening_hour = $request->opening_hour;
+        $business->primary_name = $request->primary_name;
+        $business->primary_email = $request->primary_email;
+        $business->primary_phone = $request->primary_phone;
+        $business->website = $request->website;
+        $business->twitter_link = $request->twitter_link;
+        $business->mail_redirect_update = 1;
+        $business->save();
 
-        ]);
-
-        if (empty($request->session()->get('directory'))) {
-            $directory = new Directory();
-            $directory->fill($validatedData);
-            $request->session()->put('directory', $directory);
-        } else {
-            $directory = $request->session()->get('directory');
-            $directory->fill($validatedData);
-            $request->session()->put('directory', $directory);
-        }
-
-        return redirect()->route('business.signup');
+        return redirect()->route('thank.you');
     }
-    public function store(Request $request)
+
+
+   //registration form for council business
+    public function registrationform(Request $request)
+    {
+        $this->setPageTitle('Business ', 'Business Signup');
+        $dircategory = $this->DirectoryRepository->getDirectorycategories();
+        return view('business.auth.registration-form', compact('dircategory', ));
+    }
+    
+    public function registrationformstore(Request $request)
     {
 
         $this->validate($request, [
@@ -161,113 +213,8 @@ class SignupController extends BaseController
 
             mail($to, $subject, $message, $headers);
         }
-
-        // if(empty($request->session()->get('directory'))){
-        //     $directory = new Directory();
-        //     $directory->fill($validatedData);
-        //     $request->session()->put('directory', $directory);
-        // }else{
-        //     $directory = $request->session()->get('directory');
-        //     $directory->fill($validatedData);
-        //     $request->session()->put('directory', $directory);
-        // }
-
-        return redirect()->route('products.create.step.three');
-        // } else {
-        //     return redirect()->route('business.signup')->withInput($request->all())->withErrors($validatedData->errors());
-        // }
+        return redirect()->route('thank.you');
     }
 
-    public function pagestore(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:directories',
-            'mobile' => 'required|digits:10',
-            //'password' => 'required|string|min:6',
-        ]);
-        $business = new Directory();
-        $business->name = $request->name;
-        $business->trading_name = $request->trading_name;
-        $business->email = $request->email;
-        $business->address = $request->address;
-        $business->mobile = $request->mobile;
-        // $business->pin = $request->pin;
-        $business->description = $request->description;
-        $business->service_description = $request->service_description;
-        $business->category_id = $request->category_id;
-        $business->opening_hour = $request->opening_hour;
-        $business->primary_name = $request->primary_name;
-        $business->primary_email = $request->primary_email;
-        $business->primary_phone = $request->primary_phone;
-        $business->website = $request->website;
-        $business->twitter_link = $request->twitter_link;
-        $business->password = bcrypt('Welcome@2022');
-        $saved = $business->save();
-
-        if ($saved) {
-            $template = MailTemplate::where('type', 'like', '%' . 'business-signup' . '%')->first();
-            $data["email"] = $request->email;
-            $data["title"] = $template->subject;
-            $data["body"] = $template->body;
-            $data["image"] = $template->is_image;
-            $data["url"] = URL::to('/') . '/' . 'business/login';
-
-            Mail::send('frontend.business.mail-template', $data, function ($message) use ($data) {
-                $message->to($data["email"], $data["email"])
-                    ->subject($data["title"]);
-
-            });
-            return redirect()->route('products.create.step.three');
-        } else {
-            return $this->responseRedirectBack('Error occurred while registration.', 'error', true, true);
-        }
-    }
-
-    public function createStepThree(Request $request)
-    {
-        $directory = $request->session()->get('directory');
-
-        return view('frontend.business.thankyou', compact('directory'));
-    }
-
-    /**
-     * Show the step One Form for creating a new product.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function businessformUpdate(Request $request, $slug)
-    {
-        $dirId = Directory::where('slug', $slug)->get();
-        $id = $dirId[0]->id;
-        //dd($id->id);
-        $business = Directory::findOrFail($id);
-        $business->name = $request->name;
-        $business->trading_name = $request->trading_name;
-        $business->email = $request->email;
-        $business->address = $request->address;
-        $business->mobile = $request->mobile;
-        // $business->pin = $request->pin;
-        $business->description = $request->description;
-        $business->service_description = $request->service_description;
-        $business->category_id = $request->category_id;
-        $business->opening_hour = $request->opening_hour;
-        $business->primary_name = $request->primary_name;
-        $business->primary_email = $request->primary_email;
-        $business->primary_phone = $request->primary_phone;
-        $business->website = $request->website;
-        $business->twitter_link = $request->twitter_link;
-        $business->mail_redirect_update = 1;
-        $business->save();
-
-        return redirect()->route('products.create.step.three');
-    }
-    public function postCreateStepThree(Request $request)
-    {
-        $directory = $request->session()->get('directory');
-        $request->session()->forget('directory');
-
-        return redirect()->route('index');
-    }
-
+    
 }

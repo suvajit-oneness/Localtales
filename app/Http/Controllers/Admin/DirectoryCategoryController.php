@@ -364,7 +364,7 @@ class DirectoryCategoryController extends BaseController
         foreach($request['email'] as $emailIndex => $emailVal) {
             $to = $emailVal;
             $subject = $request->subject;
-            $link = '<a href="'.URL::to('/').'/'.'business-signup/'.$request['slug'][$emailIndex].'">REGISTER HERE</a>';
+            $link = '<a href="'.URL::to('/').'/'.'business/signup'.$request['slug'][$emailIndex].'">REGISTER HERE</a>';
             $body = str_replace("REGISTRATION LINK", $link, $request->body);
             $message = $body;
             $headers = "MIME-Version: 1.0" . "\r\n";

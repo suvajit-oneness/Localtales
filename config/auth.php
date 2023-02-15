@@ -103,7 +103,7 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Directory::class,
         ],
-        'eventorganiser' => [
+        'eventorganisers' => [
             'driver' => 'eloquent',
             'model' => App\Models\EventOrganiser::class,
         ]
