@@ -18,41 +18,6 @@
     </head>
 
     <body>
-
-        <!-- ========== Header ========== -->
-        <!-- <header class="header">
-            <nav class="navbar navbar-expand-lg navbar-dark">
-                <a class="navbar-brand" href="#"><img class="w-100" src="{{ asset('site/img/main-logo.png')}}" alt="Local Tales"></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <i class="fas fa-bars"></i>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                  <ul class="navbar-nav m-auto">
-                    <li class="nav-item active">
-                      <a class="nav-link" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Local Directory</a>
-                      </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#">Local Events</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#">Local Deals</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Local Loop</a>
-                      </li>
-                  </ul>
-                  <div class="form-inline my-2 my-lg-0">
-                    <button type="button" class="btn btn-login"><img src="{{ asset('site/img/login.svg')}}"> Login</button>
-                    <button type="button" class="btn btn-login btn_buseness"><img src="{{ asset('site/img/briefcase.svg')}}"> Business Login</button>
-                  </div>
-                </div>
-            </nav>
-        </header> -->
-
         <section class="inner_banner articles_inbanner">
             <div class="container">
                 <div class="row m-0 justify-content-center">
@@ -67,209 +32,156 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-8">
-                        {{-- <ul class="fb_wizard registerWizard">
-                            <li class="active"><a href="javascript: void(0)">Business Contact</a></li>
-                            <li><a href="javascript: void(0)">Primary Contact</a></li>
-                            <li><a href="javascript: void(0)">Business Overview</a></li>
-                        </ul> --}}
                     </div>
                 </div>
                 <div class="row justify-content-center py-4 py-lg-5">
                     <div class="col-lg-8">
                         <form action="{{ route('business.registration.store') }}" method="POST"   enctype="multipart/form-data">
-                                @csrf
-                                <input type="hidden" name="longitude" id="selectedLongitude" value="">
-                                <input type="hidden" name="latitude" id="selectedLatitude" value="">
+                            @csrf
+                            <input type="hidden" name="longitude" id="selectedLongitude" value="">
+                            <input type="hidden" name="latitude" id="selectedLatitude" value="">
 
-                                <div class="div1" id="st1">
-                                    <h6> Information:</h6>
-                                    <div class="did-floating-label-content">
-                                    <input type="text" id="council_name" name="council_name" onkeypress="return validateCouncilNumber(event)" onblur="validateInputCouncil(this.value)"  value="@php
-                                        if (request()->input('council_name')) {
-                                            if (request()->input('council_name') != 'undefined') {
-                                                echo request()->input('council_name');
-                                            }
+                            <div class="div1" id="st1">
+                                <h6> Information:</h6>
+                                <div class="did-floating-label-content">
+                                <input type="text" id="council_name" name="council_name" onkeypress="return validateCouncilNumber(event)" onblur="validateInputCouncil(this.value)"  value="@php
+                                    if (request()->input('council_name')) {
+                                        if (request()->input('council_name') != 'undefined') {
+                                            echo request()->input('council_name');
                                         }
-                                        @endphp"  class="did-floating-input" autofocus required>
-                                    @error('council_name')
-                                    {{ $message ?? '' }}
-                                    @enderror
-                                        <label class="did-floating-label">Council Name</label>
-                                        <p class="small text-danger" id="businessNameErr"></p>
-                                    </div>
-                                    <div class="did-floating-label-content">
-                                    <input class="did-floating-input @error('primary_contact') is-invalid @enderror" type="text" name="primary_contact" id="trading_name" onkeypress="return validateNumber(event)" onblur="validateInput(this.value)" value="@php
-                                        if (request()->input('primary_contact')) {
-                                            if (request()->input('primary_contact') != 'undefined') {
-                                                echo request()->input('primary_contact');
-                                            }
-                                        }
-                                        @endphp" >@error('primary_contact')
-                                         {{ $message ?? '' }}
-                                      @enderror
-                                        <label class="did-floating-label">Primary Contact</label>
-                                        <p class="small text-danger" id="tradingNameErr"></p>
-                                    </div>
-                                    <div class="did-floating-label-content">
-                                    <input class="did-floating-input @error('email') is-invalid @enderror" type="text" onblur="ValidationOfBusinessEmail(this.value)" name="email" id="email" value="@php
-                                                    if (request()->input('email')) {
-                                                        if (request()->input('email') != 'undefined') {
-                                                            echo request()->input('email');
-                                                        }
-                                                    }
-                                                    @endphp" >
-                                                    @error('email')
-                                			{{ $message ?? '' }}
-                            				@enderror
-                                        <label class="did-floating-label"> Email</label>
-                                        <p class="small text-danger" id="businessEmailErr"></p>
-                                    </div>
-                                    <div class="did-floating-label-content">
-                                    <input class="did-floating-input @error('contact_no') is-invalid @enderror" type="text" name="contact_no" id="mobile" onblur="validatePhone(this.value)" value="@php
-                                                    if (request()->input('contact_no')) {
-                                                        if (request()->input('contact_no') != 'undefined') {
-                                                            echo request()->input('contact_no');
-                                                        }
-                                                    }
-                                                    @endphp" >
-                                                    @error('contact_no')
-                               			 {{ $message ?? '' }}
-                           		             @enderror
-                                        <label class="did-floating-label"> Contact Number</label>
-                                        <p class="small text-danger" id="businessPhoneErr"></p>
-                                    </div>
-                                    <div class="d-flex justify-content-end mt-4 mb-4">
-                                        <!-- <button id="pvst3" class="btn priview-btn mr-2">Preview</button> -->
-                                        <button id="step2" type="submit" class="btn main-btn">Submit</button>
-                                    </div>
+                                    }
+                                    @endphp"  class="did-floating-input" autofocus required>
+                                @error('council_name')
+                                {{ $message ?? '' }}
+                                @enderror
+                                    <label class="did-floating-label">Council Name</label>
+                                    <p class="small text-danger" id="businessNameErr"></p>
                                 </div>
-                            </form>
+                                <div class="did-floating-label-content">
+                                <input class="did-floating-input @error('primary_contact') is-invalid @enderror" type="text" name="primary_contact" id="trading_name" onkeypress="return validateNumber(event)" onblur="validateInput(this.value)" value="@php
+                                    if (request()->input('primary_contact')) {
+                                        if (request()->input('primary_contact') != 'undefined') {
+                                            echo request()->input('primary_contact');
+                                        }
+                                    }
+                                    @endphp" >@error('primary_contact')
+                                        {{ $message ?? '' }}
+                                    @enderror
+                                    <label class="did-floating-label">Primary Contact</label>
+                                    <p class="small text-danger" id="tradingNameErr"></p>
+                                </div>
+                                <div class="did-floating-label-content">
+                                <input class="did-floating-input @error('email') is-invalid @enderror" type="text" onblur="ValidationOfBusinessEmail(this.value)" name="email" id="email" value="@php
+                                                if (request()->input('email')) {
+                                                    if (request()->input('email') != 'undefined') {
+                                                        echo request()->input('email');
+                                                    }
+                                                }
+                                                @endphp" >
+                                                @error('email')
+                                        {{ $message ?? '' }}
+                                        @enderror
+                                    <label class="did-floating-label"> Email</label>
+                                    <p class="small text-danger" id="businessEmailErr"></p>
+                                </div>
+                                <div class="did-floating-label-content">
+                                <input class="did-floating-input @error('contact_no') is-invalid @enderror" type="text" name="contact_no" id="mobile" onblur="validatePhone(this.value)" value="@php
+                                                if (request()->input('contact_no')) {
+                                                    if (request()->input('contact_no') != 'undefined') {
+                                                        echo request()->input('contact_no');
+                                                    }
+                                                }
+                                                @endphp" >
+                                                @error('contact_no')
+                                        {{ $message ?? '' }}
+                                            @enderror
+                                    <label class="did-floating-label"> Contact Number</label>
+                                    <p class="small text-danger" id="businessPhoneErr"></p>
+                                </div>
+                                <div class="d-flex justify-content-end mt-4 mb-4">
+                                    <!-- <button id="pvst3" class="btn priview-btn mr-2">Preview</button> -->
+                                    <button id="step2" type="submit" class="btn main-btn">Submit</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </section>
-
-        <!-- <footer class="footerinner">
-            <div class="container">
-                <div class="row m-0 justify-content-between">
-                    <div class="col-12 col-lg-4">
-                        <div class="f-menu">
-                            <img src="{{ asset('site/img/main-logo.png')}}" alt="Local Tales" width="180px" class="mb-3">
-                            <p>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam nobis id voluptatem reprehenderit, minima sit, nulla maxime a fuga, ut perferendis et.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg-3">
-                        <div class="f-menu">
-                            <h6>Products</h6>
-                            <ul class="f-menu p-0">
-                                <li><a href="">Home</a></li>
-                                <li><a href="">About</a></li>
-                                <li><a href="">Blog</a></li>
-                                <li><a href="">Shop</a></li>
-                                <li><a href="">Contacts</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg-3">
-                        <div class="f-menu">
-                            <h6>Other</h6>
-                            <ul class="f-menu p-0">
-                                <li><a href="">Home</a></li>
-                                <li><a href="">About</a></li>
-                                <li><a href="">Blog</a></li>
-                                <li><a href="">Shop</a></li>
-                                <li><a href="">Contacts</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="text-center copy_sec">
-                <p class="mt-2"><small>Copyrights © 2021 All Rights Reserved by XYZ</small></p>
-            </div>
-        </footer> -->
-        <!--End_footer-->
 
         <script type="text/javascript" src="{{ asset('front/js/jquery-3.6.0.min.js')}}"></script>
         <script type="text/javascript" src="{{ asset('front/js/popper.min.js')}}"></script>
         <script type="text/javascript" src="{{ asset('front/js/bootstrap.min.js')}}"></script>
         <script type="text/javascript" src="{{ asset('front/js/swiper-bundle.min.js')}}"></script>
         <script type="text/javascript" src="{{ asset('front/js/custom.js')}}"></script>
-        <script>
 
-        </script>
         <script>
             $(document).ready(function(){
                 $('#opening_hour').mdtimepicker(); //Initializes the time picker
                 $('#closing_hour').mdtimepicker(); //Initializes the time picker
             });
-            </script>
 
-            <script>
             function display() {
                document.getElementById("council_name").style.wordSpacing = "25px";
             }
+
             function validateInputCouncil(val) {
-                    console.log(val)
-                    if (val.length <= 2) {
-                        $("#businessNameErr").html('Value must be at least three letters');
-                        $("#council_name").removeClass('mobile-valide');
-                        $("#council_name").addClass('mobile-novalide');
+                console.log(val)
+                if (val.length <= 2) {
+                    $("#businessNameErr").html('Value must be at least three letters');
+                    $("#council_name").removeClass('mobile-valide');
+                    $("#council_name").addClass('mobile-novalide');
 
-                        console.log(val);
-                    } else {
-                        $("#businessNameErr").html('');
-                        $("#council_name").addClass('mobile-valide');
-                        $("#council_name").removeClass('mobile-novalide');
-                    }
-
-
+                    console.log(val);
+                } else {
+                    $("#businessNameErr").html('');
+                    $("#council_name").addClass('mobile-valide');
+                    $("#council_name").removeClass('mobile-novalide');
                 }
-                function validateCouncilNumber(e) {
-                    console.log(e.charCode);
-                    if (!(e.charCode > 65 && e.charCode < 90 ) || (e.charCode > 97 && e.charCode < 122 ) || e.charCode = 32) {
-                        $("#businessNameErr").html('Value must be a letter');
-                        $("#council_name").removeClass('mobile-valide');
-                        $("#council_name").addClass('mobile-novalide');
-                        return false
-                    } else {
-                        $("#businessNameErr").html('');
-                        $("#council_name").addClass('mobile-valide');
-                        $("#council_name").removeClass('mobile-novalide');
-                    }
+            }
+
+            function validateCouncilNumber(e) {
+                console.log(e.charCode);
+                if (!(e.charCode > 65 && e.charCode < 90 ) || (e.charCode > 97 && e.charCode < 122 ) || e.charCode = 32) {
+                    $("#businessNameErr").html('Value must be a letter');
+                    $("#council_name").removeClass('mobile-valide');
+                    $("#council_name").addClass('mobile-novalide');
+                    return false
+                } else {
+                    $("#businessNameErr").html('');
+                    $("#council_name").addClass('mobile-valide');
+                    $("#council_name").removeClass('mobile-novalide');
                 }
+            }
 
-                function validateInput(val) {
-                    console.log(val)
-                    if (val.length <= 2) {
-                        $("#tradingNameErr").html('Value must be at least three letters');
-                        $("#trading_name").removeClass('mobile-valide');
-                        $("#trading_name").addClass('mobile-novalide');
+            function validateInput(val) {
+                console.log(val)
+                if (val.length <= 2) {
+                    $("#tradingNameErr").html('Value must be at least three letters');
+                    $("#trading_name").removeClass('mobile-valide');
+                    $("#trading_name").addClass('mobile-novalide');
 
-                        console.log(val);
-                    } else {
-                        $("#tradingNameErr").html('');
-                        $("#trading_name").addClass('mobile-valide');
-                        $("#trading_name").removeClass('mobile-novalide');
-                    }
-
-
+                    console.log(val);
+                } else {
+                    $("#tradingNameErr").html('');
+                    $("#trading_name").addClass('mobile-valide');
+                    $("#trading_name").removeClass('mobile-novalide');
                 }
-                function validateNumber(e) {
-                    console.log(e.charCode);
-                    if (!(e.charCode > 96 && e.charCode < 123)) {
-                        $("#tradingNameErr").html('Value must be a letter');
-                        $("#trading_name").removeClass('mobile-valide');
-                        $("#trading_name").addClass('mobile-novalide');
-                        return false
-                    } else {
-                        $("#tradingNameErr").html('');
-                        $("#trading_name").addClass('mobile-valide');
-                        $("#trading_name").removeClass('mobile-novalide');
-                    }
+            }
+
+            function validateNumber(e) {
+                console.log(e.charCode);
+                if (!(e.charCode > 96 && e.charCode < 123)) {
+                    $("#tradingNameErr").html('Value must be a letter');
+                    $("#trading_name").removeClass('mobile-valide');
+                    $("#trading_name").addClass('mobile-novalide');
+                    return false
+                } else {
+                    $("#tradingNameErr").html('');
+                    $("#trading_name").addClass('mobile-valide');
+                    $("#trading_name").removeClass('mobile-novalide');
                 }
+            }
 
                 function ValidationOfBusinessEmail(mail) {
                     console.log(mail);

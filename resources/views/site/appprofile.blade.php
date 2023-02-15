@@ -10,18 +10,14 @@
   <link rel="stylesheet" type="text/css" href="{{ asset('b2b/css/slick.css') }}"/>
   <link rel="stylesheet" type="text/css" href="{{ asset('b2b/css/slick-theme.css') }}"/>
   <link rel="stylesheet" href="{{ asset('b2b/css/style.css') }}">
+
   @yield('styles')
   @stack('styles')
 </head>
 <body class="bg-lightgray">
-
   <nav class="mnb navbar navbar-default fixed-top topnav">
     <div class="container-fluid">
       <div class="navbar-header">
-        <!-- <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-          <span class="sr-only">Toggle navigation</span>
-          <i class="ic fa fa-bars"></i>
-        </button> -->
         <div>
            <a href="#" id="msbo" class="menuIcon"><i class="ic fa fa-bars"></i></a>
            <a href="{!! URL::to('') !!}" class="admin-brand"><img src="{{ asset('b2b/images/logo.png')}}" class="img-fluid"></a>
@@ -31,34 +27,52 @@
         <ul class="navbar-nav ml-aoto">
           {{-- <li>
             <a href="{!! URL::to('notification-list') !!}"><i class="far fa-bell"></i></a>
-
           </li> --}}
-          <!-- <li><a href="#"><i class="fas fa-cog"></i></a></li> -->
         </ul>
       </div>
     </div>
   </nav>
+
   @include('site.partials.sidebar')
+
   <div class="mcw">
     <div class="container-fluid">
-    @yield('content')
+      @yield('content')
     </div>
   </div>
 
-<!--Script-->
+  <script src="{{ asset('b2b/js/jquery.min.js') }}"></script>
+  <script src="{{ asset('b2b/js/popper.min.js') }}"></script>
+  <script src="{{ asset('b2b/js/bootstrap.min.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('b2b/js/slick.min.js') }}"></script>
+  <script src="{{ asset('b2b/js/custom.js') }}"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="{{ asset('b2b/js/ckeditor.js')}}"></script>
 
-<script src="{{ asset('b2b/js/jquery.min.js') }}"></script>
+  <script>
+    function toastFire(type = 'success', title, body = '') {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            showCloseButton: true,
+            timer: 2000,
+            timerProgressBar: false,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
 
-<script src="{{ asset('b2b/js/popper.min.js') }}"></script>
-<script src="{{ asset('b2b/js/bootstrap.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('b2b/js/slick.min.js') }}"></script>
-<script src="{{ asset('b2b/js/custom.js') }}"></script>
-<script src="{{ asset('b2b/js/ckeditor.js')}}"></script>
-<script>
-         //CKEDITOR.replace( '#eveDesc' );
+        Toast.fire({
+            icon: type,
+            title: title,
+            // text: body
+        })
+    }
+  </script>
 
-        //ClassicEditor.create(document.querySelector('#eveDesc'))
-    </script>
-@stack('scripts')
+  @stack('scripts')
+
 </body>
 </html>

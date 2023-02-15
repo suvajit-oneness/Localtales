@@ -1,16 +1,7 @@
 @extends('site.appprofile')
 @section('title') Dashboard @endsection
-@section('content')
 
-@php
-$businesses = App\Models\Userbusiness::where('user_id',Auth::guard('user')->user()->id)->get();
-$collection = App\Models\UserCollection::where('user_id',Auth::guard('user')->user()->id)->get();
-@endphp
-<style type="text/css">
-    .row-md-body.no-nav {
-    margin-top: 70px;
-}
-</style>
+@section('content')
 <div class="fixed-row">
     <div class="app-title">
         <div>

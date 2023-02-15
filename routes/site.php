@@ -19,6 +19,7 @@ Route::get('suburb/{slug}', 'Site\SuburbController@detail')->name('suburb-detail
 Route::get('directory','Site\DirectoryController@index')->name('directory');
 Route::get('directory/{slug}','Site\DirectoryController@detail')->name('directory.detail');
 Route::post('directory/related','Site\BusinessController@relatedDirectory')->name('directory.related');
+
 // directory categories ajax fetch
 Route::post('/directory/category/ajax', 'Api\PostcodeController@category')->name('directory.category.ajax');
 Route::post('claim-user-collection/{id}','Front\HelpController@claimbusiness')->name('user.claim.business');
@@ -32,17 +33,12 @@ Route::get('/collection/{slug}', 'Site\CollectionController@detail')->name('coll
 Route::get('category','Site\CategoryController@index')->name('category-home');
 Route::get('category/{slug}','Site\CategoryController@detail')->name('category');
 
-//article
+// article
 Route::get('article', 'Site\ArticleController@index')->name('article.index');
 Route::get('article/{slug}','Site\ArticleController@detail')->name('article.detail');
-
-//article category
 Route::get('/article/category/{slug}', 'Site\ArticleCategoryController@index')->name('article.category');
-//article sub category
 Route::get('/article/category/{catslug}/{slug}', 'Site\ArticleSubCategoryController@index')->name('article.sub.category');
-//article tertiary category
 Route::get('/article/category/{catslug}/{subcatslug}/{slug}', 'Site\ArticleTertiaryCategoryController@index')->name('article.tertiary.category');
-//article tag
 Route::get('/article/tag/{tag}', 'Site\ArticleController@articletag')->name('article.tag');
 
 // events
@@ -56,25 +52,30 @@ Route::get('deals/{slug}','Site\DealController@detail')->name('deals.detail');
 Route::post('/deal/review/store', 'Site\DealController@reviewstore')->name('deal.review');
 Route::post('/deal/add/ajax', 'Site\DealController@dealAjax')->name('add.deal.ajax');
 
-//jobs
+// jobs
 Route::get('jobs','Site\JobController@index')->name('front.job.index');
 Route::get('jobs/{slug}','Site\JobController@details')->name('front.job.details');
 Route::get('jobs/{slug}/apply','Site\JobController@applyform')->name('front.job.apply.index');
 Route::post('/save/job', 'Site\JobController@store')->name('front.job.save');
 Route::post('/apply/job', 'Site\JobController@jobapply')->name('apply');
 
-//about-us
+// about-us
 Route::get('about-us','Site\ContentController@about')->name('about-us');
-//contact-us
+
+// contact-us
 Route::get('contact-us','Site\ContentController@contact')->name('contact-us');
 Route::post('/contact/form/submit', 'Site\ContentController@contactFormstore')->name('contactForm.store');
-//email subscription
+
+// email subscription
 Route::post('/email/subscription/submit', 'Site\ContentController@emailSubscriptionstore')->name('emailSubscription.store');
-//terms-condition
+
+// terms-condition
 Route::get('terms','Site\ContentController@terms')->name('terms-of-use');
-//privacy policy
+
+// privacy policy
 Route::get('privacy','Site\ContentController@privacy')->name('privacy-policy');
-//faq
+
+// faq
 Route::get('faq','Site\ContentController@faq')->name('faq');
 
 // user login
@@ -86,6 +87,15 @@ Route::prefix('user/')->name('front.user.')->group(function () {
 });
 Route::get('logout', 'Site\LoginController@logout')->name('user.logout');
 
+// user dashboard
+Route::group(['middleware' => ['auth:user']], function () {
+    Route::get('/dashboard', 'Site\UserController@index')->name('site.dashboard');
+
+    // notification
+    Route::get('/notification/setup', 'Site\UserNotificationController@setup')->name('user.notification.setup');
+    Route::post('/notification/toggle', 'Site\UserNotificationController@toggle')->name('user.notification.toggle');
+});
+
 // help
 Route::name('front.help.')->prefix('help')->group(function() {
 	Route::get('/', 'Front\HelpController@index')->name('index');
@@ -94,6 +104,7 @@ Route::name('front.help.')->prefix('help')->group(function() {
 });
 
 Route::post('/claim/ajax', 'Front\HelpController@claimAjax')->name('add.claim.ajax');
+
 //raise query
 Route::get('/raise/query','Front\QueryController@createQuery')->name('user.raise.query');
 Route::post('/raise/query', 'Front\QueryController@storeQuery')->name('user.raise.query.store');
@@ -101,9 +112,9 @@ Route::post('/raise/query', 'Front\QueryController@storeQuery')->name('user.rais
 Route::post('/user/help/comment', 'Front\HelpController@store')->name('front.help.store');
 Route::post('/add/ajax', 'Front\HelpController@helpAjax')->name('add.help.ajax');
 
-//user dashboard
+// user dashboard
 Route::group(['middleware' => ['auth:user']], function () {
-    Route::get('/dashboard', 'Site\UserController@index')->name('site.dashboard');
+    // Route::get('/dashboard', 'Site\UserController@index')->name('site.dashboard');
     Route::get('saved-collection','Site\UserController@savedCollection')->name('site.dashboard.saved_collection');
     Route::get('/{id}/delete', 'Site\UserController@removeSavedCollection')->name('site.dashboard.collection.delete');
     Route::get('saved-deals','Site\UserController@savedDeals')->name('site.dashboard.saved_deals');

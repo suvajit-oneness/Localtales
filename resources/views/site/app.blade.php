@@ -122,24 +122,24 @@
     <script>
         // sweetalert fires | type = success, error, warning, info, question
         function toastFire(type = 'success', title, body = '') {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            showCloseButton: true,
-            timer: 2000,
-            timerProgressBar: false,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        })
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                showCloseButton: true,
+                timer: 2000,
+                timerProgressBar: false,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
 
-        Toast.fire({
-            icon: type,
-            title: title,
-            // text: body
-        })
+            Toast.fire({
+                icon: type,
+                title: title,
+                // text: body
+            })
         }
 
         $('.home-directory--slider').on('beforeChange', function(event, slick, currentSlide) {
