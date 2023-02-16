@@ -6,11 +6,10 @@
 $demoImage = DB::table('demo_images')->where('title', '=', 'help')->get();
 $demo = $demoImage[0]->image;
 @endphp
-<section class="inner_banner"
-style="background: url({{URL::to('/').'/Demo/' .$demo}})"
-                    >
-    <div class="container position-relative">
 
+<section class="inner_banner"
+style="background: url({{URL::to('/').'/Demo/' .$demo}})">
+    <div class="container position-relative">
         <h1 class="mb-4">Help</h1>
         <div class="page-search-block filterSearchBoxWraper">
             <form action="" id="checkout-form">
@@ -23,9 +22,7 @@ style="background: url({{URL::to('/').'/Demo/' .$demo}})"
                             </div>
                         </div>
                         <div class="col-2 col-sm-auto">
-                            <a href="javascript:void(0);" id="btnFilter"
-                                class="w-100 btn btn-blue filterBtnOrange text-center ml-auto"><img
-                                    src="{{ asset('front/img/search.svg') }}"></a>
+                            <a href="javascript:void(0);" id="btnFilter" class="w-100 btn btn-blue filterBtnOrange text-center ml-auto"><img src="{{ asset('front/img/search.svg') }}"></a>
                         </div>
                     </div>
                 </div>

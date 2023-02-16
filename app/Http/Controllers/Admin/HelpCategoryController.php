@@ -42,7 +42,7 @@ class HelpCategoryController extends BaseController
 
             // dd($categories);
         } else {
-            $categories = HelpCategory::orderby('title')->paginate(20);
+            $categories = HelpCategory::latest('id')->paginate(20);
         }
 
 
@@ -144,14 +144,11 @@ class HelpCategoryController extends BaseController
      */
     public function updateStatus(Request $request)
     {
+        $category = HelpCategory::findOrFail($request->id);
+        $category->status = $request->check_status;
+        $category->save();
 
-        $params = $request->except('_token');
-
-        $category = $this->HelpcategoryRepository->updateCategoryStatus($params);
-
-        if ($category) {
-            return response()->json(array('message' => 'Category status has been successfully updated'));
-        }
+        return response()->json(array('message' => 'Category status has been successfully updated'));
     }
 
     /**

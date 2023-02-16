@@ -1,5 +1,6 @@
 @extends('admin.app')
 @section('title') {{ $pageTitle }} @endsection
+
 @section('content')
     <div class="app-title">
         <div class="row w-100">
@@ -14,22 +15,15 @@
             </div>
         </div>
     </div>
+
     @include('admin.partials.flash')
+
     <div class="row">
         <div class="col-md-12">
             <div class="row align-items-center justify-content-between">
                 <div class="col">
                     <ul>
                         <li class="active">Total Categories <span class="count">({{$categories->total()}})</span></a></li>
-                        {{-- @php
-                            $activeCount = $inactiveCount = 0;
-                            foreach ($data as $catKey => $catVal) {
-                                if ($catVal->status == 1) $activeCount++;
-                                else $inactiveCount++;
-                            }
-                        @endphp
-                        <li><a href="{{ route('admin.directory.index', ['status' => 'active'])}}">Active <span class="count">({{$activeCount}})</span></a></li>
-                        <li><a href="{{ route('admin.directory.index', ['status' => 'inactive'])}}">Inactive <span class="count">({{$inactiveCount}})</span></a></li> --}}
                     </ul>
                 </div>
                 <div class="col-auto">
@@ -78,8 +72,8 @@
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group" role="group" aria-label="Second group">
-                                        <a href="{{ route('admin.helpcategory.edit', $category['id']) }}" class="btn btn-sm btn-primary edit-btn"><i class="fa fa-edit"></i></a>
                                         <a href="{{ route('admin.helpcategory.details', $category['id']) }}" class="btn btn-sm btn-primary edit-btn"><i class="fa fa-eye"></i></a>
+                                        <a href="{{ route('admin.helpcategory.edit', $category['id']) }}" class="btn btn-sm btn-primary edit-btn"><i class="fa fa-edit"></i></a>
                                         <a href="#" data-id="{{$category['id']}}" class="sa-remove btn btn-sm btn-danger edit-btn"><i class="fa fa-trash"></i></a>
                                     </div>
                                 </td>

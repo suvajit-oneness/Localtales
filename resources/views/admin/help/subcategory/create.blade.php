@@ -12,7 +12,6 @@
             <div class="tile">
                 <h3 class="tile-title">{{ $subTitle }}
                     <span class="top-form-btn">
-                        
                         <a class="btn btn-secondary" href="{{ route('admin.helpsubcategory.index') }}"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
                     </span>
                 </h3>
@@ -23,28 +22,26 @@
                         <div class="form-group">
                             <label class="control-label" for="title"> Title <span class="m-l-5 text-danger"> *</span></label>
                             <input class="form-control @error('title') is-invalid @enderror" type="text" name="title" id="title" value="{{ old('title') }}"/>
-                            @error('title') {{ $message ?? '' }} @enderror
+                            @error('title') <p class="small text-danger">{{ $message }}</p> @enderror
                         </div>
-
                     </div>
                     <div class="tile-body">
                         <div class="form-group">
                             <label class="control-label" for="pin"> Category <span class="m-l-5 text-danger"> *</span></label>
                             <select class="form-control" name="category_id">
-                                <option hidden selected>Select Category...</option>
+                                <option value="" disabled selected>Select Category...</option>
                                 @foreach ($categories as $index => $item)
                                 <option value="{{$item->id}}">{{ $item->title }}</option>
                             @endforeach
                             </select>
                             @error('category_id') <p class="small text-danger">{{ $message }}</p> @enderror
                         </div>
-
                     </div>
                     <div class="tile-body">
                         <div class="form-group">
                             <label class="control-label" for="description"> Description <span class="m-l-5 text-danger"> *</span></label>
                             <input class="form-control @error('description') is-invalid @enderror" type="text" name="description" id="description" value="{{ old('description') }}"/>
-                            @error('description') {{ $message ?? '' }} @enderror
+                            @error('description') <p class="small text-danger">{{ $message }}</p> @enderror
                         </div>
 
                     </div>

@@ -36,15 +36,15 @@ style="background: url({{URL::to('/').'/Demo/' .$demo}})"
 
 <section class="help_details">
     <div class="container">
-    <ul class="breadcumb_list mb-2 mb-sm-4">
-                        <li><a href="{!! URL::to('help') !!}">Localtales Help</a></li>
-                        <li>/</li>
-                        <li><a href="{!! URL::to('help/category/'.$article->category->slug) !!}">{{ $article->category->title }} </a></li>
-                        <li>/</li>
-                        <li class="active">{{ $article->title }}</li>
-                    </ul>
-        <div class="row">
+        <ul class="breadcumb_list mb-2 mb-sm-4">
+            <li><a href="{!! URL::to('help') !!}">Localtales Help</a></li>
+            <li>/</li>
+            <li><a href="{!! URL::to('help/category/'.$article->category->slug) !!}">{{ $article->category->title }} </a></li>
+            <li>/</li>
+            <li class="active">{{ $article->title }}</li>
+        </ul>
 
+        {{-- <div class="row"> --}}
         <div class="row">
             <div class="col-12 col-lg-3 col-md-3 help_left">
                 <div class="sticky-top">
@@ -57,15 +57,13 @@ style="background: url({{URL::to('/').'/Demo/' .$demo}})"
                 </div>
             </div>
             <div class="col-12 col-lg-9 col-md-9 help_right">
-                <h1>
-                    {{-- {{$category->subcategory->title}} --}}
-                    {{-- <span>{{date('d M Y', strtotime($category->created_at))}}| Updated</span> --}}
-                </h1>
+                {{-- <h1>
+                    {{$category->subcategory->title}}
+                    <span>{{date('d M Y', strtotime($category->created_at))}}| Updated</span>
+                </h1> --}}
 
                 <h3>{{$article->title}}</h3>
                 <p>{!! $article->description!!}</p>
-
-
                 <a href="{{ route('user.raise.query') }}">Have more questions? Submit a query!</a>
             </div>
         </div>

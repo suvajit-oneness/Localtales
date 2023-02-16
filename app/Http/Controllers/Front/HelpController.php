@@ -34,37 +34,42 @@ class HelpController extends BaseController
 
     public function index(Request $request)
     {
-        $subcategories =HelpArticle::paginate(6);
+        $subcategories = HelpArticle::latest('id')->limit(6)->get();
+
         if (!empty($request->term)) {
-        $categories = $this->HelpcategoryRepository->getSearchCategories($request->term);
-       } else {
-        $categories =HelpCategory::all();
-       }
+            // $categories = $this->HelpcategoryRepository->getSearchCategories($request->term);
+            $categories = HelpCategory::where('status', 1)->where('title', 'like', '%'.$request->term.'%')->orderBy('title', 'asc')->get();
+        } else {
+            $categories = HelpCategory::where('status', 1)->orderBy('title', 'asc')->get();
+        }
         $this->setPageTitle('Help', 'Help page');
-        return view('site.help.index',compact('categories','subcategories'));
+
+        return view('site.help.index',compact('categories', 'subcategories'));
     }
+
     public function subcat(Request $request,$slug)
     {
-         $categories =HelpCategory::where('slug',$slug)->get();
-         $id=$categories[0]->id;
-         if (!empty($request->term)) {
-          $subcategories = $this->HelpcategoryRepository->getSearchSubCategories($request->term);
-         } else {
-        $subcategories =HelpArticle::where('cat_id',$id)->get();
+        $categories = HelpCategory::where('slug',$slug)->get();
+        $id = $categories[0]->id;
+        if (!empty($request->term)) {
+            $subcategories = $this->HelpcategoryRepository->getSearchSubCategories($request->term);
+        } else {
+            $subcategories = HelpArticle::where('cat_id',$id)->get();
         }
-        //dd($categories);
         $this->setPageTitle('Help', 'Help page');
+
         return view('site.help.subcat',compact('categories','subcategories'));
     }
+
     public function detail(Request $request,$slug)
     {
         $Articleid=HelpArticle::where('slug',$slug)->get();
         $id=$Articleid[0]->id;
-       // $subcategories =HelpSubCategory::where('category_id',$id)->get();
-       // $categories =HelpArticle::where('cat_id',$id)->get();
+        // $subcategories =HelpSubCategory::where('category_id',$id)->get();
+        // $categories =HelpArticle::where('cat_id',$id)->get();
         $subcategories =HelpArticle::where('id',$id)->get();
         $article=$subcategories[0];
-        $relevantArticle=HelpArticle::where('cat_id',$article->cat_id)->where('id','!=',$id)->get();
+        $relevantArticle=HelpArticle::where('cat_id',$article->cat_id)->where('id','!=',$id)->latest('id')->get();
         //dd($subcategories);
         $this->setPageTitle('Help detail', 'Help page');
         return view('site.help.detail',compact('article','relevantArticle'));

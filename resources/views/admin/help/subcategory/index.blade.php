@@ -62,7 +62,7 @@
                         <tbody>
                             @foreach($subcategories as $key => $category)
                                 <tr>
-                                    <td>{{ $category->id }}</td>
+                                    <td>{{ $key + 1 }}</td>
                                     <td>{{ $category->title }}</td>
                                     <td>{{ $category->slug }}</td>
                                     <td>{{ $category->helpcategory ? $category->helpcategory->title : '' }}</td>
@@ -84,8 +84,8 @@
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group" role="group" aria-label="Second group">
-                                        <a href="{{ route('admin.helpsubcategory.edit', $category['id']) }}" class="btn btn-sm btn-primary edit-btn"><i class="fa fa-edit"></i></a>
                                         <a href="{{ route('admin.helpsubcategory.details', $category['id']) }}" class="btn btn-sm btn-primary edit-btn"><i class="fa fa-eye"></i></a>
+                                        <a href="{{ route('admin.helpsubcategory.edit', $category['id']) }}" class="btn btn-sm btn-primary edit-btn"><i class="fa fa-edit"></i></a>
                                         <a href="#" data-id="{{$category['id']}}" class="sa-remove btn btn-sm btn-danger edit-btn"><i class="fa fa-trash"></i></a>
                                     </div>
                                 </td>

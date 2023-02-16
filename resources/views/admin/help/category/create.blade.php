@@ -23,15 +23,15 @@
                         <div class="form-group">
                             <label class="control-label" for="name">Category Title <span class="m-l-5 text-danger"> *</span></label>
                             <input class="form-control @error('title') is-invalid @enderror" type="text" name="title" id="title" value="{{ old('title') }}"/>
-                            @error('title') {{ $message ?? '' }} @enderror
+                            @error('title') <p class="text-danger">{{ $message }}</p> @enderror
                         </div>
                         
                     </div>
                     <div class="tile-body">
                         <div class="form-group">
-                            <label class="control-label" for="description">Category Description <span class="m-l-5 text-danger"> *</span></label>
+                            <label class="control-label" for="description">Category Description (Optional) </label>
                             <input class="form-control @error('description') is-invalid @enderror" type="text" name="description" id="description" value="{{ old('description') }}"/>
-                            @error('description') {{ $message ?? '' }} @enderror
+                            @error('description') <p class="text-danger">{{ $message }}</p> @enderror
                         </div>
                         
                     </div>

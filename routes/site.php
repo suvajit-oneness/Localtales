@@ -79,6 +79,13 @@ Route::get('privacy','Site\ContentController@privacy')->name('privacy-policy');
 // faq
 Route::get('faq','Site\ContentController@faq')->name('faq');
 
+// sitemap
+Route::get('/sitemap_sitemap.xml', 'Site\SitemapController@index');
+Route::get('/sitemap_sitemap/{slug?}', 'Site\SitemapController@detail');
+
+// 404
+Route::view('/404', 'site.404')->name('404');
+
 // user login
 Route::prefix('user/')->name('front.user.')->group(function () {
     Route::get('login', 'Site\LoginController@login')->name('login');
@@ -116,6 +123,7 @@ Route::group(['middleware' => ['auth:user']], function () {
     Route::get('site-delete-user-directory/{id}','Site\BusinessController@deleteUserBusiness');
     Route::get('site-save-user-collection/{id}','Front\IndexController@saveUserCollection');
     Route::get('site-delete-user-collection/{id}','Front\IndexController@deleteUserCollection');
+
     // notification
     Route::get('/notification/setup', 'Site\UserNotificationController@setup')->name('user.notification.setup');
     Route::post('/notification/toggle', 'Site\UserNotificationController@toggle')->name('user.notification.toggle');
@@ -146,13 +154,6 @@ Route::get('category/{id?}/directory', 'Front\IndexController@categoryWiseDirect
 
 Route::get('/advocate/registration', 'Site\AdvocateRegistrationController@index')->name('advocate.registration');
 Route::post('/advocate/registration/create', 'Site\AdvocateRegistrationController@store')->name('advocate.registration.store');
-
-// sitemap
-Route::get('/sitemap_sitemap.xml', 'Site\SitemapController@index');
-Route::get('/sitemap_sitemap/{slug?}', 'Site\SitemapController@detail');
-
-// 404
-Route::view('/404', 'site.404')->name('404');
 
 Route::get('search','Site\ArticleController@index')->name('site.search');
 Route::post('directory-search','Site\ContentController@search')->name('directory.search');

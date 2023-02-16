@@ -73,6 +73,7 @@ class HelpSubCategoryController extends BaseController
             'title'      =>  'required|max:191',
             'category_id'      =>  'required|max:191',
         ]);
+
         $slug = Str::slug($request->name, '-');
         $slugExistCount = HelpSubCategory::where('slug', $slug)->count();
         if ($slugExistCount > 0) $slug = $slug.'-'.($slugExistCount+1);
