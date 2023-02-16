@@ -54,7 +54,7 @@ class HelpController extends BaseController
         if (!empty($request->term)) {
             $subcategories = $this->HelpcategoryRepository->getSearchSubCategories($request->term);
         } else {
-            $subcategories = HelpArticle::where('cat_id',$id)->get();
+            $subcategories = HelpArticle::where('cat_id',$id)->where('status', 1)->get();
         }
         $this->setPageTitle('Help', 'Help page');
 
@@ -69,7 +69,7 @@ class HelpController extends BaseController
         // $categories =HelpArticle::where('cat_id',$id)->get();
         $subcategories =HelpArticle::where('id',$id)->get();
         $article=$subcategories[0];
-        $relevantArticle=HelpArticle::where('cat_id',$article->cat_id)->where('id','!=',$id)->latest('id')->get();
+        $relevantArticle = HelpArticle::where('cat_id',$article->cat_id)->where('id','!=',$id)->where('status', 1)->latest('id')->get();
         //dd($subcategories);
         $this->setPageTitle('Help detail', 'Help page');
         return view('site.help.detail',compact('article','relevantArticle'));
