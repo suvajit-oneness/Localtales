@@ -5,7 +5,9 @@ Route::group(['prefix' => 'business'], function () {
 	Route::get('/signup', 'Business\SignupController@register')->name('business.register');
 	Route::post('/register/store', 'Business\SignupController@store')->name('business.register.store');
 	Route::get('/thank-you', 'Business\SignupController@thankyou')->name('thank.you');
-    //signup for individual business
+    /* New Added Routes */
+		Route::get('account/verify/{token}', 'Business\SignupController@verifyAccount')->name('user.verify'); 
+	//signup for individual business
 	Route::get('/signup/{slug}', 'Business\SignupController@view')->name('business.form');
 	Route::post('/signup/update/{slug}', 'Business\SignupController@update')->name('business.form.update');
 
@@ -30,8 +32,7 @@ Route::group(['prefix' => 'business'], function () {
 		Route::post('/category/search', 'Business\UserController@searchCat')->name('business.category.search');
 		Route::post('/category/store', 'Business\UserController@storeCat')->name('business.category.store');
 		Route::get('/{dirId}/category/{catId}/delete', 'Business\UserController@deleteCat')->name('business.category.delete');
-		/* New Added Routes */
-		Route::get('account/verify/{token}', 'Business\UserController@verifyAccount')->name('user.verify'); 
+		
 		Route::group(['prefix'  =>   'event'], function() {
 			Route::get('/', 'Business\EventController@index')->name('business.event.index');
 			Route::get('/create', 'Business\EventController@create')->name('business.event.create');

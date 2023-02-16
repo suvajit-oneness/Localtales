@@ -61,7 +61,11 @@
                         <div class="row mb-4 px-3"> <small class="font-weight-bold text-muted">Don't have an account? <a class="text-orange " href="{{ route('business.register') }}">Register</a></small> </div>
                       </form>
 
-
+                      @if($message = Session::get('message'))
+                        <div class="alert alert-success">
+                            <p>{{$message}}</p>
+                        </div>
+                     @endif
                     </div>
                 </div>
             </div>
