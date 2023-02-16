@@ -21,7 +21,10 @@ Route::group(['prefix' => 'business'], function () {
 	Route::group(['middleware' => ['auth:business']], function () {
 		Route::get('/', function () {
 	      	return view('business.dashboard.index');
-	    })->name('business.dashboard')->middleware(['auth', 'is_verify_email']);
+	    })->name('business.dashboard')->middleware(['auth', 'is_verify_email'])->middleware('2fa');
+		Route::get('2fa', 'Business\TwoFAController@index')->name('2fa.index');
+		Route::post('2fa', 'Business\TwoFAController@store')->name('2fa.post');
+		Route::get('2fa/reset', 'Business\TwoFAController@resend')->name('2fa.resend');
 		Route::get('/profile', function () {
 			return view('business.auth.edit_profile');
 		})->name('business.profile');

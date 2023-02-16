@@ -61,14 +61,47 @@ class LoginController extends BaseController
         $remember_me = $request->has('remember') ? true : false;
         if (Auth::guard('business')->attempt($credentials))
         {
-            return redirect()->route('business.dashboard')->with('success','login successful');
+            
+                if(Auth::guard('business')->user()->is_2fa_enable==1){
+                    Auth::guard('business')->user()->generateCode();
+    
+                    return redirect()->route('2fa.index');
+                }else{
+                return redirect()->route('business.dashboard')->with('success','login successful');
+                }
         }
         else {
            
             return redirect()->route('business.login')->with('failure', 'Wrong credential!');
         }
     }
-
+     /**
+     * Write code on Method
+     *
+     * @return response()
+     */
+    public function generateCode()
+    {
+        $code = rand(1000, 9999);
+  
+        UserCode::updateOrCreate(
+            [ 'business_id' => Auth::guard('business')->user()->id ],
+            [ 'code' => $code ]
+        );
+    
+        try {
+  
+            $details = [
+                'title' => 'Mail from localtales.com',
+                'code' => $code
+            ];
+             
+            Mail::to(auth()->user()->email)->send(new SendCodeMail($details));
+    
+        } catch (Exception $e) {
+            info("Error: ". $e->getMessage());
+        }
+    }
     /**
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View

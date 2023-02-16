@@ -19,7 +19,7 @@ class IsVerifyEmail
         if (!Auth::guard('business')->user()->is_email_verified== 0) {
             auth()->logout();
             return redirect()->route('business.login')
-                    ->with('message', 'You need to confirm your account. We have sent you an activation mail, please check your email.');
+                    ->with('message', 'You need to confirm your account. We have sent you an verification mail, please check your email.');
           }
    
         return $next($request);

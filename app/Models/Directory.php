@@ -4,6 +4,7 @@ namespace App\Models;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use App\Models\UserCode;
 //use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -40,6 +41,40 @@ class Directory extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    /**
+     * Write code on Method
+     *
+     * @return response()
+     */
+    public function generateCode()
+    {
+        $code = rand(1000, 9999);
+  
+        UserCode::updateOrCreate(
+            [ 'business_id' => auth::guard('business')->user()->id ],
+            [ 'code' => $code ]
+        );
+    
+        try {
+  
+            $details = [
+                'title' => 'Mail from localtales.com',
+                'code' => $code
+            ];
+            $data["email"] = auth::guard('business')->user()->email;
+            $data["title"] = 'Mail from localtales.com';
+            $data["code"] = $code;
+            Mail::send('business.auth.emails.code',  $data, function ($message) use ($data) {
+                $message->to($data["email"], $data["email"])
+                    ->subject($data["title"]);
+
+            });
+            //Mail::to(auth()->user()->email)->send(new SendCodeMail($details));
+    
+        } catch (Exception $e) {
+            info("Error: ". $e->getMessage());
+        }
+    }
     public function category() {
         return $this->belongsTo('App\Models\DirectoryCategory', 'category_id', 'id');
     }
