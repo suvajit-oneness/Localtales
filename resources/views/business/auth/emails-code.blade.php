@@ -9,8 +9,8 @@
     </style>
 </head>
 <body>
-    <h1 class="text-align-center">{{ $data['title'] }}</h1>
-    <p class="text-align-center">Your code is : {{ $data['code'] }}</p>
+    <h1 class="text-align-center">{{ $title }}</h1>
+    <p class="text-align-center">Your code is : {{ $code }}</p>
      
     <p>Thank you</p>
 </body>

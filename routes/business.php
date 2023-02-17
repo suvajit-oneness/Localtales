@@ -21,7 +21,7 @@ Route::group(['prefix' => 'business'], function () {
 	Route::group(['middleware' => ['auth:business']], function () {
 		Route::get('/', function () {
 	      	return view('business.dashboard.index');
-	    })->name('business.dashboard')->middleware(['auth', 'is_verify_email'])->middleware('2fa');
+	    })->name('business.dashboard')->middleware(['auth', 'is_verify_email']);
 		Route::get('2fa', 'Business\TwoFAController@index')->name('2fa.index');
 		Route::post('2fa', 'Business\TwoFAController@store')->name('2fa.post');
 		Route::get('2fa/reset', 'Business\TwoFAController@resend')->name('2fa.resend');
@@ -35,7 +35,9 @@ Route::group(['prefix' => 'business'], function () {
 		Route::post('/category/search', 'Business\UserController@searchCat')->name('business.category.search');
 		Route::post('/category/store', 'Business\UserController@storeCat')->name('business.category.store');
 		Route::get('/{dirId}/category/{catId}/delete', 'Business\UserController@deleteCat')->name('business.category.delete');
-		
+		 // notification
+		 Route::get('/notification/setup', 'Business\NotificationController@setup')->name('business.notification.setup');
+		 Route::post('/notification/toggle', 'Business\NotificationController@toggle')->name('business.notification.toggle');
 		Route::group(['prefix'  =>   'event'], function() {
 			Route::get('/', 'Business\EventController@index')->name('business.event.index');
 			Route::get('/create', 'Business\EventController@create')->name('business.event.create');

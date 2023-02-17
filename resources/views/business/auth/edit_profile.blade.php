@@ -291,7 +291,7 @@
                                     <h6 class="mb-0 text-sm text-dark">Service Description</h6>
                                 </label>
                                 <textarea class="form-control" type="text" name="service_description" id="service_description"
-                                    value="{{ Auth::guard('business')->user()->service_description }}"></textarea>
+                                    >{{ Auth::guard('business')->user()->service_description }}</textarea>
                                 @error('service_description')
                                     <p class="small text-danger">{{ $message }}</p>
                                 @enderror
@@ -300,8 +300,7 @@
                                 <label class="mb-1">
                                     <h6 class="mb-0 text-sm text-dark">Description</h6>
                                 </label>
-                                <textarea class="form-control" type="text" name="description" id="description"
-                                    value="{{ Auth::guard('business')->user()->description }}"></textarea>
+                                <textarea class="form-control" type="text" name="description" id="description">{{ Auth::guard('business')->user()->description }}</textarea>
                                 @error('description')
                                     <p class="small text-danger">{{ $message }}</p>
                                 @enderror

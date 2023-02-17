@@ -38,7 +38,7 @@ class TwoFAController extends Controller
   
         if (!is_null($find)) {
             Session::put('user_2fa', Auth::guard('business')->user()->id);
-            return redirect()->route('business.dashboard.index');
+            return redirect()->route('business.dashboard')->with('success','login successful');
         }
   
         return back()->with('error', 'You entered wrong code.');

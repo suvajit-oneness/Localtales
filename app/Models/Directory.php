@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use App\Models\UserCode;
 //use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Auth;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\AdminResetPasswordNotification;
 
@@ -51,7 +53,7 @@ class Directory extends Authenticatable implements MustVerifyEmail
         $code = rand(1000, 9999);
   
         UserCode::updateOrCreate(
-            [ 'business_id' => auth::guard('business')->user()->id ],
+            [ 'business_id' => Auth::guard('business')->user()->id ],
             [ 'code' => $code ]
         );
     
@@ -61,10 +63,10 @@ class Directory extends Authenticatable implements MustVerifyEmail
                 'title' => 'Mail from localtales.com',
                 'code' => $code
             ];
-            $data["email"] = auth::guard('business')->user()->email;
+            $data["email"] = Auth::guard('business')->user()->email;
             $data["title"] = 'Mail from localtales.com';
             $data["code"] = $code;
-            Mail::send('business.auth.emails.code',  $data, function ($message) use ($data) {
+            Mail::send('business.auth.emails-code',  $data, function ($message) use ($data) {
                 $message->to($data["email"], $data["email"])
                     ->subject($data["title"]);
 

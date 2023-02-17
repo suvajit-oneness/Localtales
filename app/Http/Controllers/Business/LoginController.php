@@ -61,14 +61,17 @@ class LoginController extends BaseController
         $remember_me = $request->has('remember') ? true : false;
         if (Auth::guard('business')->attempt($credentials))
         {
-            
-                if(Auth::guard('business')->user()->is_2fa_enable==1){
+            $verify = Auth::guard('business')->user()->is_email_verified;
+            if ($verify== 1) {
+                $status = Auth::guard('business')->user()->is_2fa_enable;
+                if ($status == 1) {
                     Auth::guard('business')->user()->generateCode();
     
                     return redirect()->route('2fa.index');
                 }else{
                 return redirect()->route('business.dashboard')->with('success','login successful');
                 }
+            } 
         }
         else {
            

@@ -33,7 +33,7 @@
         <li><a class="app-menu__item " href="{{ route('business.change.password') }}"><i class="app-menu__icon fa fa-key"></i>
             <span class="app-menu__label">Change Password</span>
         </a></li>
-        
+        <li><a href="{{ route('business.notification.setup') }}" class="app-menu__item "><i class="app-menu__icon fa fa-cogs"></i><span class="app-menu__label">Notification setup</span></a></li>
         <li><a href="{{ route('business.logout') }}" class="app-menu__item"><i class="app-menu__icon fa fa-sign-out fa-lg"></i>LOGOUT</a></li>
         <!-- User Management -->
     </ul>

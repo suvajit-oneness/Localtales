@@ -105,9 +105,9 @@
 
             Swal.fire({
 
-                title: '<h2>Success!</h2><h5>Your Query Submitted Successfully!</h5>',
+                title: '<h2>Success!</h2><h5>Your query Submitted Successfully!</h5>',
 
-                html: "<small><b>Ticket Id: </b>{{ session('success') }}<small>",
+                html: "<small><b></b>{{ session('success') }}<small>",
 
                 icon: 'success',
 
