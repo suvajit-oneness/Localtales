@@ -12,3 +12,5 @@ npm-debug.log
 yarn-error.log
 # package.json
 .zip
+public/Blogs
+public/categories
