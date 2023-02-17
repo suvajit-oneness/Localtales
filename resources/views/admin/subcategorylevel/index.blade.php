@@ -20,7 +20,7 @@
             <div class="row align-items-center justify-content-between">
                 <div class="col">
                     <ul>
-                        <li class="active"><a href="{{ route('admin.sub-category-level2.index') }}">All <span class="count">({{$subcatlevel->count()}})</span></a></li>
+                        <li class="active"><a href="{{ route('admin.sub-category-level2.index') }}">All <span class="count">({{$subcatlevel->total()}})</span></a></li>
                     </ul>
                 </div>
                 <div class="col-auto">
@@ -52,7 +52,7 @@
                         <tbody>
                             @foreach($subcatlevel as $key => $category)
                                 <tr>
-                                    <td>{{ $key+1 }}</td>
+                                    <td>{{ $key + $subcatlevel->firstItem() }}</td>
                                     <td>{{ $category->title }}</td>
                                     <td>{{ $category->slug }}</td>
                                     <td>{{ $category->subcategory ? $category->subcategory->title : '' }}</td>

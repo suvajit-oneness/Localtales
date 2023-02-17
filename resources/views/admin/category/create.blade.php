@@ -6,46 +6,47 @@
             <h1><i class="fa fa-tags"></i> {{ $pageTitle }}</h1>
         </div>
     </div>
+
     @include('admin.partials.flash')
+
     <div class="row">
         <div class="col-md-8 mx-auto">
             <div class="tile">
                 <h3 class="tile-title">{{ $subTitle }}
                     <span class="top-form-btn">
-                        <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save Category</button>
+                        {{-- <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save Category</button> --}}
                         <a class="btn btn-secondary" href="{{ route('admin.category.index') }}"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
                     </span>
                 </h3>
+
                 <hr>
-                <form action="{{ route('admin.category.store') }}" method="POST" role="form" enctype="multipart/form-data">
-                    @csrf
+
+                <form action="{{ route('admin.category.store') }}" method="POST" role="form" enctype="multipart/form-data">@csrf
                     <div class="tile-body">
                         <div class="form-group">
-                            <label class="control-label" for="name">Category Title <span class="m-l-5 text-danger"> *</span></label>
+                            <label class="control-label" for="name">Title <span class="m-l-5 text-danger">*</span></label>
                             <input class="form-control @error('title') is-invalid @enderror" type="text" name="title" id="title" value="{{ old('title') }}"/>
-                            @error('title') {{ $message ?? '' }} @enderror
+                            @error('title') <p class="small text-danger">{{ $message }}</p> @enderror
                         </div>
+                    </div>
 
-                    </div>
                     <div class="form-group">
-                            <label class="control-label" for="description">Description</label>
-                            <textarea type="text" class="form-control" rows="4" name="description" id="description">{{ old('description') }}</textarea>
-                            @error('description')
-                                <p class="small text-danger">{{ $message }}</p>
-                            @enderror
-                        </div>
+                        <label class="control-label" for="description">Description <span class="m-l-5 text-danger">*</span></label>
+                        <textarea type="text" class="form-control" rows="4" name="description" id="description">{{ old('description') }}</textarea>
+                        @error('description') <p class="small text-danger">{{ $message }}</p> @enderror
+                    </div>
+
                     <div class="tile-body">
-                    <div class="form-group">
-                        <label class="control-label"> Image</label>
-                        <p class="small text-danger mb-2">Size must be less than 200kb</p>
-                        <input class="form-control @error('image') is-invalid @enderror" type="file"
-                            id="image" name="image" />
-                        @error('image')
-                            <p class="small text-danger">{{ $message }}</p>
-                        @enderror
+                        <div class="form-group">
+                            <label class="control-label"> Image <span class="m-l-5 text-danger">*</span></label>
+                            <p class="small text-danger mb-2">Size must be less than 200kb</p>
+                            <input class="form-control @error('image') is-invalid @enderror" type="file" id="image" name="image" />
+                            @error('image') <p class="small text-danger">{{ $message }}</p> @enderror
+                        </div>
                     </div>
-                </div>
-                 <p style="font-weight :bold;"><strong>Category Short Content</strong> (include a paragraph of text and faq , approx. 200 characters)</p>
+
+                    <p style="font-weight :bold;"><strong>Category Short Content</strong> (include a paragraph of text and faq , approx. 200 characters)</p>
+
                 <div class="tile-body">
                 <div class="form-group">
                     <label class="control-label" for="short_content">Content</label>

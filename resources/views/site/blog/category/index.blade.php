@@ -1,36 +1,35 @@
-@extends('site.app')
-@section('title')
 @php
-$meta_title=DB::table('seo_management')->where('page', '=', 'article_primary_category')->get();
-$title=$meta_title[0]->title;
-if(!empty($cat[0]->description)){
-$meta_desc=explode(".",$cat[0]->description);
+    $meta_title=DB::table('seo_management')->where('page', '=', 'article_primary_category')->get();
+    $title = $meta_title[0]->title;
 
-$description= $meta_desc[0]. "." .$meta_desc[1]. "."  ?? '';
-}
-else{
-    $description= '';
-}
+    if(!empty($cat[0]->description)) {
+        $meta_desc = explode(".", $cat[0]->description);
+
+        if (count($meta_desc) > 1) {
+            $description = $meta_desc[0].".".$meta_desc[1]."." ?? '';
+        } else {
+            $description= '';
+        }
+
+    } else {
+        $description= '';
+    }
 @endphp
- {{$title}}
-@stop
+
+@extends('site.app')
+@section('title'){{$title}}@stop
 @section('description', $description)
+
 @section('content')
-
-    <!-- ========== Inner Banner ========== -->
-
     <section class="inner_banner"
     @if($cat[0]->image)
             style="background: url({{URL::to('/').'/categories/'}}{{$cat[0]->image}})" class="w-100" height: 350px;object-fit: cover
-
     @else
     @php
-
         $demoImage=DB::table('demo_images')->where('title', '=', 'category')->get();
         $demo=$demoImage[0]->image;
     @endphp
-            style="background: url({{URL::to('/').'/Demo/' .$demo}})" class="w-100" height: 350px;object-fit: cover
-
+        style="background: url({{URL::to('/').'/Demo/' .$demo}})" class="w-100" height: 350px;object-fit: cover
     @endif>
         <div class="container position-relative">
             <h1>{{$cat[0]->title}}</h1>

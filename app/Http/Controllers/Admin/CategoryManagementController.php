@@ -67,26 +67,23 @@ class CategoryManagementController extends BaseController
     public function store(Request $request)
     {
         $this->validate($request, [
-            'title'      =>  'required|max:191',
-            'description'      =>  'required|max:500',
-           // 'short_content'      =>  'nullable|max:1000',
-           // 'medium_content'      =>  'nullable|max:1000',
-          //  'long_content'      =>  'nullable|max:12000',
-           'image' => 'required',
-           'medium_content_image' => 'nullable',
-           'long_content_image' => 'nullable',
-
-
+            'title' => 'required|max:191',
+            'description' => 'required|max:500',
+            'image' => 'required|image|max:200',
+            'short_content' => 'nullable|string|min:1',
+            'medium_content' => 'nullable|string|min:1',
+            'long_content' => 'nullable|string|min:1',
+            'medium_content_image' => 'nullable|image|max:200',
+            'long_content_image' => 'nullable|image|max:200',
         ]);
+
         $slug = Str::slug($request->title, '-');
         $slugExistCount = BlogCategory::where('slug', $slug)->count();
         if ($slugExistCount > 0) $slug = $slug . '-' . ($slugExistCount + 1);
 
         // send slug
         request()->merge(['slug' => $slug]);
-
         $params = $request->except('_token');
-
         $category = $this->categoryRepository->createCategory($params);
 
         if (!$category) {
@@ -116,18 +113,20 @@ class CategoryManagementController extends BaseController
     public function update(Request $request)
     {
         $this->validate($request, [
-            'title'      =>  'required|max:191',
-          //  'description'      =>  'required|max:500',
-           // 'short_content'      =>  'nullable|max:1000',
-           // 'medium_content'      =>  'nullable|max:1000',
-           // 'long_content'      =>  'nullable|max:12000',
-
+            'title' => 'required|max:191',
+            'description' => 'required|max:500',
+            'image' => 'nullable|image|max:200',
+            'short_content' => 'nullable|string|min:1',
+            'medium_content' => 'nullable|string|min:1',
+            'long_content' => 'nullable|string|min:1',
+            'medium_content_image' => 'nullable|image|max:200',
+            'long_content_image' => 'nullable|image|max:200',
         ]);
+
         $slug = Str::slug($request->title, '-');
         $slugExistCount = BlogCategory::where('slug', $slug)->count();
         if ($slugExistCount > 0) $slug = $slug . '-' . ($slugExistCount + 1);
         $params = $request->except('_token');
-
         $category = $this->categoryRepository->updateCategory($params);
 
         if (!$category) {

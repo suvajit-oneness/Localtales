@@ -1,9 +1,7 @@
 @extends('admin.app')
-@section('title')
-    {{ $pageTitle }}
-@endsection
+@section('title'){{ $pageTitle }}@endsection
+
 @section('content')
-    {{-- CKEDITOR 5 INCLUDE --}}
     <link rel="stylesheet" href="{{ asset('backend/ckeditor5-36.0.1-dundmb20fh0i/sample/styles.css') }}">
     <style>
         .ck.ck-reset_all {
@@ -19,25 +17,21 @@
             <h1><i class="fa fa-tags"></i> {{ $pageTitle }}</h1>
         </div>
     </div>
+
     @include('admin.partials.flash')
+
     <div class="row">
         <div class="col-md-8 mx-auto">
             <div class="tile">
-            <span class="top-form-btn">
+                <span class="top-form-btn">
+                    <a class="btn btn-secondary" href="{{ route('admin.blog.index') }}"><i class="fa fa-fw fa-lg fa-times-circle"></i>Back</a>
+                </span>
 
-            <a class="btn btn-secondary" href="{{ route('admin.blog.index') }}"><i
-                    class="fa fa-fw fa-lg fa-times-circle"></i>Back</a>
-            </span>
-                <h3 class="tile-title">{{ $subTitle }}
+                <h3 class="tile-title">{{ $subTitle }}</h3>
 
-                </h3>
                 <hr>
 
-
-                <form action="{{ route('admin.blog.store') }}" method="POST" role="form"
-                    enctype="multipart/form-data">
-                    @csrf
-
+                <form action="{{ route('admin.blog.store') }}" method="POST" role="form" enctype="multipart/form-data">@csrf
                     <div class="tile-body">
                         <div class="form-group">
                             <label class="control-label" for="name">Article Title <span class="m-l-5 text-danger">
@@ -50,8 +44,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label" for="pin"> Category <span class="m-l-5 text-danger">
-                                    *</span></label>
+                            <label class="control-label" for="pin"> Category <span class="m-l-5 text-danger">*</span></label>
                             <select class="form-control" name="blog_category_id[]" multiple>
                                 <option value="" hidden selected>Select Categoy...</option>
                                 @foreach ($blogcat as $index => $item)
@@ -113,7 +106,7 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label class="control-label" for="content">Content</label>
+                            <label class="control-label" for="content">Content <span class="m-l-5 text-danger">*</span></label>
                             {{-- <textarea type="text" class="form-control" rows="4" name="content" id="summernote_content">{{ old('content') }}</textarea> --}}
                             <textarea type="text" class="form-control ckeditor" rows="4" name="content" id="ckeditor">{{ old('content') }}</textarea>
                             @error('content')
@@ -162,7 +155,7 @@
                             @enderror
                         </div>-->
                         <div class="form-group">
-                            <label class="control-label">Article Image</label>
+                            <label class="control-label">Image <span class="m-l-5 text-danger">*</span></label>
                             <p class="small text-danger mb-2">Size must be less than 200kb</p>
                             <input class="form-control @error('image') is-invalid @enderror" type="file"
                                 id="image" name="image" />

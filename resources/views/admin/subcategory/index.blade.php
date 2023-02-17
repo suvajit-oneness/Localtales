@@ -20,7 +20,7 @@
             <div class="row align-items-center justify-content-between">
                 <div class="col">
                     <ul>
-                        <li class="active"><a href="{{ route('admin.subcategory.index') }}">All <span class="count">({{$subcategories->count()}})</span></a></li>
+                        <li class="active"><a href="{{ route('admin.subcategory.index') }}">All <span class="count">({{$subcategories->total()}})</span></a></li>
                         {{-- @php
                             $activeCount = $inactiveCount = 0;
                             foreach ($data as $catKey => $catVal) {
@@ -61,7 +61,7 @@
                         <tbody>
                             @foreach($subcategories as $key => $category)
                                 <tr>
-                                    <td>{{ $key+1}}</td>
+                                    <td>{{ $subcategories->firstItem() + $key }}</td>
                                     <td>{{ $category->title }}</td>
                                     <td>{{ $category->slug }}</td>
                                     <td>{{ $category->blogcategory ? $category->blogcategory->title : '' }}</td>

@@ -66,7 +66,7 @@
                         <tbody>
                             @foreach($blogs as $key => $blog)
                                 <tr>
-                                    <td>{{ $key+1 }}</td>
+                                    <td>{{ $key + $blogs->firstItem() }}</td>
                                     <td>
                                         @if($blog->image!='')
                                         <img style="width: 100px;height: 100px;" src="{{URL::to('/').'/Blogs/'}}{{$blog->image}}">

@@ -93,9 +93,6 @@ Route::group(['prefix' => 'admin'], function () {
         });
         //**  Category management   **/
         Route::group(['prefix'  =>   'category'], function () {
-
-
-
             Route::get('/', 'Admin\CategoryManagementController@index')->name('admin.category.index');
             Route::get('/create', 'Admin\CategoryManagementController@create')->name('admin.category.create');
             Route::post('/store', 'Admin\CategoryManagementController@store')->name('admin.category.store');
@@ -111,7 +108,6 @@ Route::group(['prefix' => 'admin'], function () {
         //faq
 
         Route::group(['prefix'  =>   'categoryfaq'], function () {
-
             Route::get('/', 'Admin\CategoryFaqManagementController@index')->name('admin.categoryfaq.index');
             Route::get('/create', 'Admin\CategoryFaqManagementController@create')->name('admin.categoryfaq.create');
             Route::post('/store', 'Admin\CategoryFaqManagementController@store')->name('admin.categoryfaq.store');
@@ -140,8 +136,6 @@ Route::group(['prefix' => 'admin'], function () {
         });
         //**  Sub category level2 management  **/
         Route::group(['prefix'  =>   'sub-category-level2'], function () {
-
-
             Route::get('/', 'Admin\SubCategoryLevelController@index')->name('admin.sub-category-level2.index');
             Route::get('/create', 'Admin\SubCategoryLevelController@create')->name('admin.sub-category-level2.create');
             Route::post('/store', 'Admin\SubCategoryLevelController@store')->name('admin.sub-category-level2.store');
@@ -155,11 +149,8 @@ Route::group(['prefix' => 'admin'], function () {
         });
 
 
-
         //**  blog management  **/
         Route::group(['prefix'  =>   'blog'], function () {
-
-
             Route::get('/', 'Admin\BlogController@index')->name('admin.blog.index');
             Route::get('/create', 'Admin\BlogController@create')->name('admin.blog.create');
             Route::post('/store', 'Admin\BlogController@store')->name('admin.blog.store');
@@ -172,6 +163,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('/csv-store', 'Admin\BlogController@csvStore')->name('admin.blog.data.csv.store');
             Route::get('/export', 'Admin\BlogController@export')->name('admin.blog.data.csv.export');
         });
+
             //**  blog management  **/
             Route::group(['prefix'  =>   'blogwidget'], function () {
 

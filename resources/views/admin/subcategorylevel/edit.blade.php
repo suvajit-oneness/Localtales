@@ -6,7 +6,9 @@
             <h1><i class="fa fa-tags"></i> {{ $pageTitle }}</h1>
         </div>
     </div>
+
     @include('admin.partials.flash')
+
     <div class="row">
         <div class="col-md-8 mx-auto">
             <div class="tile">
@@ -15,22 +17,23 @@
                         <a class="btn btn-secondary" href="{{ route('admin.sub-category-level2.index') }}"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
                     </span>
                 </h3>
+                
                 <hr>
-                <form action="{{ route('admin.sub-category-level2.update') }}" method="post" role="form" enctype="multipart/form-data">
-                    @csrf
+
+                <form action="{{ route('admin.sub-category-level2.update') }}" method="post" role="form" enctype="multipart/form-data">@csrf
                     <div class="tile-body">
                         <div class="form-group">
                             <label class="control-label" for="pin"> Title <span class="m-l-5 text-danger"> *</span></label>
                             <input class="form-control @error('title') is-invalid @enderror" type="text" name="title" id="title" value="{{ old('title', $targetsubcat->title) }}"/>
                             <input type="hidden" name="id" value="{{ $targetsubcat->id }}">
-                            @error('title') {{ $message }} @enderror
+                            @error('title') <p class="small text-danger">{{ $message }}</p> @enderror
                         </div>
-
                     </div>
+
                     <div class="tile-body">
                         <div class="form-group">
                             <label class="control-label" for="pin"> Sub Category <span class="m-l-5 text-danger"> *</span></label>
-                            <select class="form-control" name="sub_category_id">
+                            <select class="form-control @error('sub_category_id') is-invalid @enderror" name="sub_category_id">
                                 <option hidden selected>Select Sub Category...</option>
                                 @foreach ($subcat as $index => $item)
                                 <option value="{{$item->id}}" {{ ($item->id == $targetsubcat->sub_category_id) ? 'selected' : '' }}>{{ $item->title }}</option>

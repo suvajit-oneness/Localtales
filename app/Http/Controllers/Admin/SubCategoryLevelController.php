@@ -36,13 +36,11 @@ class SubCategoryLevelController extends BaseController
     {
         
         if (!empty($request->term)) {
-            // dd($request->term);
-             $subcatlevel = $this->SubCategoryLevelRepository->getSearchSubcategorylevel($request->term);
+            $subcatlevel = $this->SubCategoryLevelRepository->getSearchSubcategorylevel($request->term);
+        } else {
+            $subcatlevel =  SubCategoryLevel::orderBy('title')->paginate(25);
+        }
 
-            // dd($categories);
-         } else {
-            $subcatlevel =  SubCategoryLevel::paginate(25);
-         }
         $subcat = $this->SubCategoryLevelRepository->getSubCategory();
         $this->setPageTitle('Tertiary Category', 'List of all Tertiary Category');
         return view('admin.subcategorylevel.index', compact('subcatlevel','subcat'));
@@ -53,7 +51,6 @@ class SubCategoryLevelController extends BaseController
      */
     public function create()
     {
-
         $this->setPageTitle('Tertiary Category', 'Create Tertiary Category');
         $subcat = $this->SubCategoryLevelRepository->getSubCategory();
         return view('admin.subcategorylevel.create',compact('subcat'));
@@ -67,9 +64,12 @@ class SubCategoryLevelController extends BaseController
     public function store(Request $request)
     {
         $this->validate($request, [
-            'title'      =>  'required|max:191',
-            "sub_category_id" => "required|integer",
+            'title' => 'required|max:191',
+            "sub_category_id" => "required|integer|min:1",
+            "description" => "nullable|string|min:1",
+            "image" => "nullable|image|max:200",
         ]);
+
         $slug = Str::slug($request->name, '-');
         $slugExistCount = State::where('slug', $slug)->count();
         if ($slugExistCount > 0) $slug = $slug.'-'.($slugExistCount+1);
@@ -107,9 +107,12 @@ class SubCategoryLevelController extends BaseController
     public function update(Request $request)
     {
         $this->validate($request, [
-            'title'      =>  'required|max:191',
-            "sub_category_id" => "required|integer",
+            'title' => 'required|max:191',
+            "sub_category_id" => "required|integer|min:1",
+            "description" => "nullable|string|min:1",
+            "image" => "nullable|image|max:200",
         ]);
+
         $slug = Str::slug($request->name, '-');
         $slugExistCount = State::where('slug', $slug)->count();
         if ($slugExistCount > 0) $slug = $slug.'-'.($slugExistCount+1);

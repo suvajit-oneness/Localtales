@@ -25,6 +25,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\BlogExport;
 use DB;
 use Illuminate\Support\Facades\Session as FacadesSession;
+
 class BlogController extends BaseController
 {
     protected $BlogRepository;
@@ -45,7 +46,6 @@ class BlogController extends BaseController
      */
     public function index(Request $request)
     {
-
         if (!empty($request->term)) {
             // dd($request->term);
             $blogs = $this->BlogRepository->getSearchBlog($request->term);
@@ -74,26 +74,14 @@ class BlogController extends BaseController
         return view('admin.blog.create', compact('blogcat', 'blogsubcat', 'suburb', 'pin','blogtercat'));
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Illuminate\Validation\ValidationException
-     */
+
     public function store(Request $request)
     {
-       // dd($request->all());
         $request->validate([
-            'title' => 'required|string|min:1',
+            'title' => 'required|string|min:1|max:255',
             'blog_category_id' => 'required|array|min:1',
-           // 'pincode' => 'required|integer|min:1',
-           // 'suburb_id' => 'required|integer|min:1',
             'content' => 'required|string|min:1',
-           //'meta_title' => 'required|string',
-           // 'meta_key' => 'required|string',
-          //  'meta_description' => 'required|string',
-           'image' => 'required|mimes:jpg,jpeg,png|max:10000000',
-           // 'banner_image' => 'required|mimes:jpg,jpeg,png|max:10000000',
-           // 'image2' => 'required|mimes:jpg,jpeg,png|max:10000000',
+            'image' => 'required|mimes:jpg,jpeg,png|max:200',
         ]);
 
         $blog = $this->BlogRepository->createBlog($request->except('_token'));
@@ -104,10 +92,7 @@ class BlogController extends BaseController
         return $this->responseRedirect('admin.blog.index', 'Article has been created successfully', 'success', false, false);
     }
 
-    /**
-     * @param $id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
+
     public function edit($id)
     {
         $targetblog = $this->BlogRepository->findBlogById($id);
@@ -137,18 +122,10 @@ class BlogController extends BaseController
     {
         //dd($request->all());
         $request->validate([
-            'title' => 'required|string|min:1',
-            'blog_category_id' => 'required|',
-            //'blog_sub_category_id' => 'required|integer|min:1',
-            //'pincode' => 'required|integer|min:1',
-           // 'suburb_id' => 'required|integer|min:1',
-           // 'content' => 'required|string|min:1',
-           // 'meta_title' => 'required|string',
-           // 'meta_key' => 'required|string',
-           // 'meta_description' => 'required|string',
-           // 'image' => 'required|mimes:jpg,jpeg,png|max:10000000',
-           // 'banner_image' => 'required|mimes:jpg,jpeg,png|max:10000000',
-           // 'image2' => 'required|mimes:jpg,jpeg,png|max:10000000',
+            'title' => 'required|string|min:1|max:255',
+            'blog_category_id' => 'required|array|min:1',
+            'content' => 'required|string|min:1',
+            'image' => 'nullable|mimes:jpg,jpeg,png|max:200',
         ]);
         // $slug = Str::slug($request->name, '-');
         // $slugExistCount = Blog::where('slug', $slug)->count();

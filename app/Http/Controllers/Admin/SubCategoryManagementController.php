@@ -61,17 +61,15 @@ class SubCategoryManagementController extends BaseController
         return view('admin.subcategory.create',compact('categories'));
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Illuminate\Validation\ValidationException
-     */
     public function store(Request $request)
     {
         $this->validate($request, [
-            'title'      =>  'required|max:191',
-            'category_id'      =>  'required|max:191',
+            'title' => 'required|max:191',
+            'category_id' => 'required|integer|min:1',
+            "description" => "nullable|string|min:1",
+            "image" => "nullable|image|max:200"
         ]);
+
         $slug = Str::slug($request->name, '-');
         $slugExistCount = SubCategory::where('slug', $slug)->count();
         if ($slugExistCount > 0) $slug = $slug.'-'.($slugExistCount+1);
@@ -108,9 +106,12 @@ class SubCategoryManagementController extends BaseController
     public function update(Request $request)
     {
         $this->validate($request, [
-            'title'      =>  'required|max:191',
-            'category_id'      =>  'required|max:191',
+            'title' => 'required|max:191',
+            'category_id' => 'required|integer|min:1',
+            "description" => "nullable|string|min:1",
+            "image" => "nullable|image|max:200"
         ]);
+
         $slug = Str::slug($request->name, '-');
         $slugExistCount = SubCategory::where('slug', $slug)->count();
         if ($slugExistCount > 0) $slug = $slug.'-'.($slugExistCount+1);
