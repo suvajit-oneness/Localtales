@@ -14,34 +14,27 @@
             </div>
         </div>
     </div>
+
     @include('admin.partials.flash')
+
     <div class="row">
         <div class="col-md-12">
             <div class="row align-items-center justify-content-between">
                 <div class="col">
                     <ul>
                         <li class="active">Total Categories <span class="count">({{$categories->total()}})</span></a></li>
-                        {{-- @php
-                            $activeCount = $inactiveCount = 0;
-                            foreach ($data as $catKey => $catVal) {
-                                if ($catVal->status == 1) $activeCount++;
-                                else $inactiveCount++;
-                            }
-                        @endphp
-                        <li><a href="{{ route('admin.directory.index', ['status' => 'active'])}}">Active <span class="count">({{$activeCount}})</span></a></li>
-                        <li><a href="{{ route('admin.directory.index', ['status' => 'inactive'])}}">Inactive <span class="count">({{$inactiveCount}})</span></a></li> --}}
                     </ul>
                 </div>
                 <div class="col-auto">
                     <form action="{{ route('admin.category.index') }}">
-                    <div class="row g-3 align-items-center">
-                        <div class="col-auto">
-                        <input type="search" name="term" id="term" class="form-control" placeholder="Search here.." value="{{app('request')->input('term')}}" autocomplete="off">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-auto">
+                                <input type="search" name="term" id="term" class="form-control" placeholder="Search here.." value="{{app('request')->input('term')}}" autocomplete="off">
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-outline-danger btn-sm">Search Category</button>
+                            </div>
                         </div>
-                        <div class="col-auto">
-                        <button type="submit" class="btn btn-outline-danger btn-sm">Search Category</button>
-                        </div>
-                    </div>
                     </form>
                 </div>
             </div>
@@ -119,6 +112,7 @@
         </div>
     </div>
 @endsection
+
 @push('scripts')
     <script type="text/javascript" src="{{ asset('backend/js/plugins/jquery.dataTables.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('backend/js/plugins/dataTables.bootstrap.min.js') }}"></script>
