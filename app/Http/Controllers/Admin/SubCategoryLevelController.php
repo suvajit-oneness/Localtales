@@ -14,7 +14,11 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Response;
 use Auth;
 use Session;
-use DB;
+use Carbon\Carbon;
+use App\Exports\TertiarycategoryExport;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Session as FacadesSession;
 class SubCategoryLevelController extends BaseController
 {
     protected $SubCategoryLevelRepository;
@@ -43,7 +47,7 @@ class SubCategoryLevelController extends BaseController
 
         $subcat = $this->SubCategoryLevelRepository->getSubCategory();
         $this->setPageTitle('Tertiary Category', 'List of all Tertiary Category');
-        return view('admin.subcategorylevel.index', compact('subcatlevel','subcat'));
+        return view('admin.subcategorylevel.index', compact('subcatlevel','subcat','request'));
     }
 
     /**
@@ -213,7 +217,7 @@ class SubCategoryLevelController extends BaseController
                         $i++;
                     }
                     fclose($file);
-
+                    $count = 0;
                     // echo '<pre>';print_r($importData_arr);exit();
 
                     // Insert into database
@@ -233,30 +237,25 @@ class SubCategoryLevelController extends BaseController
                                 $commaSeperatedSubCats .= $insertDirCatId . ',';
                             }
 
-                        $storeData = 0;
-                        if(isset($importData[5]) == "Carry In") $storeData = 1;
-                        if (!empty($importData[1])) {
-                            // dd($importData[0]);
-                            $titleArr = explode(',', $importData[1]);
-
-                            // echo '<pre>';print_r($titleArr);exit();
-
-                            foreach ($titleArr as $titleKey => $titleValue) {
                                 // slug generate
-                                $slug = Str::slug($titleValue, '-');
-                                $slugExistCount = DB::table('sub_category_levels')->where('title', $titleValue)->count();
+                                $slug = Str::slug($importData[1], '-');
+                                $slugExistCount = DB::table('sub_categories')->where('title', $importData[1])->count();
                                 if ($slugExistCount > 0) $slug = $slug . '-' . ($slugExistCount + 1);
                         $insertData = array(
                             "title" => isset($importData[1]) ? $importData[1] : null,
                             "slug" => $slug,
                             "sub_category_id" => isset($commaSeperatedSubCats) ? $commaSeperatedSubCats : null,
-
+                            "description" => isset($importData[2]) ? $importData[2] : null,
                         );
                         // echo '<pre>';print_r($insertData);exit();
-                        SubCategoryLevel::insertData($insertData);
+                        $resp =  SubCategoryLevel::insertData($insertData,$count);
+                        $count = $resp['count'];
                     }
-                }
-            }
+                    if($count == 0){
+                        FacadesSession::flash('csv', 'Already Uploaded. ');
+                    } else{
+                        FacadesSession::flash('csv', 'Import Successful. '.$count.' Data Uploaded');
+                    }
                     Session::flash('message', 'Import Successful.');
                 } else {
                     Session::flash('message', 'File too large. File must be less than 50MB.');
@@ -269,6 +268,55 @@ class SubCategoryLevelController extends BaseController
         }
         return redirect()->route('admin.sub-category-level2.index');
     }
-    // csv upload
-    // csv upload
+    public function export(Request $request)
+    {
+        //return Excel::download(new CategoryExport, 'category.xlsx');
+        if (!empty($request->term)) {
+            $data = $this->SubCategoryLevelRepository->getSearchSubcategorylevel($request->term);
+        } else {
+            $data =  SubCategoryLevel::orderBy('title')->get();
+        }
+
+        if (($data)) {
+            $delimiter = ",";
+            $filename = "tertiary-category".".xlsx";
+
+            // Create a file pointer 
+            $f = fopen('php://memory', 'w');
+
+            // Set column headers 
+            $fields = array('SR','Title',  'Sub Category','Description','Status','Created at');
+            fputcsv($f, $fields, $delimiter); 
+
+            $count = 1;
+
+            foreach($data as $row) {
+               
+                $datetime = date('j M Y g:i A', strtotime($row['created_at']));
+                $lineData = array(
+                    $count,
+                    $row['title'] ?? '',
+                    $row->subcategory->title,
+                    strip_tags($row->description),
+                    ($row->status == 1) ? 'Active' : 'Blocked',
+                    $datetime
+                );
+
+                fputcsv($f, $lineData, $delimiter);
+
+                $count++;
+            }
+
+            // Move back to beginning of file
+            fseek($f, 0);
+
+            // Set headers to download file rather than displayed
+            header('Content-Type: text/csv');
+            header('Content-Disposition: attachment; filename="' . $filename . '";');
+
+            //output all remaining data on a file pointer
+            fpassthru($f);
+        }
+    }
+    
 }

@@ -15,10 +15,16 @@ class SubCategory extends Model
         return $this->belongsTo('App\Models\BlogCategory', 'category_id', 'id');
     }
 
-    public static function insertData($data) {
+    public static function insertData($data,$count) {
         $value = DB::table('sub_categories')->where('title', $data['title'])->get();
         if($value->count() == 0) {
            DB::table('sub_categories')->insert($data);
+           $count++;
         }
+        $resp = [
+            "count" => $count,
+        ];
+
+        return $resp;
     }
 }

@@ -55,7 +55,7 @@ class BlogController extends BaseController
             $blogs =  Blog::latest('id')->paginate(25);
         }
         $this->setPageTitle('Article', 'List of all Article');
-        return view('admin.blog.index', compact('blogs'));
+        return view('admin.blog.index', compact('blogs','request'));
     }
 
     /**
@@ -252,13 +252,13 @@ class BlogController extends BaseController
 
                         $commaSeperatedCats = '';
 
-                            $catExistCheck = BlogCategory::where('title', $importData[2])->first();
+                            $catExistCheck = BlogCategory::where('title', $importData[0])->first();
                             if ($catExistCheck) {
                                 $insertDirCatId = $catExistCheck->id;
                                 $commaSeperatedCats .= $insertDirCatId . ',';
                             } else {
                                 $dirCat = new BlogCategory();
-                                $dirCat->title = $importData[2];
+                                $dirCat->title = $importData[0];
                                 $dirCat->slug = null;
                                 $dirCat->save();
                                 $insertDirCatId = $dirCat->id;
@@ -271,13 +271,13 @@ class BlogController extends BaseController
                          $count = $total = 0;
                         $successArr = $failureArr = [];
 
-                            $catExistCheck = SubCategory::where('title', $importData[3])->first();
+                            $catExistCheck = SubCategory::where('title', $importData[1])->first();
                             if ($catExistCheck) {
                                 $insertDirCatId = $catExistCheck->id;
                                 $commaSeperatedSubCats .= $insertDirCatId . ',';
                             } else {
                                 $dirCat = new SubCategory();
-                                $dirCat->title = $importData[3];
+                                $dirCat->title = $importData[1];
                                 $dirCat->slug = null;
                                 $dirCat->save();
                                 $insertDirCatId = $dirCat->id;
@@ -287,13 +287,13 @@ class BlogController extends BaseController
 
  			     $commaSeperatedSublevelCats = '';
 
-                            $catExistCheck = SubCategoryLevel::where('title', $importData[4])->first();
+                            $catExistCheck = SubCategoryLevel::where('title', $importData[2])->first();
                             if ($catExistCheck) {
                                 $insertDirCatId = $catExistCheck->id;
                                 $commaSeperatedSublevelCats .= $insertDirCatId . ',';
                             } else {
                                 $dirCat = new SubCategoryLevel();
-                                $dirCat->title = $importData[4];
+                                $dirCat->title = $importData[2];
                                 $dirCat->slug = null;
                                 $dirCat->save();
                                 $insertDirCatId = $dirCat->id;
@@ -301,9 +301,9 @@ class BlogController extends BaseController
                                 $commaSeperatedSublevelCats .= $insertDirCatId . ',';
                             }
 
-                        if (!empty($importData[9])) {
+                        if (!empty($importData[3])) {
                             // dd($importData[0]);
-                            $titleArr = explode(',', $importData[9]);
+                            $titleArr = explode(',', $importData[3]);
 
                             // echo '<pre>';print_r($titleArr);exit();
 
@@ -315,14 +315,14 @@ class BlogController extends BaseController
 
                                 $insertData = array(
                                     "title" => $titleValue,
-                                    "content" => isset($importData[7]) ? $importData[7] : null,
-                                    "meta_title" => isset($importData[8]) ? $importData[8] : null,
+                                    "content" => isset($importData[4]) ? $importData[4] : null,
+                                    "meta_title" => isset($importData[5]) ? $importData[5] : null,
                                     "meta_key" => isset($importData[6]) ? $importData[6] : null,
                                     "blog_category_id" => isset($commaSeperatedCats) ? $commaSeperatedCats : null,
                                     "blog_sub_category_id" => isset($commaSeperatedSubCats) ? $commaSeperatedSubCats : null,
                                     "blog_tertiary_category_id" => isset($commaSeperatedSublevelCats) ? $commaSeperatedSublevelCats : null,
                                     "slug" => $slug,
-                                    "meta_description" => isset($importData[8]) ? $importData[8] : null,
+                                    "meta_description" => isset($importData[7]) ? $importData[7] : null,
 
                                 );
 
@@ -364,8 +364,66 @@ class BlogController extends BaseController
     }
     // csv upload
 
-    public function export()
+    public function export(Request $request)
     {
-        return Excel::download(new BlogExport, 'blog.xlsx');
+        if (!empty($request->term)) {
+            $data = $this->BlogRepository->getSearchBlog($request->term);
+        } else {
+            $data =  Blog::latest('id')->get();
+        }
+
+        if (($data)) {
+            $delimiter = ",";
+            $filename = "blog".".xlsx";
+
+            // Create a file pointer 
+            $f = fopen('php://memory', 'w');
+
+            // Set column headers 
+            $fields = array('SR','Title', 'Description','Category','SubCategory','Tertiary Category', 'Meta Title','Meta Key','Status','Created at');
+            fputcsv($f, $fields, $delimiter); 
+
+            $count = 1;
+
+            foreach($data as $row) {
+                $cat = $row->blog_category_id ?? '';
+                $displayCategoryName = '';
+                foreach(explode(',', $cat) as $catKey => $catVal) {
+                    $catDetails = DB::table('blog_categories')->where('id', $catVal)->first();
+                    if($catDetails == ''){
+                        $displayCategoryName .=  '';}
+                    else{
+                        $displayCategoryName .= $catDetails->title.' , ' ?? '';
+                    }
+                }
+                $datetime = date('j M Y g:i A', strtotime($row['created_at']));
+                $lineData = array(
+                    $count,
+                    $row['title'] ?? '',
+                    strip_tags($row->content),
+                    substr($displayCategoryName, 0, -2) ?? '',
+                    ($row->subcategory? $row->subcategory->title : ''),
+                    ($row->subcategorylevel? $row->subcategorylevel->title : ''),
+                    strip_tags($row->meta_title),
+                    strip_tags($row->meta_key),
+                    ($row->status == 1) ? 'Active' : 'Blocked',
+                    $datetime
+                );
+
+                fputcsv($f, $lineData, $delimiter);
+
+                $count++;
+            }
+
+            // Move back to beginning of file
+            fseek($f, 0);
+
+            // Set headers to download file rather than displayed
+            header('Content-Type: text/csv');
+            header('Content-Disposition: attachment; filename="' . $filename . '";');
+
+            //output all remaining data on a file pointer
+            fpassthru($f);
+        }
     }
 }

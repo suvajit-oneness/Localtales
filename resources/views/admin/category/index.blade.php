@@ -10,7 +10,7 @@
             <div class="col-md-6 text-right">
                 <a href="{{ route('admin.category.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Add New</a>
                 <a href="#csvUploadModal" data-toggle="modal" class="btn btn-primary "><i class="fa fa-cloud-upload"></i> CSV Upload</a>
-                <a href="{{ route('admin.category.data.csv.export') }}" class="btn btn-primary "><i class="fa fa-cloud-download"></i> CSV Export</a>
+                <a href="{{ route('admin.category.data.csv.export',['term'=>$request->term]) }}" class="btn btn-primary "><i class="fa fa-cloud-download"></i> CSV Export</a>
             </div>
         </div>
     </div>

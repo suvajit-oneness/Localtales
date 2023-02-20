@@ -50,7 +50,7 @@ class CategoryManagementController extends BaseController
 
 
         $this->setPageTitle('Category', 'List of all categories');
-        return view('admin.category.index', compact('categories', 'data'));
+        return view('admin.category.index', compact('categories', 'data','request'));
     }
 
     /**
@@ -376,9 +376,61 @@ class CategoryManagementController extends BaseController
         }
     }
     // export
-    public function export()
+    public function export(Request $request)
     {
-        return Excel::download(new CategoryExport, 'category.xlsx');
+        //return Excel::download(new CategoryExport, 'category.xlsx');
+        if (!empty($request->term)) {
+            // dd($request->term);
+            $data = $this->categoryRepository->getSearchCategories($request->term);
+
+            // dd($categories);
+        } else {
+            $data = BlogCategory::orderby('title')->get();
+        }
+
+        if (($data)) {
+            $delimiter = ",";
+            $filename = "category".".xlsx";
+
+            // Create a file pointer 
+            $f = fopen('php://memory', 'w');
+
+            // Set column headers 
+            $fields = array('SR', 'Title', 'Description','Short Content','Medium Content', 'Long Content','Status', 'Created at');
+            fputcsv($f, $fields, $delimiter); 
+
+            $count = 1;
+
+            foreach($data as $row) {
+               
+                $datetime = date('j M Y g:i A', strtotime($row['created_at']));
+                $lineData = array(
+                    $count,
+                    $row['title'] ?? '',
+                    strip_tags($row->description),
+                    strip_tags($row->short_content),
+                    strip_tags($row->medium_content),
+                    strip_tags($row->long_content),
+                    ($row->status == 1) ? 'Active' : 'Blocked',
+                    $datetime
+                );
+
+                fputcsv($f, $lineData, $delimiter);
+
+                $count++;
+            }
+
+            // Move back to beginning of file
+            fseek($f, 0);
+
+            // Set headers to download file rather than displayed
+            header('Content-Type: text/csv');
+            header('Content-Disposition: attachment; filename="' . $filename . '";');
+
+            //output all remaining data on a file pointer
+            fpassthru($f);
+        }
     }
+    
     // export
 }

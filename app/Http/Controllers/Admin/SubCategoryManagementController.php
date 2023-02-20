@@ -5,13 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Contracts\SubCategoryContract;
 use Illuminate\Http\Request;
+use App\Models\BlogCategory;
 use App\Models\SubCategory;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\Str;
 use Session;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\SubcategoryExport;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session as FacadesSession;
 class SubCategoryManagementController extends BaseController
 {
     /**
@@ -47,7 +50,7 @@ class SubCategoryManagementController extends BaseController
          }
         $categories = $this->SubCategoryRepository->listCategory();
         $this->setPageTitle('Sub Category', 'List of all sub categories');
-        return view('admin.subcategory.index', compact('subcategories','categories'));
+        return view('admin.subcategory.index', compact('subcategories','categories','request'));
     }
 
     /**
@@ -213,22 +216,48 @@ class SubCategoryManagementController extends BaseController
                         $i++;
                     }
                     fclose($file);
-
+                    $count = 0;
                     // echo '<pre>';print_r($importData_arr);exit();
 
                     // Insert into database
                     foreach ($importData_arr as $importData) {
-                        $storeData = 0;
-                        if(isset($importData[5]) == "Carry In") $storeData = 1;
+                        $commaSeperatedSubCats = '';
+                        $catExistCheck = BlogCategory::where('title', $importData[0])->first();
+                        $catslug = Str::slug($importData[0], '-');
+                                $catslugExistCount = DB::table('blog_categories')->where('title', $importData[0])->count();
+                                if ($catslugExistCount > 0) $catslug = $catslug . '-' . ($catslugExistCount + 1);
+                            if ($catExistCheck) {
+                                $insertDirCatId = $catExistCheck->id;
+                                $commaSeperatedSubCats .= $insertDirCatId . ',';
+                            } else {
+                                $dirCat = new BlogCategory();
+                                $dirCat->title = $importData[0];
+                                $dirCat->slug = $catslug;
+                                $dirCat->save();
+                                $insertDirCatId = $dirCat->id;
 
+                                $commaSeperatedSubCats .= $insertDirCatId . ',';
+                            }
+                            $slug = Str::slug($importData[1], '-');
+                                $slugExistCount = DB::table('sub_categories')->where('title', $importData[1])->count();
+                                if ($slugExistCount > 0) $slug = $slug . '-' . ($slugExistCount + 1);
                         $insertData = array(
-                            "title" => isset($importData[0]) ? $importData[0] : null,
-                            "slug" => isset($importData[1]) ? $importData[1] : null,
-                            "category_id" => isset($importData[2]) ? $importData[2] : null,
+                            "category_id" => isset($commaSeperatedSubCats) ? $commaSeperatedSubCats : null,
+                            "title" => isset($importData[1]) ? $importData[1] : null,
+                            "description" => isset($importData[2]) ? $importData[2] : null,
+                            "slug" => $slug,
+                            "created_at" => Carbon::now(),
+                            "updated_at"=> now(),
 
                         );
                         // echo '<pre>';print_r($insertData);exit();
-                        SubCategory::insertData($insertData);
+                        $resp =  SubCategory::insertData($insertData,$count);
+                        $count = $resp['count'];
+                    }
+                    if($count == 0){
+                        FacadesSession::flash('csv', 'Already Uploaded. ');
+                    } else{
+                         FacadesSession::flash('csv', 'Import Successful. '.$count.' Data Uploaded');
                     }
                     Session::flash('message', 'Import Successful.');
                 } else {
@@ -242,9 +271,55 @@ class SubCategoryManagementController extends BaseController
         }
         return redirect()->route('admin.subcategory.index');
     }
-    public function export()
+    public function export(Request $request)
     {
-        return Excel::download(new SubcategoryExport, 'subcategory.xlsx');
+        //return Excel::download(new CategoryExport, 'category.xlsx');
+        if (!empty($request->term)) {
+           $data = $this->SubCategoryRepository->getSearchSubcategory($request->term);
+         } else {
+           $data = SubCategory::orderby('title')->get();
+         }
+
+        if (($data)) {
+            $delimiter = ",";
+            $filename = "sub-category".".xlsx";
+
+            // Create a file pointer 
+            $f = fopen('php://memory', 'w');
+
+            // Set column headers 
+            $fields = array('SR','Title',  'Category','Description','Status','Created at');
+            fputcsv($f, $fields, $delimiter); 
+
+            $count = 1;
+
+            foreach($data as $row) {
+               
+                $datetime = date('j M Y g:i A', strtotime($row['created_at']));
+                $lineData = array(
+                    $count,
+                    $row['title'] ?? '',
+                    $row->blogcategory->title,
+                    strip_tags($row->description),
+                    ($row->status == 1) ? 'Active' : 'Blocked',
+                    $datetime
+                );
+
+                fputcsv($f, $lineData, $delimiter);
+
+                $count++;
+            }
+
+            // Move back to beginning of file
+            fseek($f, 0);
+
+            // Set headers to download file rather than displayed
+            header('Content-Type: text/csv');
+            header('Content-Disposition: attachment; filename="' . $filename . '";');
+
+            //output all remaining data on a file pointer
+            fpassthru($f);
+        }
     }
 }
 

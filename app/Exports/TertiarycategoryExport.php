@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\SubCategory;
+use App\Models\SubCategoryLevel;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -13,14 +13,14 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 // used for autosizing columns
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
-class SubcategoryExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize
+class TertiarycategoryExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize
 {
     /**
     * @return \Illuminate\Support\Collection
     */
     public function collection()
     {
-        return SubCategory::all();
+        return SubCategoryLevel::all();
     }
 
     public function map($categories): array
@@ -28,7 +28,7 @@ class SubcategoryExport implements FromCollection, WithHeadings, WithMapping, Sh
         return [
 
             $categories->title,
-            $categories->blogcategory->title,
+            $categories->subcategory->title,
             strip_tags($categories->description),
             ($categories->status == 1) ? 'Active' : 'Inactive',
             $categories->created_at,
@@ -37,7 +37,7 @@ class SubcategoryExport implements FromCollection, WithHeadings, WithMapping, Sh
 
     public function headings(): array
     {
-        return ['Title', 'Category','Description','Status','Created at'];
+        return ['Title',  'Sub Category','Description','Status','Created at'];
     }
 
 }

@@ -18,16 +18,25 @@ class CategoryExport implements FromCollection, WithHeadings, WithMapping, Shoul
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function collection()
+    public function collection(Request $request)
     {
-        return BlogCategory::all();
+        if (!empty($request->term)) {
+            dd($request->term);
+           $categories =BlogCategory::where('title',$request->term)->get();
+        }else{
+            $categories= BlogCategory::all();
+        }
+        return $categories;
     }
 
     public function map($categories): array
     {
         return [
             $categories->title,
-            $categories->slug,
+            strip_tags($categories->Description),
+            strip_tags($categories->short_content),
+            strip_tags($categories->medium_content),
+            strip_tags($categories->long_content),
             ($categories->status == 1) ? 'Active' : 'Blocked',
             $categories->created_at,
         ];
@@ -35,7 +44,7 @@ class CategoryExport implements FromCollection, WithHeadings, WithMapping, Shoul
 
     public function headings(): array
     {
-        return ['Title', 'Slug', 'Status', 'Created at'];
+        return ['Title', 'Description','Short Content','Medium Content', 'Long Content','Status', 'Created at'];
     }
 
 }
