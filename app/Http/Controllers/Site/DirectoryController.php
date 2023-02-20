@@ -7,13 +7,20 @@ use App\Http\Controllers\BaseController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-
+use App\Contracts\DirectoryContract;
 use App\Models\Directory;
 use App\Models\Userbusiness;
 use App\Models\Review;
-
+use Illuminate\Support\Facades\Validator;
 class DirectoryController extends BaseController
 {
+    protected $DirectoryRepository;
+
+    public function __construct(DirectoryContract $DirectoryRepository)
+    {
+        $this->DirectoryRepository = $DirectoryRepository;
+    }
+
     public function index(Request $request)
     {
         $this->setPageTitle('Directory', 'List of all Directory');
@@ -78,14 +85,13 @@ class DirectoryController extends BaseController
             }
         }
 
-        $review =  Review::where('directory_id', $id)->get();
+        $review =  Review::where('directory_id', $id)->orderby('created_at','desc')->take(4)->get();
         $this->setPageTitle($business->title, 'Directory Details : '.$business->title);
 
         return view('site.directory.detail', compact('business', 'businessSaved', 'review'));
     }
     //related directory
     public function relatedDirectory(Request $request)
-
     {
         $displayRelated = array();
 
@@ -176,21 +182,14 @@ class DirectoryController extends BaseController
 
         }
         if(count($displayRelated)<8){
-
             $data5 = DB::select("select * from directories where address like '%, ".$pin5."' and category_id like '$cat1,%'");
-
             $data6 = DB::select("select * from directories where address like '%, ".$pin6."' and category_id like '$cat1,%'");
             foreach($data5 as $d){
-
                 array_push($displayRelated,$d);
-
             }
             foreach($data6 as $d){
-
                 array_push($displayRelated,$d);
-
             }
-
         }
         if(count($displayRelated)<8){
 
@@ -200,16 +199,12 @@ class DirectoryController extends BaseController
             foreach($data7 as $d){
 
                 array_push($displayRelated,$d);
-
             }
             foreach($data8 as $d){
 
                 array_push($displayRelated,$d);
-
             }
-
         }
-
         if(count($displayRelated)<8){
             $data9 = DB::select("select * from directories where address like '%, ".$pin9."' and category_id like '$cat1,%'");
             $data10 = DB::select("select * from directories where address like '%, ".$pin10."' and category_id like '$cat1,%'");
@@ -352,15 +347,55 @@ class DirectoryController extends BaseController
     //store review
     public function reviewstore(Request $request)
     {
-
+        $request->validate([
+            'author_name' => 'required|string|max:255',
+            'rating' => 'required',
+        ]);
         $business = new Review();
-        $business->name = $request->name;
+        $business->author_name = $request->author_name;
         $business->directory_id = $request->directory_id;
-        $business->email = $request->email;
+        $business->user_id = Auth::guard('user')->user()->id ?? '';
         $business->rating = $request->rating;
-        $business->comment = $request->comment;
+        $business->text = $request->text;
         $business->save();
-        return redirect()->back()->with('success', 'Review Added Successfully');
+        if($business){
+            return redirect()->back()->with('success', 'Review Added Successfully');
+        }
+        else{
+            redirect()->back()->with('failure', 'Error occurred while registration.', 'error', true, true);
+        }
+    }
+    public function reviewAjax(Request $request)
+    {
+        //dd($request->all());
+        $validator = Validator::make($request->all(), [
+            'author_name' => 'required|string|max:255',
+            'rating' => 'required',
+
+        ]);
+
+        if (!$validator->fails()) {
+
+                $params = array(
+                    'user_id' => Auth::guard('user')->user()->id ?? '',
+                    'directory_id' =>  !empty($request->directory_id) ? $request->directory_id : '',
+                    'author_name' =>     !empty($request->author_name) ? $request->author_name : '',
+                    'rating' =>   !empty($request->rating) ? $request->rating : '',
+                    'text' =>  !empty($request->text) ? $request->text : '',
+                  
+                );
+
+                $data = $this->DirectoryRepository->directoryReview($params);
+
+                if ($data) {
+                    return response()->json(['error' => false, 'message' => 'Review added']);
+                } else {
+                    return response()->json(['error' => true, 'message' => 'Something happened']);
+                }
+
+        } else {
+            return response()->json(['error' => true, 'message' => $validator->errors()->first()]);
+        }
     }
 
 }

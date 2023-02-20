@@ -345,100 +345,72 @@
 
 <section class="py-2 py-sm-4 py-lg-5">
     <div class="container">
-        <div class="row">
-            <div class="reviewListWrap col">
-
-                @php
-                    $googleReviews = \DB::select("SELECT review_json as google_review FROM directory_reviews WHERE dir_id = '".$business->id."' ");
-                    if (count($googleReviews)>0) {
-                        $jsonToArr = json_decode($googleReviews[0]->google_review, true);
-                    }
-                @endphp
-
-                @if(isset($jsonToArr))
-                @foreach($jsonToArr as $googleReviewKey => $googleReview)
-                <div class="reviewList">
-                    <div class="reviewListImg">
-                        <img src="{{asset('Directory/userDefualt.png')}}" alt="">
-                    </div>
-                    <div class="reviewListText">
-                        <div class="reviewListTextTop">
-                            <h3>{{ $googleReview['author_name'] }}</h3>
-                            <div class="date">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                                {{ date('j F, Y', substr($googleReview['time'], 0, 10)) }}
-                            </div>
-                        </div>
-                        <div class="reviewListTextRating">
-                            @php
-                                $rating = number_format($googleReview['rating'],1);
-                                for ($i = 1; $i < 6; $i++) {
-                                    if ($rating >= $i) {
-                                        echo '<i class="fas fa-star"></i>';
-                                    } elseif (($rating < $i) && ($rating > $i-1)) {
-                                        echo '<i class="fas fa-star-half-alt"></i>';
-                                    } else {
-                                        echo '<i class="far fa-star"></i>';
-                                    }
-                                }
-                            @endphp
-                        </div>
-                        <p>{{ $googleReview['text'] }}</p>
-                    </div>
-                </div>
-                @endforeach
-                @endif
-
-                @foreach($review as $cat)
-                <div class="reviewList">
-                    <div class="reviewListImg">
-                        <img src="{{asset('Directory/userDefualt.png')}}" alt="">
-                    </div>
-                    <div class="reviewListText">
-                        <div class="reviewListTextTop">
-                            <h3>{{ $cat->name }}</h3>
-                            <div class="date">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                                {{ date('j F, Y', strtotime($cat->created_at)) }}
-                            </div>
-                        </div>
-                        <div class="reviewListTextRating">
-                            @php
-                                $rating = number_format($cat->rating,1);
-                                for ($i = 1; $i < 6; $i++) {
-                                    if ($rating >= $i) {
-                                        echo '<i class="fas fa-star"></i>';
-                                    } elseif (($rating < $i) && ($rating > $i-1)) {
-                                        echo '<i class="fas fa-star-half-alt"></i>';
-                                    } else {
-                                        echo '<i class="far fa-star"></i>';
-                                    }
-                                }
-                            @endphp
-                        </div>
-                        <p>{{ $cat->comment }}</p>
-                    </div>
-                </div>
-                @endforeach
+        <div class="row mb-0 mb-sm-4 justify-content-center">
+            <div class="page_title text-center">
+                <h2 class="mb-2"><a href="{{route('review')}}" class="location_btn">Recent Reviews </a></h2>
             </div>
         </div>
+        <div class="row">
+            <div class="reviewListWrap col">
+                <section class="py-2 py-sm-2 py-lg-2 similar_postcode">
+                    <div class="row">
+                        @foreach($review as $data)
+                            <div class="col-6 col-md-3 mb-2 mb-sm-4 mb-lg-3">
+                                <div class="card directory-single-review">
+                                    <div class="card-body">
+                                        <h5>{{ $data->author_name }}</h5>
 
-        <form method="post" action="{{route('review')}}" id="form">@csrf
-            <input type="hidden" name="directory_id" id="selectedLongitude" value="{{$business->id  }}">
+                                        <div class="rating">
+                                            @php
+                                                $rating = number_format($data->rating,1);
+                                                for ($i = 1; $i < 6; $i++) {
+                                                    if ($rating >= $i) {
+                                                        echo '<i class="fas fa-star"></i>';
+                                                    } elseif (($rating < $i) && ($rating > $i-1)) {
+                                                        echo '<i class="fas fa-star-half-alt"></i>';
+                                                    } else {
+                                                        echo '<i class="far fa-star"></i>';
+                                                    }
+                                                }
+                                            @endphp
+                                        </div>
+                                        @if(!empty($data->time))
+                                        <p>{{date('d/m/Y', $data->time) }}</p>
+                                        @else
+                                        <p>{{date('d/m/Y', strtotime($data->created_at)) }}</p>
+                                        @endif
+                                        <div class="desc">
+                                            @if(strlen($data->text) > 200)
+                                                <p>{{ substr($data->text,0,200) }} <small class="text-underline text-primary text-lowercase showMore" style="cursor: pointer">Read more</small></p>
+
+                                                <p style="display: none">{{substr($data->text,200,strlen($data->text))}}<small class="text-underline text-primary text-lowercase showLess" style="cursor: pointer">less</small></p>
+                                            @else
+                                                <p>{{$data->text}}</p>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </section>
+        <form method="post" action="{{route('directory.review.store')}}" id="reviewForm">@csrf
+            <input type="hidden" name="directory_id" id="" value="{{$business->id  }}">
             <div class="reviwbox mt-4">
                 <div class="row">
                     <h2 class="col-12 mb-3">Review</h2>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-12">
                         <label for="Name">Name:</label>
-                        <input type="text" class="form-control" name="name" id="name">
+                        <input type="text" class="form-control" name="author_name" id="author_name">
+
                     </div>
-                    <div class="form-group col-md-6">
+                    {{-- <div class="form-group col-md-6">
                         <label for="email">Email:</label>
                         <input type="text" class="form-control" name="email" id="email">
-                    </div>
+                    </div> --}}
                     <div class="form-group col-md-12">
                         <label for="comment">Comment:</label>
-                        <textarea type="text" class="form-control" name="comment" id="comment"></textarea>
+                        <textarea type="text" class="form-control" name="text" id="text"></textarea>
                     </div>
                     <div class="form-group col-md-12">
                         <label for="rating">Rating:</label>
@@ -466,7 +438,7 @@
                         </div>
                     </div>
                     <div class="col-md-12 d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary reviewBtn">Save changes</button>
+                        <button type="submit" class="btn btn-primary" reviewBtn>Save changes</button>
                     </div>
                 </div>
             </div>
@@ -579,7 +551,47 @@
 @push('scripts')
     <script src="https://maps.google.com/maps/api/js?key=" type="text/javascript"></script>
     <script async src="https://static.addtoany.com/menu/page.js"></script>
-
+    <script>
+        $('.showMore').click(function(){
+            $(this).parent().hide();
+            $(this).parent().next().show();
+        })    
+        $('.showLess').click(function(){
+            $(this).parent().hide();
+            $(this).parent().prev().show();
+        })    
+    </script>
+    <script>
+        $(document).on('submit', '#reviewForm', (event) => {
+               event.preventDefault();
+    
+               const cartSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-bag"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>';
+    
+               $.ajax({
+                   url: "{{ route('directory.add.review.ajax') }}",
+                   type: "POST",
+                   data: {
+                       _token: "{{csrf_token()}}",
+                       author_name: $('#reviewForm input[name="author_name"]').val(),
+                       directory_id: $('#reviewForm input[name="directory_id"]').val(),
+                       rating: $('#reviewForm input[name="rating"]:checked').val(),
+                       text: $('#reviewForm textarea[name="text"]').val(),
+                   },
+                   beforeSend: function() {
+                       $('.reviewBtn').attr('disabled', true).html(cartSvg+' Adding....');
+                   },
+                   success: function(result) {
+                       if (result.error === false) {
+                           $('.minidealBtn').html(cartSvg+'<span class="badge badge-danger">'+result.count+'</span>');
+                           toastFire('success', result.message);
+                       } else {
+                           toastFire('warning', result.message);
+                       }
+                       $('.reviewBtn').attr('disabled', false).html(cartSvg+' Review added');
+                   }
+               });
+           });
+    </script>
     <script>
         // AutoComplete Start
         var geocoder = new google.maps.Geocoder();
@@ -834,4 +846,7 @@
             });
         });
     </script>
+    <script src="{{ asset('frontend/dist/owl.carousel.min.js') }}"></script>
+
+     
 @endpush

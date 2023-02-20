@@ -554,6 +554,7 @@ class DealRepository extends BaseRepository implements DealContract
         }
     }
 
+ 
      /**
      * @return mixed
      */

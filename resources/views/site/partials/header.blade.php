@@ -18,10 +18,17 @@
                   <a class="dropdown-item" href="{!! URL::to('postcode') !!}">Postcode</a>
                   <a class="dropdown-item" href="{!! URL::to('suburb') !!}">Suburb</a>
                 </div>
-              </li>
+            </li>
+            <li class="dropdown nav-item {{ request()->is('directory*')|| request()->is('review') ? 'active' : '' }}">
+              <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Directory</a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{!! URL::to('directory') !!}">Directory</a>
+                <a class="dropdown-item" href="{!! URL::to('review') !!}">Reviews</a>
+              </div>
+            {{-- </li>
               <li class="nav-item {{ request()->is('directory*') ? 'active' : '' }}">
                 <a class="nav-link" href="{!! URL::to('directory') !!}">Directory</a>
-              </li>
+              </li> --}}
             <li class="nav-item {{ request()->is('collection*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('collection.home') }}">Collection</a>
             </li>

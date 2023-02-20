@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Console\Input\Input;
 /**
  * Class DirectoryRepository
@@ -452,6 +453,29 @@ class DirectoryRepository extends BaseRepository implements DirectoryContract
     public function showreview($id){
         return Review::where('directory_id', $id)->get();
       }
+
+
+         //directory review add
+    public function directoryReview(array $params)
+    {
+        try {
+
+            $collection = collect($params);
+
+            $item = new Review;
+            $item->user_id = Auth::guard('user')->user()->id ?? '';
+            $item->author_name = $collection['author_name'];
+            $item->directory_id = $collection['directory_id'];
+            $item->rating = $collection['rating'];
+            $item->text = $collection['text'];
+            $item->save();
+
+            return $item;
+        } catch (QueryException $exception) {
+            throw new InvalidArgumentException($exception->getMessage());
+        }
+    }
+
     }
 
 

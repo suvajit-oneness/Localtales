@@ -19,8 +19,8 @@ Route::get('suburb/{slug}', 'Site\SuburbController@detail')->name('suburb-detail
 Route::get('directory','Site\DirectoryController@index')->name('directory');
 Route::get('directory/{slug}','Site\DirectoryController@detail')->name('directory.detail');
 Route::post('directory/related','Site\DirectoryController@relatedDirectory')->name('directory.related');
-Route::post('/review/create', 'Front\DirectoryController@reviewstore')->name('review');
-
+Route::post('/directory/review/create', 'Site\DirectoryController@reviewstore')->name('directory.review.store');
+Route::post('/directory/add/review/ajax', 'Site\DirectoryController@reviewAjax')->name('directory.add.review.ajax');
 // directory categories ajax fetch
 Route::post('/directory/category/ajax', 'Api\PostcodeController@category')->name('directory.category.ajax');
 //Route::post('claim-user-collection/{id}','Front\HelpController@claimbusiness')->name('user.claim.business');
@@ -59,6 +59,9 @@ Route::get('jobs/{slug}','Site\JobController@details')->name('front.job.details'
 Route::get('jobs/{slug}/apply','Site\JobController@applyform')->name('front.job.apply.index');
 Route::post('/save/job', 'Site\JobController@store')->name('front.job.save');
 Route::post('/apply/job', 'Site\JobController@jobapply')->name('apply');
+
+// review
+Route::get('review','Site\ReviewController@index')->name('review');
 
 // about-us
 Route::get('about-us','Site\ContentController@about')->name('about-us');
