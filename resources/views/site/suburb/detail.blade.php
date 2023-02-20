@@ -28,6 +28,18 @@
         height: 300px;
         overflow: hidden;
     }
+    .weather.short-width {
+        padding-right: 5px;
+    }
+    .weather.short-width a {
+        width: 240px;
+        border-radius: 5px 5px 0px 0px;
+    }
+    .weather.short-width .currentTemp {
+        color: #000000;
+        font-size: 20px;
+        font-weight: 700;
+    }
 </style>
 @section('content')
     @php
@@ -77,9 +89,23 @@
 
     <section class="inner_banner" @if($data->image) style="background: url({{asset('/admin/uploads/suburb/' . $data->image)}})" @else style="background: url({{URL::to('/').'/Demo/' .$demo}})" @endif>
         <div class="container position-relative">
+            <div class="d-flex justify-content-between">
+                <div class="left-part">
+                    <h1>{{ $data->name }}</h1>
+                    <h4>{{ $data->state }}, {{ $data->pin_code }}</h4>
+                </div>
 
-            <h1>{{ $data->name }}</h1>
-            <h4>{{ $data->state }}, {{ $data->pin_code }}</h4>
+                <div class="right-part">
+                    @if ($data->slug == "abbotsbury")
+                        <div class="weather short-width">
+                            <a class="weatherwidget-io" href="https://forecast7.com/en/n33d88150d86/abbotsbury/" data-icons="Climacons Animated" data-mode="Current" data-theme="pure">Abbotsbury NSW, Australia</a>
+                            <script>
+                            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+                            </script>
+                        </div>
+                    @endif
+                </div>
+            </div>
             <div class="page-search-block filterSearchBoxWraper">
                 <form action="" id="checkout-form">
                     <div class="filterSearchBox">
@@ -111,6 +137,7 @@
             </div>
         </div>
     </section>
+
     <section class="pb-4 pb-lg-5 our-process pt-5 mt-3">
         <div class="container">
         <ul class="breadcumb_list mb-4 pb-2">
@@ -122,19 +149,32 @@
         </ul>
        </div>
     </section>
+
     <section class="map_section pt-1">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12">
                     <p>{!! ($data) ? $data->description : '' !!}</p>
                 </div>
-                @if(count($directories) > 0)
-                <div class="col-12">
-                    <div class="map map-margintop">
-                        <div id="mapShow" style="height: 600px;"></div>
-                        <input type="hidden" id="googlemapaddress" value="{{ $data ? $data->pin_code : '' }}">
+
+                @if ($data->slug == "abbotsbury")
+                    <div class="col-12 mt-4">
+                        <div class="weather full-width">
+                            <a class="weatherwidget-io" href="https://forecast7.com/en/n33d88150d86/abbotsbury/" data-icons="Climacons Animated" data-theme="pure" >Abbotsbury NSW, Australia</a>
+                            <script>
+                            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+                            </script>
+                        </div>
                     </div>
-                </div>
+                @endif
+
+                @if(count($directories) > 0)
+                    <div class="col-12">
+                        <div class="map map-margintop">
+                            <div id="mapShow" style="height: 600px;"></div>
+                            <input type="hidden" id="googlemapaddress" value="{{ $data ? $data->pin_code : '' }}">
+                        </div>
+                    </div>
                 @endif
             </div>
         </div>
@@ -587,4 +627,3 @@
 
     </script>
 @endpush
-
