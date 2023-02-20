@@ -11,11 +11,17 @@ class BlogCategory extends Model
         'title', 'slug','status'
     ];
 
-    public static function insertData($data) {
+    public static function insertData($data ,$count) {
         $value = DB::table('blog_categories')->where('title', $data['title'])->where('slug', $data['slug'])->get();
         if($value->count() == 0) {
            DB::table('blog_categories')->insert($data);
+           $count++;
         }
+        $resp = [
+            "count" => $count,
+        ];
+
+        return $resp;
     }
 
     public function productDetails() {

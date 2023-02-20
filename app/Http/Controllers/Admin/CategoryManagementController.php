@@ -8,10 +8,13 @@ use App\Contracts\BlogCategoryContract;
 use App\Http\Controllers\BaseController;
 use App\Models\BlogCategory;
 use Session;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Exports\CategoryExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\CategoryFaq;
+use DB;
+use Illuminate\Support\Facades\Session as FacadesSession;
 class CategoryManagementController extends BaseController
 {
     /**
@@ -182,79 +185,196 @@ class CategoryManagementController extends BaseController
 
     //csv upload
 
+    // public function csvStore(Request $request)
+    // {
+    //     if (!empty($request->file)) {
+    //         // if ($request->input('submit') != null ) {
+    //         $file = $request->file('file');
+    //         // File Details
+    //         $filename = $file->getClientOriginalName();
+    //         $extension = $file->getClientOriginalExtension();
+    //         $tempPath = $file->getRealPath();
+    //         $fileSize = $file->getSize();
+    //         $mimeType = $file->getMimeType();
+
+    //         // Valid File Extensions
+    //         $valid_extension = array("csv");
+    //         // 50MB in Bytes
+    //         $maxFileSize = 50097152;
+    //         // Check file extension
+    //         if (in_array(strtolower($extension), $valid_extension)) {
+    //             // Check file size
+    //             if ($fileSize <= $maxFileSize) {
+    //                 // File upload location
+    //                 $location = 'admin/uploads/csv';
+    //                 // Upload file
+    //                 $file->move($location, $filename);
+    //                 // Import CSV to Database
+    //                 $filepath = public_path($location . "/" . $filename);
+    //                 // Reading file
+    //                 $file = fopen($filepath, "r");
+    //                 $importData_arr = array();
+    //                 $i = 0;
+    //                 while (($filedata = fgetcsv($file, 10000, ",")) !== FALSE) {
+    //                     $num = count($filedata);
+    //                     // Skip first row
+    //                     if ($i == 0) {
+    //                         $i++;
+    //                         continue;
+    //                     }
+    //                     for ($c = 0; $c < $num; $c++) {
+    //                         $importData_arr[$i][] = $filedata[$c];
+    //                     }
+    //                     $i++;
+    //                 }
+    //                 fclose($file);
+
+    //                 // echo '<pre>';print_r($importData_arr);exit();
+    //                 $count = $total = 0;
+    //                 $successArr = $failureArr = [];
+    //                 // Insert into database
+    //                 foreach ($importData_arr as $importData) {
+    //                     $storeData = 0;
+                       
+    //                     if (!empty($importData[0])) {
+    //                         // dd($importData[0]);
+    //                         $titleArr = explode(',', $importData[0]);
+
+    //                         // echo '<pre>';print_r($titleArr);exit();
+
+    //                         foreach ($titleArr as $titleKey => $titleValue) {
+    //                             // slug generate
+    //                             $slug = Str::slug($titleValue, '-');
+    //                             $slugExistCount = DB::table('blog_categories')->where('title', $titleValue)->count();
+    //                             if ($slugExistCount > 0) $slug = $slug . '-' . ($slugExistCount + 1);
+    //                         $insertData = array(
+    //                         "title" => isset($importData[0]) ? $importData[0] : null,
+    //                         "description" => isset($importData[1]) ? $importData[1] : null,
+    //                         "short_content" => isset($importData[2]) ? $importData[2] : null,
+    //                         "medium_content" => isset($importData[3]) ? $importData[3] : null,
+    //                         "long_content" => isset($importData[4]) ? $importData[4] : null,
+    //                         "slug" => $slug,
+
+    //                     );
+    //                     // echo '<pre>';print_r($insertData);exit();
+    //                     BlogCategory::insertData($insertData, $count, $successArr, $failureArr);
+    //                 }
+    //               }
+    //            }
+    //             if($count == 0){
+    //                 FacadesSession::flash('csv', 'Already Uploaded. ');
+    //             } else{
+    //                 FacadesSession::flash('csv', 'Import Successful. '.$count.' Data Uploaded');
+    //             }
+    //         } else {
+    //             Session::flash('message', 'Invalid File Extension. supported extensions are ' . implode(', ', $valid_extension));
+    //         }
+    //     } else {
+    //         Session::flash('message', 'No file found.');
+    //     }
+    //     return redirect()->route('admin.category.index');
+    // }
+    // csv upload
+    /**
+     * @param $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function csvStore(Request $request)
     {
-        if (!empty($request->file)) {
-            // if ($request->input('submit') != null ) {
-            $file = $request->file('file');
-            // File Details
-            $filename = $file->getClientOriginalName();
-            $extension = $file->getClientOriginalExtension();
-            $tempPath = $file->getRealPath();
-            $fileSize = $file->getSize();
-            $mimeType = $file->getMimeType();
+        // dd($request->all());
 
-            // Valid File Extensions
-            $valid_extension = array("csv");
-            // 50MB in Bytes
-            $maxFileSize = 50097152;
-            // Check file extension
-            if (in_array(strtolower($extension), $valid_extension)) {
-                // Check file size
-                if ($fileSize <= $maxFileSize) {
-                    // File upload location
-                    $location = 'admin/uploads/csv';
-                    // Upload file
-                    $file->move($location, $filename);
-                    // Import CSV to Database
-                    $filepath = public_path($location . "/" . $filename);
-                    // Reading file
-                    $file = fopen($filepath, "r");
-                    $importData_arr = array();
-                    $i = 0;
-                    while (($filedata = fgetcsv($file, 10000, ",")) !== FALSE) {
-                        $num = count($filedata);
-                        // Skip first row
-                        if ($i == 0) {
+        try {
+            if (!empty($request->file)) {
+                // if ($request->input('submit') != null ) {
+                $file = $request->file('file');
+                // File Details
+                $filename = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+                $tempPath = $file->getRealPath();
+                $fileSize = $file->getSize();
+                $mimeType = $file->getMimeType();
+
+                // Valid File Extensions
+                $valid_extension = array("csv");
+                // 50MB in Bytes
+                $maxFileSize = 50097152;
+                // Check file extension
+                if (in_array(strtolower($extension), $valid_extension)) {
+                    // Check file size
+                    if ($fileSize <= $maxFileSize) {
+                        // File upload location
+                        $location = 'uploads/admin/csv';
+                        // Upload file
+                        $file->move($location, $filename);
+                        // Import CSV to Database
+                        $filepath = public_path($location . "/" . $filename);
+                        // Reading file
+                        $file = fopen($filepath, "r");
+                        $importData_arr = array();
+                        $i = 0;
+                        while (($filedata = fgetcsv($file, 10000, ",")) !== FALSE) {
+                            $num = count($filedata);
+                            // dd($num);
+                            // Skip first row
+                            if ($i == 0) {
+                                $i++;
+                                continue;
+                            }
+                            for ($c = 0; $c < $num; $c++) {
+                                $importData_arr[$i][] = $filedata[$c];
+                            }
                             $i++;
-                            continue;
                         }
-                        for ($c = 0; $c < $num; $c++) {
-                            $importData_arr[$i][] = $filedata[$c];
-                        }
-                        $i++;
+                        fclose($file);
+                        $count = 0;
+                        // echo '<pre>';print_r($importData_arr);exit();
+                        foreach ($importData_arr as $importData) {
+                            $insertData = [];
+                                
+                                // slug generate
+                                $slug = Str::slug($importData[0], '-');
+                                $slugExistCount = DB::table('blog_categories')->where('title', $importData[0])->count();
+                                if ($slugExistCount > 0) $slug = $slug . '-' . ($slugExistCount + 1);
+                                $insertData = array(
+                                    "title" => isset($importData[0]) ? $importData[0] : null,
+                                    "description" => isset($importData[1]) ? $importData[1] : null,
+                                    "short_content" => isset($importData[2]) ? $importData[2] : null,
+                                    "medium_content" => isset($importData[3]) ? $importData[3] : null,
+                                    "long_content" => isset($importData[4]) ? $importData[4] : null,
+                                    "slug" => $slug,
+                                    "created_at" => Carbon::now(),
+                                    "updated_at"=> now(),
+                                   
+                                );
+                               
+                                $resp = BlogCategory::insertData($insertData,$count);
+                                $count = $resp['count'];
+                                
+                            }
+                           
+                    
+                            if($count == 0){
+                                FacadesSession::flash('csv', 'Already Uploaded. ');
+                            } else{
+                                 FacadesSession::flash('csv', 'Import Successful. '.$count.' Data Uploaded');
+                            }
+                        
+                        //return redirect()->back()->with('message', 'Import Successful.');
+                    } else {
+                        FacadesSession::flash('csv', 'File too large. File must be less than 50MB.');
                     }
-                    fclose($file);
-
-                    // echo '<pre>';print_r($importData_arr);exit();
-
-                    // Insert into database
-                    foreach ($importData_arr as $importData) {
-                        $storeData = 0;
-                        if (isset($importData[5]) == "Carry In") $storeData = 1;
-
-                        $insertData = array(
-                            "title" => isset($importData[0]) ? $importData[0] : null,
-                            "slug" => isset($importData[1]) ? $importData[1] : null,
-
-                        );
-                        // echo '<pre>';print_r($insertData);exit();
-                        BlogCategory::insertData($insertData);
-                    }
-                    Session::flash('message', 'Import Successful.');
                 } else {
-                    Session::flash('message', 'File too large. File must be less than 50MB.');
+                    FacadesSession::flash('csv', 'Invalid File Extension. supported extensions are ' . implode(', ', $valid_extension));
                 }
             } else {
-                Session::flash('message', 'Invalid File Extension. supported extensions are ' . implode(', ', $valid_extension));
+                FacadesSession::flash('csv', 'No file found.');
             }
-        } else {
-            Session::flash('message', 'No file found.');
-        }
-        return redirect()->route('admin.category.index');
-    }
-    // csv upload
 
+            return redirect()->route('admin.category.index');
+        } catch (\Exception $th) {
+            return $th;
+        }
+    }
     // export
     public function export()
     {
