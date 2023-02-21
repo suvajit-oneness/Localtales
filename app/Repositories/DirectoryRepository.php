@@ -463,7 +463,7 @@ class DirectoryRepository extends BaseRepository implements DirectoryContract
             $collection = collect($params);
 
             $item = new Review;
-            $item->user_id = Auth::guard('user')->user()->id ?? '';
+            $item->user_id = !empty(Auth::guard('user')->user()->id) ? Auth::guard('user')->user()->id : '';
             $item->author_name = $collection['author_name'];
             $item->directory_id = $collection['directory_id'];
             $item->rating = $collection['rating'];

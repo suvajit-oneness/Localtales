@@ -11,6 +11,7 @@ use App\Models\Suburb;
 use App\Models\User;
 use App\Models\MailLog;
 use App\Models\DealReview;
+use App\Models\ReviewVote;
 use App\Models\Activity;
 use Illuminate\Support\Facades\Mail;
 
@@ -793,4 +794,20 @@ if(!function_exists('activityStore')) {
         $activity->location = $data['location'];
         $activity->save();
     }
+}
+
+
+//review like count
+function CountLikeReview($reviewId){
+    $vote=ReviewVote::where('review_id',$reviewId)->where('vote_status',1)->count();
+    if(($vote)>0)
+    return $vote;
+}
+
+
+//review like count
+function CountDisLikeReview($reviewId){
+    $vote=ReviewVote::where('review_id',$reviewId)->where('vote_status',0)->count();
+    if(($vote)>0)
+    return $vote;
 }

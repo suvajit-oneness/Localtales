@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Business;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Session;
-use App\Models\UserCode;
+use App\Models\DirectoryLoginCode;
 use Auth;
 class TwoFAController extends Controller
 {
@@ -31,7 +31,7 @@ class TwoFAController extends Controller
             'code'=>'required',
         ]);
   
-        $find = UserCode::where('business_id', Auth::guard('business')->user()->id)
+        $find = DirectoryLoginCode::where('business_id', Auth::guard('business')->user()->id)
                         ->where('code', $request->code)
                         ->where('updated_at', '>=', now()->subMinutes(2))
                         ->first();

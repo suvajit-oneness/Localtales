@@ -15,7 +15,7 @@ use App\Models\DirectoryCategory;
 use App\Models\MailTemplate;
 use App\Models\PinCode;
 use App\Models\Review;
-use App\Models\UserVerify;
+use App\Models\DirectoryLoginVerify;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -89,7 +89,7 @@ class SignupController extends BaseController
         $saved = $business->save();
         $token = Str::random(64);
   
-        $user= new UserVerify();
+        $user= new DirectoryLoginVerify();
         $user->business_id = $business->id;
         $user->token = $token;
         $user->save();     
@@ -128,7 +128,7 @@ class SignupController extends BaseController
     public function verifyAccount($token)
     {
         //dd('hi');
-        $verifyUser = UserVerify::where('token', $token)->first();
+        $verifyUser = DirectoryLoginVerify::where('token', $token)->first();
         //dd($verifyUser->business);
         if(!$verifyUser->business->email){
             $message = 'Sorry your email cannot be identified.';
@@ -136,7 +136,7 @@ class SignupController extends BaseController
   
             if(!is_null($verifyUser) ){
                 $user = $verifyUser->business_id;
-                $business=Directory::where('id',$user)->first();
+                $business=DirectoryLoginVerify::where('id',$user)->first();
                 if(!$business->is_email_verified) {
                     $verifyUser->business->is_email_verified = 1;
                     $verifyUser->business->save();

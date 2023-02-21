@@ -11,6 +11,7 @@ use App\Contracts\DirectoryContract;
 use App\Models\Directory;
 use App\Models\Userbusiness;
 use App\Models\Review;
+use App\Models\ReviewVote;
 use Illuminate\Support\Facades\Validator;
 class DirectoryController extends BaseController
 {
@@ -354,7 +355,7 @@ class DirectoryController extends BaseController
         $business = new Review();
         $business->author_name = $request->author_name;
         $business->directory_id = $request->directory_id;
-        $business->user_id = Auth::guard('user')->user()->id ?? '';
+        $business->user_id = !empty(Auth::guard('user')->user()->id) ? Auth::guard('user')->user()->id : '';
         $business->rating = $request->rating;
         $business->text = $request->text;
         $business->save();
@@ -377,7 +378,7 @@ class DirectoryController extends BaseController
         if (!$validator->fails()) {
 
                 $params = array(
-                    'user_id' => Auth::guard('user')->user()->id ?? '',
+                    'user_id' => !empty(Auth::guard('user')->user()->id) ? Auth::guard('user')->user()->id : '',
                     'directory_id' =>  !empty($request->directory_id) ? $request->directory_id : '',
                     'author_name' =>     !empty($request->author_name) ? $request->author_name : '',
                     'rating' =>   !empty($request->rating) ? $request->rating : '',
@@ -386,7 +387,6 @@ class DirectoryController extends BaseController
                 );
 
                 $data = $this->DirectoryRepository->directoryReview($params);
-
                 if ($data) {
                     return response()->json(['error' => false, 'message' => 'Review added']);
                 } else {

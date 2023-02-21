@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Review;
 use App\Models\Directory;
+use App\Models\ReviewVote;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\Facades\DB;
@@ -38,4 +39,75 @@ class ReviewController extends BaseController
         //dd($reviewList);
         return view('site.directory.review.index', compact('reviewList','request'));
     }
+
+
+     //review like store
+     public function likeStore(Request $request){
+        //dd(Auth::guard('user')->check());
+	    // check if review already exists
+        if(Auth::guard('user')->check()){
+           $reviewExistsCheck = ReviewVote::where('review_id', $request->id)->where('user_id', auth()->guard('user')->user()->id)->first();
+        } else {
+           $reviewExistsCheck  = ReviewVote::where('review_id', $request->id)->first();
+        }
+        if($reviewExistsCheck != null) {
+            $reviewDetails=ReviewVote::where('review_id', $request->id)->where('user_id', auth()->guard('user')->user()->id)->where('vote_status',0)->first();
+            if($reviewDetails == null) {
+            // if found
+                $data = ReviewVote::destroy($reviewExistsCheck->id);
+                return response()->json(['status' => 200, 'type' => 'remove', 'message' => 'Feedback added']);
+            } else {
+                // if not found
+                $data = ReviewVote::findOrFail($reviewDetails->id);
+                $data->vote_status = 1;
+                $data->save();
+                return response()->json(['status' => 200, 'type' => 'add', 'message' => 'Feedback added']);
+            }
+            // if found
+            $data = ReviewVote::destroy($reviewExistsCheck->id);
+            return response()->json(['status' => 200, 'type' => 'remove', 'message' => 'Feedback added']);
+        } else {
+            // if not found
+            $data = new ReviewVote();
+            $data->user_id = auth()->guard('user')->user() ? auth()->guard('user')->user()->id : '';
+            $data->review_id = $request->id;
+            $data->vote_status = 1;
+            $data->save();
+            return response()->json(['status' => 200, 'type' => 'add', 'message' => 'Feedback added']);
+        }
+	}
+
+
+
+    //review dislike store
+    public function dislikeStore(Request $request){
+	    // check if collection already exists
+        if(Auth::guard('user')->check()){
+            $reviewExistsCheck = ReviewVote::where('review_id', $request->id)->where('user_id', auth()->guard('user')->user()->id)->first();
+         } else {
+            $reviewExistsCheck =  ReviewVote::where('review_id', $request->id)->first();
+         }
+        if($reviewExistsCheck != null) {
+            $reviewDetails=ReviewVote::where('review_id', $request->id)->where('user_id', auth()->guard('user')->user()->id)->where('vote_status',1)->first();
+            if($reviewDetails == null) {
+            // if found
+                $data = ReviewVote::destroy($reviewExistsCheck->id);
+                return response()->json(['status' => 200, 'type' => 'remove', 'message' => 'Feedback added']);
+            } else {
+                // if not found
+                $data = ReviewVote::findOrFail($reviewDetails->id);
+                $data->vote_status = 0;
+                $data->save();
+                return response()->json(['status' => 200, 'type' => 'add', 'message' => 'Feedback added']);
+            }
+        } else {
+            // if not found
+            $data = new ReviewVote();
+            $data->user_id = auth()->guard('user')->user() ? auth()->guard('user')->user()->id : '';
+            $data->review_id = $request->id;
+            $data->vote_status = 0;
+            $data->save();
+            return response()->json(['status' => 200, 'type' => 'add', 'message' => 'Feedback added']);
+        }
+	}
 }

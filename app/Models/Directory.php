@@ -52,7 +52,7 @@ class Directory extends Authenticatable implements MustVerifyEmail
     {
         $code = rand(1000, 9999);
   
-        UserCode::updateOrCreate(
+        DirectoryLoginCode::updateOrCreate(
             [ 'business_id' => Auth::guard('business')->user()->id ],
             [ 'code' => $code ]
         );

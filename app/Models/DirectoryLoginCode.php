@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UserCode extends Model
+class DirectoryLoginCode extends Model
 {
-    public $table = "user_codes";
+    public $table = "directory_login_codes";
   
     protected $fillable = [
         'business_id',

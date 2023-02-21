@@ -5,11 +5,11 @@ namespace App\Models;
 //use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserVerify extends Model
+class DirectoryLoginVerify extends Model
 {
     //use HasFactory;
   
-    public $table = "users_verify";
+    public $table = "directory_login_verify";
   
     /**
      * Write code on Method

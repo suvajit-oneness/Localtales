@@ -7,7 +7,7 @@ use App\Http\Controllers\BaseController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-
+use App\Models\Review;
 use App\Models\PinCode;
 use App\Models\Suburb;
 use App\Models\Blog;
@@ -82,7 +82,12 @@ class PostcodeController extends BaseController
         }
 
         $jobs = Job::where('postcode', 'LIKE', '%'.$pincode)->where('status',1)->orderby('id','desc')->paginate(8);
-
+        // $reviews = [];
+        // foreach($directories as $directory){
+        //  $reviews[] =  Review::where('directory_id', $directory->id)->orderby('created_at','desc')->take(4)->get();
+        // // array_push($reviews,$r);
+        //  //dd($reviews);
+        // }
         return view('site.postcode.detail', compact('data', 'suburbs', 'articles', 'directories','jobs'));
     }
 }
