@@ -2,7 +2,7 @@
 <aside class="app-sidebar">
     <ul class="app-menu">
         <li>
-            <a class="app-menu__item {{ request()->is('business') ? 'active' : '' }}" href="{{ route('business.dashboard') }}"><i class="app-menu__icon fa fa-dashboard"></i>
+            <a class="app-menu__item {{ request()->is('business') ? 'active' : '' }}" href="{{ route('business.dashboard') }}"><i class="app-menu__icon fa fa-tachometer-alt"></i>
                 <span class="app-menu__label">Dashboard</span>
             </a>
         </li>
@@ -22,7 +22,7 @@
             </a>
         </li>
         <li>
-            <a class="app-menu__item {{ request()->is('business/profile*') ? 'active' : '' }}" href="{{ route('business.profile') }}"><i class="app-menu__icon fa fa-user fa-lg"></i>
+            <a class="app-menu__item {{ request()->is('business/profile*') ? 'active' : '' }}" href="{{ route('business.profile') }}"><i class="app-menu__icon fa fa-user"></i>
                 <span class="app-menu__label">Edit Profile</span>
             </a>
         </li>
@@ -37,7 +37,7 @@
             </a>
         </li>
         <li>
-            <a href="{{ route('business.logout') }}" class="app-menu__item"><i class="app-menu__icon fa fa-sign-out fa-lg"></i>
+            <a class="app-menu__item" href="{{ route('business.logout') }}"><i class="app-menu__icon fa fa-sign-out-alt"></i>
                 <span class="app-menu__label">Logout</span>
             </a>
         </li>
