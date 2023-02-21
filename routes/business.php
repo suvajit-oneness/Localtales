@@ -21,7 +21,18 @@ Route::group(['prefix' => 'business'], function () {
 	      	return view('business.dashboard.index');
 	    })->name('business.dashboard')->middleware(['auth', 'is_verify_email']);
 
+		// 2FA toggle
+		Route::post('/twoFacAuth/toggle', 'Business\UserController@twoFacAuthToggle')->name('business.twoFacAuth.toggle');
+
+		// review
 	    Route::get('/review', 'Business\UserController@review')->name('business.review');
+
+		// notification
+		Route::get('/notification/setup', 'Business\NotificationController@setup')->name('business.notification.setup');
+		Route::post('/notification/toggle', 'Business\NotificationController@toggle')->name('business.notification.toggle');
+		Route::post('/notification/receive/toggle', 'Business\NotificationController@NotificationReceiveType')->name('business.notification.receive.toggle');
+
+
 
 		Route::get('2fa', 'Business\TwoFAController@index')->name('2fa.index');
 		Route::post('2fa', 'Business\TwoFAController@store')->name('2fa.post');
@@ -35,9 +46,7 @@ Route::group(['prefix' => 'business'], function () {
 		Route::post('/category/search', 'Business\UserController@searchCat')->name('business.category.search');
 		Route::post('/category/store', 'Business\UserController@storeCat')->name('business.category.store');
 		Route::get('/{dirId}/category/{catId}/delete', 'Business\UserController@deleteCat')->name('business.category.delete');
-		 // notification
-		 Route::get('/notification/setup', 'Business\NotificationController@setup')->name('business.notification.setup');
-		 Route::post('/notification/toggle', 'Business\NotificationController@toggle')->name('business.notification.toggle');
+
 		Route::group(['prefix'  =>   'event'], function() {
 			Route::get('/', 'Business\EventController@index')->name('business.event.index');
 			Route::get('/create', 'Business\EventController@create')->name('business.event.create');

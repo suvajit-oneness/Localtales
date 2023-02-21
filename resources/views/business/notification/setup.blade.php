@@ -20,7 +20,7 @@
                             <div class="notification-box-inner notification-box-inner-mod">
                                 <div class="content">
                                     <label class="switch">
-                                        <input type="checkbox" checked>
+                                        <input type="checkbox" {{ (Auth::guard('business')->user()->notification_email == 1) ? 'checked' : '' }} onchange="notificationReceiveToggle('notification_email')">
                                         <span class="slider round"></span>
                                         <p>Email</p>
                                     </label>
@@ -29,7 +29,7 @@
                             <div class="notification-box-inner notification-box-inner-mod">
                                 <div class="content">
                                     <label class="switch">
-                                        <input type="checkbox" checked>
+                                        <input type="checkbox" {{ (Auth::guard('business')->user()->notification_push == 1) ? 'checked' : '' }} onchange="notificationReceiveToggle('notification_push')">
                                         <span class="slider round"></span>
                                         <p>Push Notification</p>
                                     </label>
@@ -38,7 +38,7 @@
                             <div class="notification-box-inner notification-box-inner-mod">
                                 <div class="content">
                                     <label class="switch">
-                                        <input type="checkbox" checked>
+                                        <input type="checkbox" {{ (Auth::guard('business')->user()->notification_in_app == 1) ? 'checked' : '' }} onchange="notificationReceiveToggle('notification_in_app')">
                                         <span class="slider round"></span>
                                         <p>In-app Notification</p>
                                     </label>
@@ -67,7 +67,7 @@
                                                 <li><p class="small mb-0">{{$notification['description']}}</p></li>
                                             </ul>
                                             <label class="switch">
-                                                <input type="checkbox" {{ (count($notification['notification_receive_user']) > 0) ? 'checked' : '' }} onchange="here({{$notification['id']}})">
+                                                <input type="checkbox" {{ (count($notification['notification_receive_user']) > 0) ? 'checked' : '' }} onchange="notificationToggle({{$notification['id']}})">
                                                 <span class="slider round"></span>
                                             </label>
                                         </div>
@@ -84,9 +84,28 @@
 
 @push('scripts')
     <script>
-        function here(notificationId) {
+        function notificationReceiveToggle(type) {
             $.ajax({
-                url: "{{ route('user.notification.toggle') }}",
+                url: "{{ route('business.notification.receive.toggle') }}",
+                type: "POST",
+                data: {
+                    '_token': '{{csrf_token()}}',
+                    type: type,
+                    user_id: '{{auth()->guard("business")->user()->id}}',
+                },
+                success: function(resp) {
+                    if (resp.status == 200) {
+                        toastFire('success', resp.message);
+                    } else {
+                        toastFire('warning', resp.message);
+                    }
+                }
+            });
+        }
+
+        function notificationToggle(notificationId) {
+            $.ajax({
+                url: "{{ route('business.notification.toggle') }}",
                 type: "POST",
                 data: {
                     '_token': '{{csrf_token()}}',

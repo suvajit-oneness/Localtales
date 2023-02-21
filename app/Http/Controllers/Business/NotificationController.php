@@ -21,10 +21,54 @@ class NotificationController extends BaseController
     }
 
 	public function toggle(Request $request) {
-       // $checkNoti = Directory::where('id', Auth::guard('business')->user()->id)->first();
-            $noti = Directory::findOrFail(Auth::guard('business')->user()->id);
-            $noti->is_2fa_enable = $request->check_status;
+        $checkNoti = NotificationReceiveUser::where('user_id', $request->user_id)->where('notification_id', $request->notification_id)->first();
+
+        if (!empty($checkNoti)) {
+            $checkNoti->delete();
+        } else {
+            $noti = new NotificationReceiveUser();
+            $noti->user_id = $request->user_id;
+            $noti->notification_id = $request->notification_id;
             $noti->save();
-            return redirect()->route('business.profile')->with('success','You have successfully enabled 2FA Authentication');
+        }
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Notification Preference updated'
+        ]);
+    }
+
+	public function NotificationReceiveType(Request $request) {
+        $directory = Directory::findOrFail($request->user_id);
+
+        if($request->type == "notification_email") {
+            $directory->notification_email = ($directory->notification_email == 1) ? 0 : 1;
+            $directory->save();
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Email notifications preference updated'
+            ]);
+        }
+
+        if($request->type == "notification_push") {
+            $directory->notification_push = ($directory->notification_push == 1) ? 0 : 1;
+            $directory->save();
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Push notifications preference updated'
+            ]);
+        }
+
+        if($request->type == "notification_in_app") {
+            $directory->notification_in_app = ($directory->notification_in_app == 1) ? 0 : 1;
+            $directory->save();
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'In-App notifications preference updated'
+            ]);
+        }
     }
 }

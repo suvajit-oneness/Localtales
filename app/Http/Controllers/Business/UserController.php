@@ -171,4 +171,11 @@ class UserController extends Controller
         return redirect()->back()->with('success', 'Directory Category added successfully', 'success', false, false);
         //return $this->responseRedirectBack('Directory Category added successfully', 'success', false, false);
     }
+
+    public function twoFacAuthToggle(Request $request) {
+        $noti = Directory::findOrFail(Auth::guard('business')->user()->id);
+        $noti->is_2fa_enable = $request->check_status;
+        $noti->save();
+        return redirect()->route('business.profile')->with('success','You have successfully enabled 2FA Authentication');
+    }
 }

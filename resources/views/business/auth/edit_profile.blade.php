@@ -600,15 +600,17 @@
             var event_id = $(this).data('event_id');
             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
             var check_status = 0;
-          if($(this).is(":checked")){
-              check_status = 1;
-          }else{
-            check_status = 0;
-          }
-          $.ajax({
+
+            if($(this).is(":checked")){
+                check_status = 1;
+            } else {
+                check_status = 0;
+            }
+
+            $.ajax({
                 type:'POST',
                 dataType:'JSON',
-                url:"{{route('business.notification.toggle')}}",
+                url:"{{route('business.twoFacAuth.toggle')}}",
                 data:{ _token: CSRF_TOKEN, id:event_id, check_status:check_status},
                 success:function(response)
                 {
@@ -619,7 +621,7 @@
                     
                   swal("Error!", response.message, "error");
                 }
-              });
+            });
         });
     </script>
 @endpush
