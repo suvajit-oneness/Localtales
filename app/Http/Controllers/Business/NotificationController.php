@@ -7,13 +7,17 @@ use App\Http\Controllers\BaseController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+
 use App\Models\Directory;
+use App\Models\NotificationTypeHead;
+use App\Models\NotificationReceiveUser;
+
 class NotificationController extends BaseController
 {
     public function setup(Request $request) {
-        $data = Directory::where('id', Auth::guard('business')->user()->id)->first();
+        $data = NotificationTypeHead::orderBy('position')->with('notificationLists.notificationReceiveUser')->get()->toArray();
 
-        return view('business.notification.index', compact('data'));
+        return view('business.notification.setup', compact('data'));
     }
 
 	public function toggle(Request $request) {

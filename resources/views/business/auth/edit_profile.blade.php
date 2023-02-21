@@ -1,7 +1,6 @@
 @extends('business.app')
-@section('title')
-    Edit Profile
-@endsection
+@section('title')Edit Profile @endsection
+
 @section('content')
     <style>
         .category-container {
@@ -36,11 +35,6 @@
         }
     </style>
 
-    <div class="app-title">
-        <div>
-            <h1><i class="fa fa-tags"></i> Edit Profile</h1>
-        </div>
-    </div>
     @php
         $state = App\Models\State::orderby('name')->get();
         $dircategory = App\Models\DirectoryCategory::orderby('parent_category')
@@ -48,33 +42,44 @@
             ->distinct()
             ->get();
         $string = Auth::guard('business')->user()->address;
-        //dd($string);
-        //$last_word_start = strrpos($string, ' ') + 1;
-        //dd($last_word_start);
-       // $txt = explode(',', $string);
-        //dd($txt);
-       // $length = count($txt);
-       // $suburb = $txt[$length - 3];
-        //$pin = $txt[$length - 1];
-        //$stateWord = trim($txt[$length - 2]);
-        
-       // $address = implode(',', array_slice($txt, 0, $length - 3));
-        
+
+        $notification = App\Models\Directory::where('id', Auth::guard('business')->user()->id)->first();
     @endphp
+
+    <div class="app-title">
+        <div>
+            <h1><i class="fa fa-tags"></i> Edit Profile</h1>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-8 mx-auto">
             <div class="tile">
                 <span class="top-form-btn">
                     <a class="btn btn-secondary" href="{{ route('business.dashboard') }}"><i class="fa fa-fw fa-lg fa-times-circle"></i>Back</a>
                 </span>
-                <h3 class="tile-title">Edit Profile
+                <h3 class="tile-title">Edit Profile</h3>
 
-                </h3>
                 <hr>
+
                 <form action="{{ route('business.profile.update') }}" method="POST" role="form"
                     enctype="multipart/form-data">
                     @csrf
                     <div class="tile-body">
+                        <div class="form-group">
+                            <label class="mb-1">
+                                <h6 class="mb-0 text-sm text-dark">Two Factor authentication</h6>
+                            </label>
+                            <div class="toggle-button-cover margin-auto">
+                                <div class="button-cover">
+                                    <div class="button-togglr b2" id="button-11">
+                                        <input id="toggle-block" type="checkbox" name="is_2fa_enable" class="checkbox" data-event_id="{{ $notification['id'] }}" {{ $notification['is_2fa_enable'] == 1 ? 'checked' : '' }}>
+                                        <div class="knobs"><span>Inactive</span></div>
+                                        <div class="layer"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="mb-1">
                                 <h6 class="mb-0 text-sm text-dark">Name<span class="m-l-5 text-danger">
@@ -224,9 +229,12 @@
                             </div> --}}
                             <div class="form-group">
                                 <label class="mb-1">
-                                    <h6 class="control-label" for="pin"> Category: <br>
-                                        {{ directoryCategoryStr(Auth::guard('business')->user()->category_id) }} <span
-                                            class="m-l-5 text-danger"> *</span></h6>
+                                    <h6 class="control-label mb-0" for="pin">
+                                        Category:
+                                        {{-- <br>
+                                        {{ directoryCategoryStr(Auth::guard('business')->user()->category_id) }}
+                                        <span class="m-l-5 text-danger"> *</span> --}}
+                                    </h6>
                                 </label>
                                 <div class="category-container mb-3">
 
@@ -477,27 +485,11 @@
                 </div>
                 <div class="modal-body">
                     <label for="childCatSearch">Search by category name</label>
-                    <input type="search" name="childCatSearch" id="childCatSearch" class="form-control"
-                        onkeyup="findChildCat(this.value)">
+                    <input type="search" name="childCatSearch" id="childCatSearch" class="form-control" onkeyup="findChildCat(this.value)">
 
                     <hr>
 
                     <form action="{{ route('business.category.store') }}" method="POST">@csrf
-                        {{-- @php
-                                $top10Categories = \App\Models\DirectoryCategory::select('id', 'child_category', 'title')->limit(20)->get()->toArray();
-    
-                                $sortedCats = [];
-                                foreach($top10Categories as $topCat) {
-                                    $sortedCats[] = [
-                                        'id' => $topCat->id,
-                                        'child_category' => $topCat->child_category,
-                                        'title' => $topCat->title,
-                                    ];
-                                }
-    
-                                dd($sortedCats);
-                            @endphp --}}
-
                         <label for="">Result</label>
                         <div id="result"></div>
 
@@ -514,6 +506,7 @@
         </div>
     </div>
 @endsection
+
 @push('scripts')
     <script>
         $('select[name="state"]').on('change', (event) => {
@@ -565,6 +558,7 @@
         $('#service_description').summernote({
             height: 400
         });
+
         $('#description').summernote({
             height: 400
         });
@@ -600,5 +594,32 @@
                 }
             });
         }
+
+        // 2FA
+        $('input[id="toggle-block"]').change(function() {
+            var event_id = $(this).data('event_id');
+            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+            var check_status = 0;
+          if($(this).is(":checked")){
+              check_status = 1;
+          }else{
+            check_status = 0;
+          }
+          $.ajax({
+                type:'POST',
+                dataType:'JSON',
+                url:"{{route('business.notification.toggle')}}",
+                data:{ _token: CSRF_TOKEN, id:event_id, check_status:check_status},
+                success:function(response)
+                {
+                  swal("Success!", response.message, "success");
+                },
+                error: function(response)
+                {
+                    
+                  swal("Error!", response.message, "error");
+                }
+              });
+        });
     </script>
 @endpush
