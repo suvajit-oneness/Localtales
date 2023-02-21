@@ -65,8 +65,8 @@
                                         <option value="" hidden selected>Sort by</option>
                                         <option value="" disabled>Select</option>
                                         <option value="date_desc" {{ ($request->orderBy == "date_desc") ? 'selected' : '' }}>Latest review</option>
-                                        <option value="rating_asc" {{ ($request->orderBy == "rating_asc") ? 'selected' : '' }}>Highest rating</option>
-                                        <option value="rating_desc" {{ ($request->orderBy == "rating_desc") ? 'selected' : '' }}>Lowest rating</option>
+                                        <option value="rating_desc" {{ ($request->orderBy == "rating_desc") ? 'selected' : '' }}>Highest rating</option>
+                                        <option value="rating_asc" {{ ($request->orderBy == "rating_asc") ? 'selected' : '' }}>Lowest rating</option>
                                     </select>
                                     {{-- <label for="searchbykeyword" placeholder="Nom">Sort by</label> --}}
                                 </div>

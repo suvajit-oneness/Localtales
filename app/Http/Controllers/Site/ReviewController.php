@@ -18,20 +18,23 @@ class ReviewController extends BaseController
 
         $directory = $request->name ?? '';
         $keyword = $request->keyword ?? '';
-        $orderBy = $request->orderBy ?? '';
-        $query = Review::query();
-
+       
+        $query = Review::select('reviews.id AS id','reviews.author_name AS author_name','reviews.rating AS rating','reviews.created_at AS created_at','reviews.text AS text','directories.name AS name','directories.address AS address')->join('directories', 'reviews.directory_id', 'directories.id')->where('reviews.status',1);
+      
+    
         $query->when($directory, function($query) use ($directory) {
             // $query->with('directoryDetails')->where('directories.name', 'like', 'gilmour');
-            $query->join('directories', 'reviews.directory_id', 'directories.id')
-            ->where('directories.name', 'like', '%' . $directory . '%');
+            $query->where('directories.name', 'like', '%' . $directory . '%');
         });
         $query->when($keyword, function($query) use ($keyword) {
-            $query->join('pin_codes', 'pin_codes.pin', 'directories.address')
-            ->where('pin_codes.pin', 'like', '%' . $keyword . '%');
+            $query->where('directories.address', 'like', '%' . $keyword . '%');
         });
-
-        $reviewList = $query->orderBy('created_at', 'desc')->paginate(12);
+        
+        if($request->orderBy=="date_desc") {$filterName = "reviews.created_at";$sortOrder = "DESC";}
+        elseif($request->orderBy=="rating_asc") {$filterName = "reviews.rating";$sortOrder = "asc";}
+        elseif($request->orderBy=="rating_desc") {$filterName = "reviews.rating";$sortOrder = "desc";}
+        else {$filterName = "reviews.created_at";$sortOrder = "desc";}
+        $reviewList = $query->orderBy($filterName,$sortOrder)->paginate(12);
 
         //dd($reviewList);
 
