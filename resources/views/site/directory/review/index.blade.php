@@ -92,7 +92,7 @@
             </ul>
 
             <div class="">
-				@if (!empty(request()->input('code'))|| !empty(request()->input('keyword'))|| !empty(request()->input('name')))
+				@if (!empty(request()->input('orderBy'))|| !empty(request()->input('keyword'))|| !empty(request()->input('name')))
 				    @if ($reviewList->count() > 0)
                         <h2 class="mb-2 mb-sm-3">Reviews found</h2>
 				    @else
@@ -158,6 +158,17 @@
 @endsection
 
 @push('scripts')
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+<script>
+    $('.showMore').click(function(){
+        $(this).parent().hide();
+        $(this).parent().next().show();
+    })    
+    $('.showLess').click(function(){
+        $(this).parent().hide();
+        $(this).parent().prev().show();
+    })    
+</script>
     <script>
         $('body').on('click', function() {
             //code
