@@ -16,7 +16,7 @@
         style="background: url({{ asset('site/images/banner') }}-image.jpg) no-repeat center center; background-size:cover;">
         <div class="container position-relative">
             <div class="row m-0 mb-4">
-                <h1>Recent Reviews</h1>
+                <h1>Reviews</h1>
             </div>
             <div class="page-search-block filterSearchBoxWraper" style="bottom: -83px;">
                 <div class="filterSearchBox">

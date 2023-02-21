@@ -138,11 +138,18 @@ class SuburbController extends BaseController
             ->paginate(18)
             ->appends(request()->query());
         }
+        //job
         $jobs=Job::where('suburb', 'LIKE', '%'.$data->name)->where('status',1)->orderby('id','desc')->paginate(8);
 
         // similar places - other suburbs in same postcode
         $similarPlaces = Suburb::where('slug', '!=', $slug)->where('pin_code', '=', $data->pin_code)->orderby('name')->paginate(4);
-
-        return view('site.suburb.detail', compact('data', 'directories', 'similarPlaces','jobs'));
+          // reviews
+          $reviews = DB::select("SELECT d.name, r.* FROM directories AS d
+          INNER JOIN reviews AS r ON r.directory_id = d.id
+          WHERE d.address like '%$data->name%'
+          ORDER BY r.created_at DESC
+          LIMIT 4");
+         // dd($reviews);
+        return view('site.suburb.detail', compact('data', 'directories', 'similarPlaces','jobs','reviews'));
     }
 }
