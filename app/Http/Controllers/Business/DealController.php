@@ -55,6 +55,7 @@ class DealController extends BaseController
         }else{
             $deals = Deal::where('created_by',Auth::guard('business')->user()->id)->paginate(25);
         }
+
         $categories = DirectoryCategory::where('type',1)->where('status',1)->orderby('parent_category')->get();
         $this->setPageTitle('Deal', 'List of all deals');
         return view('business.deal.index', compact('deals','categories'));
@@ -81,18 +82,18 @@ class DealController extends BaseController
     {
         //dd($request->all());
         $this->validate($request, [
-            'category_id'      =>  'required',
-            'title'      =>  'required|max:191',
-            'address'      =>  'required|max:191',
-            'state'      =>  'required',
-            'pin'      =>  'required',
-            'suburb'      =>  'required',
-            'expiry_date'      =>  'required',
-            'price'      =>  'required',
-            'promo_code'      =>  'nullable',
-            'discount_type'      =>  'nullable',
-            'discount_amount'      =>  'nullable',
-            'image'     =>  'required|mimes:jpg,jpeg,png|max:2000',
+            'category_id' => 'required|array',
+            'title' => 'required|max:191',
+            'address' => 'required|max:191',
+            'state' => 'required',
+            'pin' => 'required',
+            'suburb' => 'required',
+            'expiry_date' =>  'required',
+            'price' => 'required',
+            'promo_code' => 'nullable',
+            'discount_type' => 'nullable',
+            'discount_amount' => 'nullable',
+            'image' => 'required|mimes:jpg,jpeg,png|max:200',
         ]);
 
         $params = $request->except('_token');

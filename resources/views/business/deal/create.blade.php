@@ -1,12 +1,33 @@
 @extends('business.app')
 @section('title') {{ $pageTitle }} @endsection
+
 @section('content')
+    <style>
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            background-color: #ff6155;
+            border: 1px solid #ff6155;
+        }
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+            color: #fff;
+            font-size: 18px;
+            position: relative;
+            top: 1px;
+            left: 1px;
+            margin-right: 7px;
+        }
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+            color: #000000;
+        }
+    </style>
+    
     <div class="app-title">
         <div>
             <h1><i class="fa fa-tags"></i> {{ $pageTitle }}</h1>
         </div>
     </div>
+
     @include('business.partials.flash')
+
     <div class="row">
         <div class="col-md-8 mx-auto">
             <div class="tile">
@@ -51,17 +72,17 @@
                             @error('image') <p class="small text-danger"> {{ $message }} </p>@enderror
                         </div>
                         <div class="form-group">
-                            <label class="control-label">First Image <span class="m-l-5 text-danger"> *</span></label>
+                            <label class="control-label">First Image <span class="m-l-5 text-muted"> (optional)</span></label>
                             <input class="form-control @error('image1') is-invalid @enderror" type="file" id="image1" name="image1"/>
                             @error('image1') <p class="small text-danger"> {{ $message }} </p>@enderror
                         </div>
                         <div class="form-group">
-                            <label class="control-label">Second Image <span class="m-l-5 text-danger"> *</span></label>
+                            <label class="control-label">Second Image <span class="m-l-5 text-muted"> (optional)</span></label>
                             <input class="form-control @error('image2') is-invalid @enderror" type="file" id="image2" name="image2"/>
                             @error('image2') <p class="small text-danger"> {{ $message }} </p>@enderror
                         </div>
                         <div class="form-group">
-                            <label class="control-label">Third Image <span class="m-l-5 text-danger"> *</span></label>
+                            <label class="control-label">Third Image <span class="m-l-5 text-muted"> (optional)</span></label>
                             <input class="form-control @error('image3') is-invalid @enderror" type="file" id="image3" name="image3"/>
                             @error('image3') <p class="small text-danger"> {{ $message }} </p>@enderror
                         </div>

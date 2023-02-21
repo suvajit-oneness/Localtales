@@ -112,12 +112,14 @@ class UserController extends Controller
         return redirect()->back()->with('success', 'Password has been updated successfully', 'success', false, false);
         }
     }
+
     //review
     public function review(Request $request)
     {
-        $review =  Review::where('directory_id', Auth::guard('business')->user()->id)->get();
-        return view('business.dashboard.review',compact('review'));
+        $review =  Review::where('directory_id', Auth::guard('business')->user()->id)->orderBy('created_at', 'desc')->get();
+        return view('business.review.index',compact('review'));
     }
+
     //delete category
     public function deleteCat(Request $request, $dirId, $catId)
     {
@@ -168,5 +170,12 @@ class UserController extends Controller
         ]);
         return redirect()->back()->with('success', 'Directory Category added successfully', 'success', false, false);
         //return $this->responseRedirectBack('Directory Category added successfully', 'success', false, false);
+    }
+
+    public function twoFacAuthToggle(Request $request) {
+        $noti = Directory::findOrFail(Auth::guard('business')->user()->id);
+        $noti->is_2fa_enable = $request->check_status;
+        $noti->save();
+        return redirect()->route('business.profile')->with('success','You have successfully enabled 2FA Authentication');
     }
 }
