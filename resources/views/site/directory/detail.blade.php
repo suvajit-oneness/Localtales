@@ -348,6 +348,26 @@
         <div class="row mb-0 mb-sm-4 justify-content-center">
             <div class="page_title text-center">
                 <h2 class="mb-2">Review Summary</h2>
+                
+                <div class="tab-pane" id="reviews" role="tabpanel">
+                    <div class="row justify-content-between">
+                        <div class="col-auto">
+                            <div class="directoryRating">
+                                {{-- <span>{{ number_format(getDirectoryReviewDetails($business->id)['average_star_count'],1) }}</span> --}}
+                                <div>
+                                    {!! directoryRatingHtml(number_format(getDirectoryReviewDetails($business->id)['average_star_count'],1)) !!}
+                                    @if(getDirectoryReviewDetails($business->id)['total_reviews'] > 0)
+                                        @if(getDirectoryReviewDetails($business->id)['total_reviews'] == 1)
+                                            <small>{{ number_format(getDirectoryReviewDetails($business->id)['total_reviews']) }} Review</small>
+                                        @else
+                                            <small>{{ number_format(getDirectoryReviewDetails($business->id)['total_reviews']) }} Reviews</small>
+                                        @endif
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -425,7 +445,7 @@
                                                 }
                                             @endphp
                                                 <svg id="reviewlikeBtn_{{ $data->id }}_grid" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="{{ $heartColor }}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
-                                                <span>{{ CountLikeReview($data->id)  }}</span>
+                                                <span id="likeReviewCount">{{ CountLikeReview($data->id)  }}</span>
                                             </a>
                                             <a href="javascript:void(0)" class="location_btn ms-auto" onclick="reviewDisLike({{ $data->id }})" title="DisLike">
 
@@ -641,11 +661,13 @@
                         $('#reviewlikeBtn_' + reviewId + '_list').attr('fill', '#ff6153');
                         $('#reviewdislikeBtn_' + reviewId + '_grid').attr('fill', 'none');
                         $('#reviewdislikeBtn_' + reviewId + '_list').attr('fill', 'none');
+                        $("#likeReviewCount").text(data);
                     } else {
                         toastFire("warning", result.message);
                         // toastr.error(result.message);
                         $('#reviewlikeBtn_' + reviewId + '_grid').attr('fill', 'none');
                         $('#reviewlikeBtn_' + reviewId + '_list').attr('fill', 'none');
+                        $("#likeReviewCount").text(data);
                     }
                 }
             });
@@ -664,7 +686,7 @@
                     // alert(result);
                     if (result.type == 'add') {
                         // toastr.success(result.message);
-                        toastFire("success", result.message);
+                        toastFire("success", result.message,);
                         $('#reviewdislikeBtn_' + reviewId + '_grid').attr('fill', '#ff6153');
                         $('#reviewdislikeBtn_' + reviewId + '_list').attr('fill', '#ff6153');
                         $('#reviewlikeBtn_' + reviewId + '_grid').attr('fill', 'none');

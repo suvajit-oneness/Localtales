@@ -17538,3 +17538,126 @@ input:checked+.slider:before {
     top: -10px;
     left: 0px;
 }
+.top-list>li .inner-box .rating {
+  position: absolute;
+  top: 18px;
+  background: #FF6153;
+  padding: 4px 7px;
+}
+.rating {
+  font-size: 15px;
+  color: #777777;
+  margin-bottom: 10px;
+}
+
+.rating img {
+  margin-right: 13px;
+}
+.rating_coments {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: #efefef;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 7px 19px 7px 5px;
+  border-bottom: 1px solid #dededd;
+}
+.rating_coments {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: #efefef;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 7px 19px 7px 5px;
+  border-bottom: 1px solid #dededd;
+}
+
+.rating_coments li {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-right: 1px solid #b0b0b0;
+  padding-right: 14px;
+  margin-right: 8px;
+}
+
+.rating_coments li:last-child {
+  margin-right: 0;
+  padding-right: 0;
+  border-right: 0;
+}
+
+.rating_coments li img {
+  margin-right: 8px;
+}
+
+.rating_coments li:nth-child(1) img {
+  width: 21px;
+  height: 21px;
+}
+
+.rating_coments li:nth-child(2) img {
+  width: 15px;
+  height: 15px;
+}
+
+.rating_coments li h5 {
+  font-size: 23px;
+  margin: 0;
+  line-height: 1;
+}
+
+.rating_coments li h5 span {
+  display: inline-block;
+  font-size: 14px;
+  color: #171717;
+  margin-left: 3px;
+  margin-top: -6px;
+  vertical-align: middle;
+}
+.search_list_items-mod>li .rating_coments {
+  position: relative;
+  border-bottom: 0;
+  margin-bottom: 26px;
+}
+
+.cafe-card .rating {
+  font-size: 15px;
+}
+
+.cafe-card .rating .badge {
+  font-size: 15px;
+  background-color: #ffb700;
+  color: #fff;
+}
+
+.dealsRating {
+  display: flex;
+  align-items: center;
+}
+
+.dealsRating span {
+  font-size: 35px;
+  font-weight: 700;
+  margin-right: 8px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.dealsRating i {
+  color: #fbb033;
+  vertical-align: middle;
+}
+
+.sortRating {
+  display: flex;
+  align-items: center;
+}
+
+.sortRating span {
+  flex: 0 0 auto;
+  margin-right: 10px;
+}

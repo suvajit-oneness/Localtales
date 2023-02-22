@@ -265,6 +265,9 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/category/match', 'Admin\DirectoryController@categoryMatch')->name('admin.directory.category.match');
             Route::post('/verify', 'Admin\DirectoryController@directoryVerify')->name('admin.directory.verify');
             Route::get('/verify/export', 'Admin\DirectoryController@directoryVerifyExport')->name('admin.directory.verify.export');
+
+            //review
+            Route::get('/{id}/review/details', 'Admin\DirectoryController@reviewDetails')->name('admin.directory.review.details');
         });
 
         //**  Collection management  **/
@@ -658,6 +661,15 @@ Route::group(['prefix' => 'admin'], function () {
         Route::group(['prefix' => 'job/scrap'], function () {
             Route::get('/', 'Admin\JobScrapController@index')->name('admin.job.scrap.index');
             Route::post('/store', 'Admin\JobScrapController@store')->name('admin.job.scrap.store');
+        });
+
+        //**  blog management  **/
+        Route::group(['prefix'  =>   'review'], function () {
+            Route::get('/', 'Admin\ReviewController@index')->name('admin.review.index');
+            Route::get('/{id}/delete', 'Admin\ReviewController@delete')->name('admin.review.delete');
+            Route::post('updateStatus', 'Admin\ReviewController@updateStatus')->name('admin.review.updateStatus');
+          
+            Route::get('/{id}/details', 'Admin\ReviewController@details')->name('admin.review.details');
         });
 
     });

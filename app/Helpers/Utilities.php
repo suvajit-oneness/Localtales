@@ -11,6 +11,7 @@ use App\Models\Suburb;
 use App\Models\User;
 use App\Models\MailLog;
 use App\Models\DealReview;
+use App\Models\Review;
 use App\Models\ReviewVote;
 use App\Models\Activity;
 use App\Models\Notification;
@@ -629,7 +630,7 @@ if(!function_exists('dealreviewUserName')) {
 function getReviewDetails($deal_id)
 {
     $all_review = DealReview::where('deal_id',$deal_id);
-    
+    //dd($all_review);
     $data = [];
     $data['total_reviews'] = $all_review->count();
     $data['total_person_reviewed'] = $all_review->groupBy('user_id')->get()->count();
@@ -884,5 +885,118 @@ if(!function_exists('sendPushNotification')) {
         $noti->description = $body;
         $noti->read_flag = 0;
         $noti->save();
+    }
+}
+
+//total ratings of directory
+function getDirectoryReviewDetails($directory_id)
+{
+    $review= Review::where('directory_id',$directory_id)->where('text');
+    $all_review = Review::where('directory_id',$directory_id);
+    $data = [];
+    $data['total_person_reviewed'] = $all_review->groupBy('user_id')->get()->count();
+    $data['average_star_count'] = $all_review->average('rating');
+    $data['total_reviews'] = $all_review->groupBy('text')->get()->count();
+    return $data;
+}
+
+//directory rating html
+if(!function_exists('directoryRatingHtml')) {
+    function directoryRatingHtml($rating = null) {
+        if ($rating == 0) {
+            $resp = '<p>No ratings available</p>';
+        } elseif ($rating == 1) {
+            $resp = '
+            <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+            </div>
+            ';
+        } elseif ($rating > 1 && $rating < 2) {
+            $resp = '
+            <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+            </div>
+            ';
+        } elseif ($rating == 2) {
+            $resp = '
+            <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+            </div>
+            ';
+        } elseif ($rating > 2 && $rating < 3) {
+            $resp = '
+            <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+            </div>
+            ';
+        } elseif ($rating == 3) {
+            $resp = '
+            <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+            </div>
+            ';
+        } elseif ($rating > 3 && $rating < 4) {
+            $resp = '
+            <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+                <i class="far fa-star"></i>
+            </div>
+            ';
+        } elseif ($rating == 4) {
+            $resp = '
+            <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="far fa-star"></i>
+            </div>
+            ';
+        } elseif ($rating > 4 && $rating < 5) {
+            $resp = '
+            <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+            </div>
+            ';
+        } else {
+            $resp = '
+            <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+            </div>
+            ';
+        }
+
+        return $resp;
     }
 }

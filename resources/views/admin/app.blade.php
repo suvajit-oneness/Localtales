@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/css/font-awesome/4.7.0/css/font-awesome.min.css') }}"/>
      {{--<script type="text/javascript" src="{{ asset('backend/js/select2.min.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/css/select2.min.css') }}">--}}
+    <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css?ver=5.9.3' />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
     <script src="{{ asset('backend/js/jquery-3.2.1.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>

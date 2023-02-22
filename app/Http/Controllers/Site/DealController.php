@@ -270,13 +270,13 @@ class DealController extends BaseController
         if(Auth::guard('user')->check()){
             $user_id = Auth::guard('user')->user()->id;
 
-            $dealSavedResult = $this->dealRepository->checkUserDeals($id,$user_id);
+           // $dealSavedResult = $this->dealRepository->checkUserDeals($id,$user_id);
 
-            if(count($dealSavedResult)>0){
-                $dealSaved = 1;
-            }else{
-                $dealSaved = 0;
-            }
+            // if(count($dealSavedResult)>0){
+            //     $dealSaved = 1;
+            // }else{
+            //     $dealSaved = 0;
+            // }
         }
         $dealReview=DealReview::where('deal_id',$deal->id)->get();
 
