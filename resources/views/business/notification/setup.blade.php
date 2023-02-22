@@ -29,7 +29,7 @@
                             <div class="notification-box-inner notification-box-inner-mod">
                                 <div class="content">
                                     <label class="switch">
-                                        <input type="checkbox" {{ (Auth::guard('business')->user()->notification_push == 1) ? 'checked' : '' }} onchange="notificationReceiveToggle('notification_push')">
+                                        <input type="checkbox" {{ (Auth::guard('business')->user()->notification_push == 1) ? 'checked' : '' }} onchange="notificationReceiveToggle('notification_push')" name="push-notification">
                                         <span class="slider round"></span>
                                         <p>Push Notification</p>
                                     </label>
@@ -84,7 +84,54 @@
 
 @push('scripts')
     <script>
+        // notification receive toggle
         function notificationReceiveToggle(type) {
+            // browser push notification
+            if(type == "notification_push") {
+                // if toggeled for "YES"
+                if ($('input[name=push-notification]').is(':checked')) {
+                    try {
+                        Notification.requestPermission().then(perm => {
+                            // if permission is "DENIED"/ user clicks "DENY"
+                            if (perm === "denied") {
+                                toastFire('warning', 'Browser Notification permission denied. Please Reset permission');
+                            }
+                            // if permission is "GRANTED"
+                            else {
+                                const img = "{{asset('front/img/logo-icon-square.png')}}";
+                                const title = 'Local Tales';
+                                const text = 'HELLO! this is a Push Notification';
+
+                                const notification = new Notification(title, {
+                                    body: text,
+                                    icon: img
+                                });
+
+                                notification.onclick = function () {
+                                    window.open("{{url('/')}}");
+                                };
+
+                                receivePreferenceAjaxCall(type);
+                            }
+                        });
+                    } catch (e) {
+                        return false;
+                    }
+
+                    return true;
+                }
+                // if toggeled for "NO"
+                else {
+                    receivePreferenceAjaxCall(type);
+                }
+            }
+            // for email & in app notification
+            else {
+                receivePreferenceAjaxCall(type);
+            }
+        }
+
+        function receivePreferenceAjaxCall(type) {
             $.ajax({
                 url: "{{ route('business.notification.receive.toggle') }}",
                 type: "POST",
@@ -103,6 +150,7 @@
             });
         }
 
+        // notification types toggle
         function notificationToggle(notificationId) {
             $.ajax({
                 url: "{{ route('business.notification.toggle') }}",

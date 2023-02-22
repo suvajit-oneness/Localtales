@@ -113,13 +113,6 @@ class UserController extends Controller
         }
     }
 
-    //review
-    public function review(Request $request)
-    {
-        $review =  Review::where('directory_id', Auth::guard('business')->user()->id)->orderBy('created_at', 'desc')->get();
-        return view('business.review.index',compact('review'));
-    }
-
     //delete category
     public function deleteCat(Request $request, $dirId, $catId)
     {

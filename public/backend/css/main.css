@@ -17497,6 +17497,47 @@ input:checked+.slider:before {
   line-height: 16px;
 }
 
+.page-item.active .page-link, .page-item.disabled .page-link {
+  font-size: 14px;
+}
+
+.notification-list .unread, .dropdown-item.unread {
+  background-color: #d1d1d1;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+  color: #fff;
+  text-decoration: none;
+  background-color: #ff6155;
+}
+
+.dropdown-item p {
+  color: #6c757d ;
+}
+
+.dropdown-item:active p {
+  color: #fff;
+}
+
+.all-notification, .all-notification:hover, .all-notification:active, .all-notification:focus {
+  color: #fff;;
+  background-color: #ff6155;
+}
+
+.dropdown-menu.dropdown-menu-right {
+  width: fit-content;
+}
+
+.noti-badge {
+  border-radius: 0;
+    background-color: #fff;
+    color: #000;
+    font-size: 12px;
+    padding: 1px 5px;
+    position: relative;
+    top: -10px;
+    left: 0px;
+}
 .top-list>li .inner-box .rating {
   position: absolute;
   top: 18px;

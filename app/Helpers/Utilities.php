@@ -14,6 +14,8 @@ use App\Models\DealReview;
 use App\Models\Review;
 use App\Models\ReviewVote;
 use App\Models\Activity;
+use App\Models\Notification;
+use App\Models\PushNotification;
 use Illuminate\Support\Facades\Mail;
 
 if (!function_exists('sidebar_open')) {
@@ -797,20 +799,93 @@ if(!function_exists('activityStore')) {
     }
 }
 
-
-//review like count
+// review like count
 function CountLikeReview($reviewId){
     $vote=ReviewVote::where('review_id',$reviewId)->where('vote_status',1)->count();
     if(($vote)>0)
     return $vote;
 }
 
-
-//review like count
+// review like count
 function CountDisLikeReview($reviewId){
     $vote=ReviewVote::where('review_id',$reviewId)->where('vote_status',0)->count();
     if(($vote)>0)
     return $vote;
+}
+
+// directory notification function
+if(!function_exists('directoryNotify')) {
+    function directoryNotify($directory_id, $type, $data) {
+        // 1. check how the directory wants to receive notifications
+        $noti = Directory::select('notification_email', 'notification_push', 'notification_in_app')->where('id', $directory_id)->first();
+
+        // 2. check type of notifications
+        switch ($type) {
+            case 'review-add':
+                // if directory wants to receive email
+                if ($noti->notification_email == 1) {
+                    
+                }
+                // if directory wants to receive push notification
+                if ($noti->notification_push == 1) {
+                    $sender = 0;
+                    $receiver = $directory_id;
+                    $type = 'new-localtales-review-added';
+                    $route = 'business/review/'.$data->id;
+                    $title = 'You have a brand new review';
+                    $body = 'Your business has a brand new review. Check it out by tapping here';
+
+                    sendPushNotification($sender, $receiver, $type, $route, $title, $body);
+                }
+                // if directory wants to receive in app notification
+                if ($noti->notification_in_app == 1) {
+                    $sender = 0;
+                    $receiver = $directory_id;
+                    $type = 'new-localtales-review-added';
+                    $route = 'business/review/'.$data->id;
+                    $title = 'You have a brand new review, check it out!';
+                    $body = 'Your business has a brand new review. Check it out by tapping here';
+
+                    sendNotification($sender, $receiver, $type, $route, $title, $body);
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+}
+
+// in app notification
+if(!function_exists('sendNotification')) {
+    function sendNotification($sender, $receiver, $type, $route, $title, $body='')
+    {
+        $noti = new Notification();
+        $noti->sender = $sender;
+        $noti->receiver = $receiver;
+        $noti->type = $type;
+        $noti->route = $route;
+        $noti->title = $title;
+        $noti->description = $body;
+        $noti->read_flag = 0;
+        $noti->save();
+    }
+}
+
+// in app notification
+if(!function_exists('sendPushNotification')) {
+    function sendPushNotification($sender, $receiver, $type, $route, $title, $body='')
+    {
+        $noti = new PushNotification();
+        $noti->sender = $sender;
+        $noti->receiver = $receiver;
+        $noti->type = $type;
+        $noti->route = $route;
+        $noti->title = $title;
+        $noti->description = $body;
+        $noti->read_flag = 0;
+        $noti->save();
+    }
 }
 
 //total ratings of directory
@@ -839,7 +914,7 @@ if(!function_exists('directoryRatingHtml')) {
                 <i class="far fa-star"></i>
                 <i class="far fa-star"></i>
             </div>
-';
+            ';
         } elseif ($rating > 1 && $rating < 2) {
             $resp = '
             <div class="stars">

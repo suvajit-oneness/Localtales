@@ -32,8 +32,8 @@
             </a>
         </li>
         <li>
-            <a class="app-menu__item {{ request()->is('business/notification/setup*') ? 'active' : '' }}" href="{{ route('business.notification.setup') }}"><i class="app-menu__icon fa fa-cogs"></i>
-                <span class="app-menu__label">Notification setup</span>
+            <a class="app-menu__item {{ request()->is('business/notification*') ? 'active' : '' }}" href="{{ route('business.notification.index') }}"><i class="app-menu__icon fa fa-cogs"></i>
+                <span class="app-menu__label">Notifications</span>
             </a>
         </li>
         <li>

@@ -41,12 +41,16 @@
           </ul>
           <div class="form-inline my-2 my-lg-0 login-content-holder">
             @if(Auth::guard('user')->check())
-						  <a type="button" class="btn btn-login d-flex align-items-center justify-content-center" href="{!! URL::to('profile/edit') !!}" style="height: 35px;">
-							  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-							  <span class="ml-1">Hi, {{Auth::guard('user')->user()->name}}</span>
-						  </a>
-						@else
-              <a type="button" class="btn btn-login d-flex align-items-center justify-content-center" href="{!! URL::to('user/login') !!}" style="height: 35px;"><img src="{{ asset('front/img/login.svg')}}"> Login</a>
+                @php
+                    $userName = Auth::guard('user')->user()->name;
+                    $explodesUserName = explode(' ', $userName);
+                @endphp
+                <a type="button" class="btn btn-login d-flex align-items-center justify-content-center" href="{!! URL::to('dashboard') !!}" style="height: 35px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <span class="ml-1" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Hi, {{ $explodesUserName[0] }}</span>
+                </a>
+            @else
+                <a type="button" class="btn btn-login d-flex align-items-center justify-content-center" href="{!! URL::to('user/login') !!}" style="height: 35px;"><img src="{{ asset('front/img/login.svg')}}"> Login</a>
             @endif
 
             <a type="button" class="btn btn-login btn_buseness" href="{{ route('business.register')}}"><img src="{{ asset('front/img/briefcase.svg')}}"> Business Signup</a>
