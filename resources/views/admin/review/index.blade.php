@@ -90,7 +90,11 @@
                                     <td>{{ $data->name  ?? ''}}</td>
                                     <td>{{ $data->author_name }}</td>
                                     <td>{{ $data->rating }}</td>
+                                    @if($data->text!='')
                                     <td>{{ substr($data->text,0,200) }}... </td>
+                                    @else
+                                    <td></td>
+                                    @endif
                                     <td>{{date('d/m/Y', strtotime($data->created_at)) }}</td>
                                     <td>{{ CountLikeReview($data->id)  }}</td>
                                     <td>{{ CountDisLikeReview($data->id)  }}</td>

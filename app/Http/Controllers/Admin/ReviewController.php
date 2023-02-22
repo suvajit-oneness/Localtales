@@ -14,7 +14,7 @@ class ReviewController extends BaseController
         $directory = $request->name ?? '';
         $keyword = $request->keyword ?? '';
        
-        $query = Review::select('reviews.id AS id','reviews.author_name AS author_name','reviews.rating AS rating','reviews.created_at AS created_at','reviews.text AS text','directories.name AS name','directories.address AS address')->join('directories', 'reviews.directory_id', 'directories.id');
+        $query = Review::select('reviews.id AS id','reviews.author_name AS author_name','reviews.rating AS rating','reviews.created_at AS created_at','reviews.text AS text','reviews.status AS status','directories.name AS name','directories.address AS address')->join('directories', 'reviews.directory_id', 'directories.id');
       
     
         $query->when($directory, function($query) use ($directory) {
@@ -28,7 +28,8 @@ class ReviewController extends BaseController
         elseif($request->orderBy=="rating_asc") {$filterName = "reviews.rating";$sortOrder = "asc";}
         elseif($request->orderBy=="rating_desc") {$filterName = "reviews.rating";$sortOrder = "desc";}
         else {$filterName = "reviews.created_at";$sortOrder = "desc";}
-        $review = $query->orderBy($filterName,$sortOrder)->paginate(12);
+        $review = $query->orderBy($filterName,$sortOrder)->paginate(25);
+        //dd($review);
         return view('admin.review.index', compact('review','request'));
     }
 
