@@ -64,7 +64,7 @@ class LoginController extends Controller
                 'user_type' => 'Admin',
                 'date' => date('Y-m-d'),
                 'time' => date('H:i:s'),
-                'type' => 'Login',
+                'type' => 'login',
                 'location' => $_SERVER['REMOTE_ADDR'],
             ];
             activityStore($activityData);

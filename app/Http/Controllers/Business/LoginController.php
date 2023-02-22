@@ -9,6 +9,8 @@ use App\Models\Review;
 use App\Models\Order;
 use App\Models\Directory;
 use App\Models\State;
+use Illuminate\Support\Carbon;
+use App\Models\Activity;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\LocalTradeQueryRequest;
@@ -69,6 +71,16 @@ class LoginController extends BaseController
     
                     return redirect()->route('2fa.index');
                 }else{
+                      // login activity store
+                    $activityData = [
+                        'user_id' => Auth::guard('business')->user()->id,
+                        'user_type' => 'business',
+                        'date' => date('Y-m-d'),
+                        'time' => date('H:i:s'),
+                        'type' => 'login',
+                        'location' => $_SERVER['REMOTE_ADDR'],
+                    ];
+                    activityStore($activityData);
                 return redirect()->route('business.dashboard')->with('success','login successful');
                 }
             } 

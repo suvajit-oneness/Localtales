@@ -70,7 +70,7 @@
     @endphp
 
     <section class="inner_banner"
-        {{-- @if($postcode_img->image)
+        @if($postcode_img->image)
             style="background: url({{asset('/admin/uploads/suburb/'.$postcode_img->image)}})"
         @else
             @if($data->image)
@@ -82,7 +82,7 @@
             style="background: url({{asset('Directory/placeholder-image.png')}})"
             @endif
             @endif
-        @endif --}}
+        @endif
         >
         <div class="container position-relative">
             <h1>{{ $data ? $data->pin : '' }}</h1>
