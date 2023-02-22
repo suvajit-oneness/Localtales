@@ -368,8 +368,69 @@ class CollectionController extends BaseController
 
     public function export()
     {
-        return Excel::download(new CollectionExport, 'collection.xlsx');
+        //return Excel::download(new CollectionExport, 'collection.xlsx');
+        if (!empty($request->term)) {
+            // dd($request->term);
+            $col = $this->CollectionRepository->getSearchCollection($request->term);
+
+            //dd($col);
+        } else {
+            $col =  Collection::where('status', 1)->get();
+        }
+        if (($data)) {
+            $delimiter = ",";
+            $filename = "collection".".xlsx";
+
+            // Create a file pointer 
+            $f = fopen('php://memory', 'w');
+
+            // Set column headers 
+            $fields = array('SR','Keyword', 'CollectionName','Suburb','Categories','Collection Description','Paragraph1 Heading','Paragraph1 (50-100 words)', 'Paragraph2 Heading','Paragraph 2 (100 - 150 words)','Paragraph3 Heading','Paragraph 3 (100 - 150 words)','Google Doc','Completion','Who?','Quality Checked','Status','Date');
+            fputcsv($f, $fields, $delimiter); 
+
+            $count = 1;
+
+            foreach($data as $row) {
+                
+                $datetime = date('j M Y g:i A', strtotime($row['created_at']));
+                $lineData = array(
+                    $count,
+                    $row->meta_key,
+                    $row->title,
+                    $row->suburb,
+                    $row->category,
+                    $row->short_description,
+                    $row->paragraph1_heading,
+                    $row->paragraph1,
+                    $row->paragraph2_heading,
+                    $row->paragraph2,
+                    $row->paragraph3_heading,
+                    $row->paragraph3,
+                    $row->google_doc,
+                    $row->completion,
+                    $row->who,
+                    $row->quality_check,
+                    ($row->status == 1) ? 'Active' : 'Blocked',
+                    $datetime
+                );
+
+                fputcsv($f, $lineData, $delimiter);
+
+                $count++;
+            }
+
+            // Move back to beginning of file
+            fseek($f, 0);
+
+            // Set headers to download file rather than displayed
+            header('Content-Type: text/csv');
+            header('Content-Disposition: attachment; filename="' . $filename . '";');
+
+            //output all remaining data on a file pointer
+            fpassthru($f);
+        }
     }
+    
 
      public function upload_bulk_images(Request $request)
     {

@@ -50,22 +50,24 @@ class ReviewController extends BaseController
         } else {
            $reviewExistsCheck  = ReviewVote::where('review_id', $request->id)->first();
         }
+        
         if($reviewExistsCheck != null) {
+            $count=ReviewVote::where('review_id',$request->id)->where('user_id', auth()->guard('user')->user()->id)->where('vote_status',1)->count();
             $reviewDetails=ReviewVote::where('review_id', $request->id)->where('user_id', auth()->guard('user')->user()->id)->where('vote_status',0)->first();
             if($reviewDetails == null) {
             // if found
                 $data = ReviewVote::destroy($reviewExistsCheck->id);
-                return response()->json(['status' => 200, 'type' => 'remove', 'message' => 'Feedback added']);
+                return response()->json(['status' => 200, 'count'=>$count,'type' => 'remove', 'message' => 'Feedback added']);
             } else {
                 // if not found
                 $data = ReviewVote::findOrFail($reviewDetails->id);
                 $data->vote_status = 1;
                 $data->save();
-                return response()->json(['status' => 200, 'type' => 'add', 'message' => 'Feedback added']);
+                return response()->json(['status' => 200, 'count'=>$count,'type' => 'add', 'message' => 'Feedback added']);
             }
             // if found
             $data = ReviewVote::destroy($reviewExistsCheck->id);
-            return response()->json(['status' => 200, 'type' => 'remove', 'message' => 'Feedback added']);
+            return response()->json(['status' => 200, 'count'=>$count,'type' => 'remove', 'message' => 'Feedback added']);
         } else {
             // if not found
             $data = new ReviewVote();
@@ -73,7 +75,7 @@ class ReviewController extends BaseController
             $data->review_id = $request->id;
             $data->vote_status = 1;
             $data->save();
-            return response()->json(['status' => 200, 'type' => 'add', 'message' => 'Feedback added']);
+            return response()->json(['status' => 200,'count'=>$count, 'type' => 'add', 'message' => 'Feedback added']);
         }
 	}
 
