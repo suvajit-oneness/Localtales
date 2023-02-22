@@ -1,21 +1,17 @@
 @extends('business.app')
 @section('title') Dashboard @endsection
+
 @section('content')
-@php
-$deals = App\Models\Deal::where('created_by',Auth::guard('business')->user()->id)->get();
-@endphp
-<style type="text/css">
-    .row-md-body.no-nav {
-    margin-top: 70px;
-}
-</style>
-<div class="fixed-row">
+    @php
+        $deals = App\Models\Deal::where('created_by',Auth::guard('business')->user()->id)->get();
+    @endphp
+
     <div class="app-title">
         <div>
-            <h1><i class="fa fa-dashboard"></i> Dashboard</h1>
+            <h1><i class="fa fa-file"></i> Dashboard</h1>
         </div>
     </div>
-</div>
+
     <div class="row section-mg row-md-body no-nav">
         <div class="col-md-6 col-lg-3">
             <div class="widget-small primary coloured-icon">
@@ -50,6 +46,7 @@ $deals = App\Models\Deal::where('created_by',Auth::guard('business')->user()->id
                 </div>
             </div>
         </div>
+
         {{--<div class="col-md-6 col-lg-3">
             <div class="widget-small warning coloured-icon">
                 <i class="icon fa fa-folder-open fa-3x"></i>

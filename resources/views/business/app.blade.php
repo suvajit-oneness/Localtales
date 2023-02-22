@@ -153,7 +153,6 @@
                                         let title = val.title+val.id;
                                         let text = val.description;
                                         let url = "{{url('/')}}/"+val.route;
-                                        let dts = Math.floor(Date.now());
 
                                         // if (key < 2) {
                                             let notification = new Notification(title, {
