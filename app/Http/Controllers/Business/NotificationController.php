@@ -8,12 +8,30 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
+use App\Models\Notification;
+use App\Models\PushNotification;
 use App\Models\Directory;
 use App\Models\NotificationTypeHead;
 use App\Models\NotificationReceiveUser;
 
 class NotificationController extends BaseController
 {
+    public function index(Request $request)
+    {
+        $user = Auth::guard('business')->user();
+        $data = Notification::where('receiver', $user->id)->latest()->paginate(25);
+
+        return view('business.notification.index', compact('data'));
+    }
+
+    public function read(Request $request)
+    {
+        $user = Auth::guard('business')->user();
+        $noti = Notification::where('receiver', $user->id)->where('id', $request->id)->first();
+        $noti->read_flag = 1;
+        $noti->save();
+    }
+
     public function setup(Request $request) {
         $data = NotificationTypeHead::orderBy('position')->with('notificationLists.notificationReceiveUser')->get()->toArray();
 
@@ -68,6 +86,19 @@ class NotificationController extends BaseController
             return response()->json([
                 'status' => 200,
                 'message' => 'In-App notifications preference updated'
+            ]);
+        }
+    }
+
+    public function checkPushNotification(Request $request) {
+        $user = Auth::guard('business')->user();
+        $data = PushNotification::where('receiver', $user->id)->where('read_flag', 0)->get();
+
+        if ($data) {
+            return response()->json([
+                'status' => 200,
+                'message' => 'Push notifications found',
+                'data' => $data
             ]);
         }
     }

@@ -13,6 +13,7 @@ use App\Models\Userbusiness;
 use App\Models\Review;
 use App\Models\ReviewVote;
 use Illuminate\Support\Facades\Validator;
+
 class DirectoryController extends BaseController
 {
     protected $DirectoryRepository;
@@ -366,33 +367,40 @@ class DirectoryController extends BaseController
             redirect()->back()->with('failure', 'Error occurred while registration.', 'error', true, true);
         }
     }
-    public function reviewAjax(Request $request)
+
+    public function reviewAdd(Request $request)
     {
-        //dd($request->all());
+        // dd($request->all());
         $validator = Validator::make($request->all(), [
             'author_name' => 'required|string|max:255',
-            'rating' => 'required',
-
+            'directory_id' => 'required',
+            'rating' => 'required'
         ]);
 
         if (!$validator->fails()) {
+            $params = array(
+                'user_id' => !empty(Auth::guard('user')->user()->id) ? Auth::guard('user')->user()->id : '',
+                'directory_id' => !empty($request->directory_id) ? $request->directory_id : '',
+                'author_name' => !empty($request->author_name) ? $request->author_name : '',
+                'rating' => !empty($request->rating) ? $request->rating : '',
+                'text' => !empty($request->text) ? $request->text : '',
+            );
 
-                $params = array(
-                    'user_id' => !empty(Auth::guard('user')->user()->id) ? Auth::guard('user')->user()->id : '',
-                    'directory_id' =>  !empty($request->directory_id) ? $request->directory_id : '',
-                    'author_name' =>     !empty($request->author_name) ? $request->author_name : '',
-                    'rating' =>   !empty($request->rating) ? $request->rating : '',
-                    'text' =>  !empty($request->text) ? $request->text : '',
-                  
-                );
+            $data = $this->DirectoryRepository->directoryReview($params);
 
-                $data = $this->DirectoryRepository->directoryReview($params);
-                if ($data) {
-                    return response()->json(['error' => false, 'message' => 'Review added']);
-                } else {
-                    return response()->json(['error' => true, 'message' => 'Something happened']);
-                }
+            if ($data) {
+                // Notify Diretcory about the review add
+                /**
+                 * @param int $directoryId
+                 * @param string $type
+                 * @param object $data
+                 */
+                directoryNotify($request->directory_id, 'review-add', $data);
 
+                return response()->json(['error' => false, 'message' => 'Review added']);
+            } else {
+                return response()->json(['error' => true, 'message' => 'Something happened']);
+            }
         } else {
             return response()->json(['error' => true, 'message' => $validator->errors()->first()]);
         }

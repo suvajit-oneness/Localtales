@@ -16,7 +16,6 @@ Route::group(['prefix' => 'business'], function () {
 	Route::get('logout', 'Business\LoginController@logout')->name('business.logout');
 
 	Route::group(['middleware' => ['auth:business']], function () {
-
 		Route::get('/', function () {
 	      	return view('business.dashboard.index');
 	    })->name('business.dashboard')->middleware(['auth', 'is_verify_email']);
@@ -25,12 +24,16 @@ Route::group(['prefix' => 'business'], function () {
 		Route::post('/twoFacAuth/toggle', 'Business\UserController@twoFacAuthToggle')->name('business.twoFacAuth.toggle');
 
 		// review
-	    Route::get('/review', 'Business\UserController@review')->name('business.review');
+	    Route::get('/review', 'Business\ReviewController@index')->name('business.review');
+	    Route::get('/review/{id}', 'Business\ReviewController@detail')->name('business.review.detail');
 
 		// notification
+		Route::get('/notification', 'Business\NotificationController@index')->name('business.notification.index');
+		Route::post('/notification/read', 'Business\NotificationController@read')->name('business.notification.read');
 		Route::get('/notification/setup', 'Business\NotificationController@setup')->name('business.notification.setup');
 		Route::post('/notification/toggle', 'Business\NotificationController@toggle')->name('business.notification.toggle');
 		Route::post('/notification/receive/toggle', 'Business\NotificationController@NotificationReceiveType')->name('business.notification.receive.toggle');
+		Route::get('/push/notification', 'Business\NotificationController@checkPushNotification')->name('business.push.notification.check');
 
 
 

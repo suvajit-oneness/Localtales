@@ -1,69 +1,83 @@
 @extends('business.app')
-@section('title') Notfications @endsection
+@section('title') Notification @endsection
 
 @section('content')
-    <div class="fixed-row">
-        <div class="app-title">
-            <div>
-                <h1><i class="fa fa-dashboard"></i> Notfications</h1>
-            </div>
+    <div class="app-title">
+        <div>
+            <h1><i class="fa fa-file"></i> Notification</h1>
+            <p>List of all Notifications</p>
         </div>
     </div>
 
-    <div class="col-12">
-        <div class="notification-content">
-            <div class="alert alert-light notification-box" role="alert">
-                    <div class="notification-box-inner">
-                        <h4>2FA Authentication</h4>
-                            <div class="content">
-                                <ul class="list-unstyled p-0 m-0">
-                                </ul>
-                                <div class="toggle-button-cover margin-auto">
-                                    <div class="button-cover">
-                                        <div class="button-togglr b2" id="button-11">
-                                            <input id="toggle-block" type="checkbox" name="is_2fa_enable" class="checkbox" data-event_id="{{ $data['id'] }}" {{ $data['is_2fa_enable'] == 1 ? 'checked' : '' }}>
-                                            <div class="knobs"><span>Inactive</span></div>
-                                            <div class="layer"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+    <div class="row">
+        <div class="col-12 mt-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="preference text-right mb-3">
+                        <a href="{{ route('business.notification.setup') }}" class="btn btn-secondary">
+                            <i class="fa fa-cogs"></i>
+                            Setup Notification Preference
+                        </a>
                     </div>
-  
+
+                    @forelse ($data as $index => $noti)
+                        <a href="javascript:void(0)" class="dropdown-item {{ $noti->read_flag == 0 ? 'unread' : 'read' }}" onclick="readNotification({{ $noti->id }}, '{{ $noti->route }}')">
+                            <p class="mb-0">{{ $noti->title }}</p>
+                            <p class="small mb-0">{{ $noti->description }}</p>
+                        </a>
+                    @empty
+                        <a class="dropdown-item" href="javascript: void(0)">
+                            <p class="small text-muted text-center mb-0">No notifications yet</p>
+                        </a>
+                    @endforelse
+
+                    <div class="d-flex justify-content-end">
+                        {{$data->appends($_GET)->links()}}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 @endsection
 
 @push('scripts')
+    <script>
+        function notificationReceiveToggle(type) {
+            $.ajax({
+                url: "{{ route('business.notification.receive.toggle') }}",
+                type: "POST",
+                data: {
+                    '_token': '{{csrf_token()}}',
+                    type: type,
+                    user_id: '{{auth()->guard("business")->user()->id}}',
+                },
+                success: function(resp) {
+                    if (resp.status == 200) {
+                        toastFire('success', resp.message);
+                    } else {
+                        toastFire('warning', resp.message);
+                    }
+                }
+            });
+        }
 
-
-<script type="text/javascript">
-    $('input[id="toggle-block"]').change(function() {
-        var event_id = $(this).data('event_id');
-        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-        var check_status = 0;
-      if($(this).is(":checked")){
-          check_status = 1;
-      }else{
-        check_status = 0;
-      }
-      $.ajax({
-            type:'POST',
-            dataType:'JSON',
-            url:"{{route('business.notification.toggle')}}",
-            data:{ _token: CSRF_TOKEN, id:event_id, check_status:check_status},
-            success:function(response)
-            {
-              swal("Success!", response.message, "success");
-            },
-            error: function(response)
-            {
-                
-              swal("Error!", response.message, "error");
-            }
-          });
-    });
-</script>
+        function notificationToggle(notificationId) {
+            $.ajax({
+                url: "{{ route('business.notification.toggle') }}",
+                type: "POST",
+                data: {
+                    '_token': '{{csrf_token()}}',
+                    notification_id: notificationId,
+                    user_id: '{{auth()->guard("business")->user()->id}}',
+                },
+                success: function(resp) {
+                    if (resp.status == 200) {
+                        toastFire('success', resp.message);
+                    } else {
+                        toastFire('warning', resp.message);
+                    }
+                }
+            });
+        }
+    </script>
 @endpush

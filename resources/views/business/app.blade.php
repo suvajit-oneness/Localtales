@@ -66,8 +66,7 @@
             $('#country').hide();
           }
         });
-    </script>
-    <script>
+
         $('.filter_select').select2({
             width:"100%",
         });
@@ -116,6 +115,64 @@
         @elseif (Session::has("failure"))
             toastFire("warning", "{{ Session::get('failure') }}");
         @endif
+
+        // click to read notification
+        function readNotification(id, route) {
+            $.ajax({
+                url: "{{ route('business.notification.read') }}",
+                method: 'POST',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    id: id
+                },
+                success: function(result) {
+                    window.location = "{{url('/')}}/"+route;
+                }
+            });
+        }
+
+        // check for push notifications
+        function pushNotifications() {
+            $.ajax({
+                url: "{{ route('business.push.notification.check') }}",
+                success: function(result) {
+                    if (result.status == 200) {
+                        // console.log(result.data);
+                        try {
+                            Notification.requestPermission().then(perm => {
+                                // if permission is "DENIED"/ user clicks "DENY"
+                                if (perm === "denied") {
+                                    toastFire('warning', 'Browser Notification permission denied. Please Reset permission');
+                                }
+                                // if permission is "GRANTED"
+                                else {
+                                    const img = "{{asset('front/img/logo-icon-square.png')}}";
+
+                                    // looping through notifications
+                                    $.each(result.data, (key, val) => {
+                                        let title = val.title;
+                                        let text = val.description;
+                                        let url = "{{url('/')}}/"+val.route;
+
+                                        let notification = new Notification(title, {
+                                            body: text,
+                                            icon: img
+                                        });
+
+                                        notification.onclick = function () {
+                                            window.open(url);
+                                        };
+                                    });
+                                }
+                            });
+                        } catch (e) {
+                            return false;
+                        }
+                    }
+                }
+            });
+        }
+        pushNotifications();
     </script> 
 
     @stack('scripts')
