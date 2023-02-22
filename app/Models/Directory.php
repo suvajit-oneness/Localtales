@@ -108,4 +108,9 @@ class Directory extends Authenticatable implements MustVerifyEmail
     {
         $this->notify(new AdminResetPasswordNotification($token));
     }
+
+    public function reviewDetail()
+    {
+        return $this->hasMany('\App\Models\Review', 'directory_id', 'id');
+    }
 }

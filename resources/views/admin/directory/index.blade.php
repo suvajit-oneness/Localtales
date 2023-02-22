@@ -98,7 +98,8 @@
                                             <a href="{{ route('admin.directory.edit', $blog['id']) }}" class="btn btn-sm btn-primary edit-btn"><i class="fa fa-edit"></i></a>
                                             <a href="{{ route('admin.directory.details', $blog['id']) }}" class="btn btn-sm btn-primary edit-btn"><i class="fa fa-eye"></i></a>
                                             <a href="#" data-id="{{$blog['id']}}" class="sa-remove btn btn-sm btn-danger edit-btn"><i class="fa fa-trash"></i></a>
-                                            <a href="#"  class=" btn btn-sm btn-primary edit-btn"><i class="fa fa-comments"></i></a>
+                                            <a href="{{route('admin.directory.review.details',$blog['id'])}}"  class=" btn btn-sm btn-primary edit-btn"><i class="fa fa-star"></i><span> @if($blog->reviewDetail->count() > 0){{ number_format(getDirectoryReviewDetails($blog->id)['average_star_count'] ,1)}}@endif</span></a>
+                                            <a href="{{route('admin.directory.review.details',$blog['id'])}}"  class=" btn btn-sm btn-primary edit-btn"><i class="fa fa-comments"></i><span>@if($blog->reviewDetail->count() > 0){{ number_format(getDirectoryReviewDetails($blog->id)['total_reviews'])}}@endif</span></a>
                                         </div>
                                     </td>
                                 </tr>

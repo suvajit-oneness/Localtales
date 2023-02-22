@@ -220,6 +220,11 @@
                 <span class="app-menu__label">Deal Management</span>
             </a>
         </li> --}}
+        <li>
+            <a class="app-menu__item {{ request()->is('admin/review*') ? 'active' : '' }} {{ sidebar_open(['admin.review']) }}" href="{{ route('admin.review.index') }}"><i class="app-menu__icon fa fa-star"></i>
+            <span class="app-menu__label">Review</span>
+            </a>
+        </li>
          <li>
             <a class="app-menu__item {{ sidebar_open(['admin.csv']) }}"
                 href="{{ route('admin.csv-activity.index') }}"><i class="app-menu__icon fa fa-group"></i>

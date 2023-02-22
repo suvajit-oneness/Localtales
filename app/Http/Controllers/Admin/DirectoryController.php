@@ -759,5 +759,14 @@ class DirectoryController extends BaseController
             fpassthru($f);
         }
     }
+
+
+    //review details
+
+    public function reviewDetails(Request $request,$id)
+    {
+        $review =  Review::where('directory_id', $id)->orderBy('created_at', 'desc')->get();
+        return view('admin.directory.review-detail',compact('review'));
+    }
 }
 
