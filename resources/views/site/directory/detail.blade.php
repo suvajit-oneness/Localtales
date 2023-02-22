@@ -347,7 +347,8 @@
     <div class="container">
         <div class="row mb-0 mb-sm-4 justify-content-center">
             <div class="page_title text-center">
-                <h2 class="mb-2">Review Summery</h2>
+               
+                <h2 class="mb-2">Review Summary</h2>
                 <div class="row">
                     <div class="col-md-6 details_left">
                         <div class="tab-pane" id="reviews" role="tabpanel">
@@ -369,7 +370,6 @@
                         </div>
                     </div>
                 </div>
-                <h2 class="mb-2">Review Summary</h2>
                 
                 <div class="tab-pane" id="reviews" role="tabpanel">
                     <div class="row justify-content-between">
@@ -683,13 +683,13 @@
                         $('#reviewlikeBtn_' + reviewId + '_list').attr('fill', '#ff6153');
                         $('#reviewdislikeBtn_' + reviewId + '_grid').attr('fill', 'none');
                         $('#reviewdislikeBtn_' + reviewId + '_list').attr('fill', 'none');
-                        $("#likeReviewCount").text(data);
+                        $("#likeReviewCount").html(result.count);
                     } else {
                         toastFire("warning", result.message);
                         // toastr.error(result.message);
                         $('#reviewlikeBtn_' + reviewId + '_grid').attr('fill', 'none');
                         $('#reviewlikeBtn_' + reviewId + '_list').attr('fill', 'none');
-                        $("#likeReviewCount").text(data);
+                        //$("#likeReviewCount").html(result.count);
                     }
                 }
             });

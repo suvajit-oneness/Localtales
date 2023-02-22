@@ -44,7 +44,7 @@
                                 {{-- <input  class="tap-to-delete" type="checkbox"  value="{{$blog->id}}" name="directory_id[]" checked> --}}
                             </td>
                             <td>{{ $key+1 }}</td>
-                            <td>{{ $blog->directory->name }}</td>
+                            <td>{{ $blog->directory->name ?? ''}}</td>
                             <td class="text-center">
                                 <div class="btn-group" role="group" aria-label="Second group">
                                     {{-- <a href="#" data-id="{{$blog['id']}}" class="sa-remove btn btn-sm btn-danger edit-btn"><i class="fa fa-trash"></i></a> --}}
