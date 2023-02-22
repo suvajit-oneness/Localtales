@@ -92,12 +92,28 @@ class NotificationController extends BaseController
 
     public function checkPushNotification(Request $request) {
         $user = Auth::guard('business')->user();
-        $data = PushNotification::where('receiver', $user->id)->where('read_flag', 0)->get();
+        $data = PushNotification::where('receiver', $user->id)->where('read_flag', 0)->latest('id')->get();
 
         if ($data) {
             return response()->json([
                 'status' => 200,
                 'message' => 'Push notifications found',
+                'data' => $data
+            ]);
+        }
+    }
+
+    public function readPushNotification(Request $request) {
+        $user = Auth::guard('business')->user();
+        $data = PushNotification::where('receiver', $user->id)->where('id', $request->id)->first();
+
+        if ($data) {
+            $data->read_flag = 1;
+            $data->save();
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Push notifications read',
                 'data' => $data
             ]);
         }

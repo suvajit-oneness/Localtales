@@ -150,18 +150,31 @@
 
                                     // looping through notifications
                                     $.each(result.data, (key, val) => {
-                                        let title = val.title;
+                                        let title = val.title+val.id;
                                         let text = val.description;
                                         let url = "{{url('/')}}/"+val.route;
+                                        let dts = Math.floor(Date.now());
 
-                                        let notification = new Notification(title, {
-                                            body: text,
-                                            icon: img
-                                        });
+                                        // if (key < 2) {
+                                            let notification = new Notification(title, {
+                                                body: text,
+                                                icon: img
+                                            });
 
-                                        notification.onclick = function () {
-                                            window.open(url);
-                                        };
+                                            notification.onclick = function () {
+                                                window.open(url);
+                                            };
+
+                                            notification.addEventListener('close', function() {
+                                                pushNotificationRead(val.id);
+                                            });
+
+                                            setTimeout(() => {console.log(val.id)}, 5000)
+
+                                            // setTimeout(() => notification.close(), 10*1000);
+                                        // }
+
+                                        // pushNotificationRead(val.id);
                                     });
                                 }
                             });
@@ -173,6 +186,17 @@
             });
         }
         pushNotifications();
+
+        function pushNotificationRead(id) {
+            $.ajax({
+                url: "{{ route('business.push.notification.read') }}",
+                method: 'POST',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    id: id
+                }
+            });
+        }
     </script> 
 
     @stack('scripts')

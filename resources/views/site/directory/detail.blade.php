@@ -347,7 +347,6 @@
     <div class="container">
         <div class="row mb-0 mb-sm-4 justify-content-center">
             <div class="page_title text-center">
-<<<<<<< HEAD
                 <h2 class="mb-2">Review Summery</h2>
                 <div class="row">
                     <div class="col-md-6 details_left">
@@ -370,10 +369,8 @@
                         </div>
                     </div>
                 </div>
-=======
                 <h2 class="mb-2">Review Summary</h2>
                 
->>>>>>> a97822e4c2d9b6f5bbc49557d6ad52683781c903
                 <div class="tab-pane" id="reviews" role="tabpanel">
                     <div class="row justify-content-between">
                         <div class="col-auto">

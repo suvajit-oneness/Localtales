@@ -34,6 +34,7 @@ Route::group(['prefix' => 'business'], function () {
 		Route::post('/notification/toggle', 'Business\NotificationController@toggle')->name('business.notification.toggle');
 		Route::post('/notification/receive/toggle', 'Business\NotificationController@NotificationReceiveType')->name('business.notification.receive.toggle');
 		Route::get('/push/notification', 'Business\NotificationController@checkPushNotification')->name('business.push.notification.check');
+		Route::post('/push/notification/read', 'Business\NotificationController@readPushNotification')->name('business.push.notification.read');
 
 
 
