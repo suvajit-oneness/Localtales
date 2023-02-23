@@ -48,6 +48,7 @@
                                 <th> Title </th>
                                 <!-- <th> Description </th> -->
                                 <th> Image </th>
+                                <th> Start Date </th>
                                 <th> Expiry Date </th>
                                 <th> Details</th>
                                 <th> Status </th>
@@ -77,6 +78,7 @@
                                         <img style="width: 150px;height: 100px;" src="{{URL::to('/').'/uploads/deals/'}}{{$deal->image}}">
                                         @endif
                                     </td>
+                                    <td>{{ date("d-M-Y",strtotime($deal->start_date)) }}</td>
                                     <td>{{ date("d-M-Y",strtotime($deal->expiry_date)) }}</td>
                                     <td>Price : ${{ $deal->price }}<br> Promo Code : {{$deal->promo_code}}<br>Discount type : {{$deal->discount_type}}<br>Discount amount : {{$deal->discount_amount}}</td>
                                     {{-- <td>{!! dealRatingHtml(getReviewDetails($deal->id)['average_star_count']) !!}</td> --}}

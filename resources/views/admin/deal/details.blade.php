@@ -41,6 +41,10 @@
                             <td>{{ empty($deal['lon'])? null:($deal['lon']) }}</td>
                         </tr>
                         <tr>
+                            <td>Start Date</td>
+                            <td>{{ empty($deal['start_date'])? null:(date("d-M-Y",strtotime($deal['start_date']))) }}</td>
+                        </tr>
+                        <tr>
                             <td>Expiry Date</td>
                             <td>{{ empty($deal['expiry_date'])? null:(date("d-M-Y",strtotime($deal['expiry_date']))) }}</td>
                         </tr>

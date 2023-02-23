@@ -81,6 +81,7 @@ class DealRepository extends BaseRepository implements DealContract
             if(!empty($params['address'])||!empty($params['pin'])||!empty($params['suburb'])||!empty($params['state'])) {
                 $deal->full_address = ($collection['address'].', '.$collection['suburb'].', '.$collection['state'].', ' .$collection['pin']) ?? '';
             }
+            $deal->start_date = $collection['start_date'] ?? '';
             $deal->expiry_date = $collection['expiry_date'] ?? '';
             $deal->short_description = $collection['short_description'] ?? '';
             $deal->description = $collection['description'] ?? '';
@@ -148,6 +149,7 @@ class DealRepository extends BaseRepository implements DealContract
             if(!empty($params['address'])||!empty($params['pin'])||!empty($params['suburb'])||!empty($params['state'])) {
                 $deal->full_address = ($collection['address'].', '.$collection['suburb'].', '.$collection['state'].', ' .$collection['pin']) ?? '';
             }
+            $deal->start_date = $collection['start_date'] ?? '';
             $deal->expiry_date = $collection['expiry_date'] ?? '';
             $deal->short_description = $collection['short_description'] ?? '';
             $deal->description = $collection['description'] ?? '';
@@ -220,6 +222,7 @@ class DealRepository extends BaseRepository implements DealContract
         else{
             $deal->full_address = $deal->full_address; 
         }
+        $deal->start_date = $collection['start_date'] ?? '';
         $deal->expiry_date = $collection['expiry_date'] ?? '';
         $deal->short_description = $collection['short_description'] ?? '';
         $deal->description = $collection['description']?? '';
@@ -289,6 +292,7 @@ class DealRepository extends BaseRepository implements DealContract
         else{
             $deal->full_address = $deal->full_address; 
         }
+        $deal->start_date = $collection['start_date'] ?? '';
         $deal->expiry_date = $collection['expiry_date'] ?? '';
         $deal->short_description = $collection['short_description'] ?? '';
         $deal->description = $collection['description']?? '';

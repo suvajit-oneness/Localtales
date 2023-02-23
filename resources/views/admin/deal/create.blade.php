@@ -119,6 +119,10 @@
                             @enderror
                         </div>
                         <div class="form-group">
+                            <label class="control-label" for="name">Start Date <span class="m-l-5 text-danger"> *</span></label>
+                            <input class="form-control @error('start_date') is-invalid @enderror" type="date" name="start_date" id="start_date" value="{{ old('start_date') }}"/>
+                        </div>
+                        <div class="form-group">
                             <label class="control-label" for="name">Expiry Date <span class="m-l-5 text-danger"> *</span></label>
                             <input class="form-control @error('expiry_date') is-invalid @enderror" type="date" name="expiry_date" id="expiry_date" value="{{ old('expiry_date') }}"/>
                             @error('expiry_date')
