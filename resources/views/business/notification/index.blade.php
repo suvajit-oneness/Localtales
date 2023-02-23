@@ -12,7 +12,7 @@
     <div class="row">
         <div class="col-12 mt-3">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body all-notifications">
                     <div class="preference text-right mb-3">
                         <a href="{{ route('business.notification.setup') }}" class="btn btn-secondary">
                             <i class="fa fa-cogs"></i>
@@ -21,14 +21,17 @@
                     </div>
 
                     @forelse ($data as $index => $noti)
-                        <a href="javascript:void(0)" class="dropdown-item {{ $noti->read_flag == 0 ? 'unread' : 'read' }}" onclick="readNotification({{ $noti->id }}, '{{ $noti->route }}')">
-                            <p class="mb-0">{{ $noti->title }}</p>
-                            <p class="small mb-0">{{ $noti->description }}</p>
+                        <a href="javascript:void(0)" class="dropdown-item my-2 {{ $noti->read_flag == 0 ? 'unread' : 'read' }}" onclick="readNotification({{ $noti->id }}, '{{ $noti->route }}')">
+                            <div class="d-flex">
+                                <p class="mb-0 mr-3"><strong class="text-dark">{{ $index + $data->firstItem() }}</strong></p>
+                                <div class="noti">
+                                    <p class="mb-0">{{ $noti->title }}</p>
+                                    <p class="small mb-0">{{ $noti->description }}</p>
+                                </div>
+                            </div>
                         </a>
                     @empty
-                        <a class="dropdown-item" href="javascript: void(0)">
-                            <p class="small text-muted text-center mb-0">No notifications yet</p>
-                        </a>
+                        <p class="small text-muted text-center my-5">No notifications yet</p>
                     @endforelse
 
                     <div class="d-flex justify-content-end">

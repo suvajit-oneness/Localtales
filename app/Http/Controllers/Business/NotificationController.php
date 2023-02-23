@@ -19,7 +19,7 @@ class NotificationController extends BaseController
     public function index(Request $request)
     {
         $user = Auth::guard('business')->user();
-        $data = Notification::where('receiver', $user->id)->latest()->paginate(25);
+        $data = Notification::where('receiver', $user->id)->latest()->paginate(12);
 
         return view('business.notification.index', compact('data'));
     }

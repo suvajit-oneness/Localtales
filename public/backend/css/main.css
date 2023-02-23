@@ -17661,3 +17661,7 @@ input:checked+.slider:before {
   flex: 0 0 auto;
   margin-right: 10px;
 }
+
+.all-notifications .dropdown-item.read {
+  background-color: #f1f1f16e;
+}
