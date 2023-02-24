@@ -879,6 +879,35 @@ if(!function_exists('directoryNotify')) {
                 }
                 break;
 
+            case 'directory-favourite-add':
+                // if directory wants to receive email
+                if ($noti->notification_email == 1) {
+                    
+                }
+                // if directory wants to receive push notification
+                if ($noti->notification_push == 1) {
+                    $sender = 0;
+                    $receiver = $directory_id;
+                    $type = 'directory-favourite-add';
+                    $route = 'business/profile';
+                    $title = 'Your business has been favourited by a community member.';
+                    $body = 'You have had a new community member favourite your business! Great work on providing a great service.Don&apos;t forget to keep your profile up to date in case things have changed.';
+
+                    sendPushNotification($sender, $receiver, $type, $route, $title, $body);
+                }
+                // if directory wants to receive in app notification
+                if ($noti->notification_in_app == 1) {
+                    $sender = 0;
+                    $receiver = $directory_id;
+                    $type = 'directory-favourite-add';
+                    $route = 'business/profile';
+                    $title = 'Your business has been favourited by a community member.';
+                    $body = 'You have had a new community member favourite your business! Great work on providing a great service.Don&apos;t forget to keep your profile up to date in case things have changed.';
+
+                    sendNotification($sender, $receiver, $type, $route, $title, $body);
+                }
+                break;
+
             default:
                 break;
         }

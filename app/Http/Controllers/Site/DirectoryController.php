@@ -115,6 +115,14 @@ class DirectoryController extends BaseController
             $data->ip = $ip;
             $data->save();
 
+            // Notify Diretcory about incomplete profile
+            /**
+             * @param int $directoryId
+             * @param string $type
+             * @param object $data
+             */
+            directoryNotify($request->id, 'directory-favourite-add', $data);
+
             return response()->json(['status' => 200, 'type' => 'add', 'message' => 'Directory saved']);
         }
 	}
