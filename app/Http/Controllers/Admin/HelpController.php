@@ -45,7 +45,7 @@ class HelpController extends BaseController
             $blogs = HelpArticle::latest('id')->paginate(25);
         }
         $this->setPageTitle('Article', 'List of all Article');
-        return view('admin.help.index', compact('blogs'));
+        return view('admin.help.index', compact('blogs','request'));
     }
 
     /**

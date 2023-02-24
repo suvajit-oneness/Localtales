@@ -154,7 +154,7 @@ class HelpCategoryRepository extends BaseRepository implements HelpCategoryContr
 
     public function getSearchSubCategories(string $term)
     {
-        return HelpArticle::where([['title', 'LIKE', '%' . $term . '%']])->where('status', 1)->paginate(25);
+        return HelpArticle::where([['title', 'LIKE', '%' . $term . '%']])->paginate(25);
     }
 
 

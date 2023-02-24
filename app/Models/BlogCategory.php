@@ -12,7 +12,7 @@ class BlogCategory extends Model
     ];
 
     public static function insertData($data ,$count) {
-        $value = DB::table('blog_categories')->where('title', $data['title'])->where('slug', $data['slug'])->get();
+        $value = DB::table('blog_categories')->where('title', $data['title'])->get();
         if($value->count() == 0) {
            DB::table('blog_categories')->insert($data);
            $count++;

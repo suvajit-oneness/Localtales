@@ -38,7 +38,7 @@ class HelpController extends BaseController
 
         if (!empty($request->term)) {
             // $categories = $this->HelpcategoryRepository->getSearchCategories($request->term);
-            $categories = HelpCategory::where('status', 1)->where('title', 'like', '%'.$request->term.'%')->orderBy('title', 'asc')->get();
+            $categories = HelpCategory::where('title', 'like', '%'.$request->term.'%')->where('status', 1)->orderBy('title', 'asc')->get();
         } else {
             $categories = HelpCategory::where('status', 1)->orderBy('title', 'asc')->get();
         }

@@ -64,7 +64,7 @@ style="background: url({{URL::to('/').'/Demo/' .$demo}})"
 
                 <h3>{{$article->title}}</h3>
                 <p>{!! $article->description!!}</p>
-                <a href="{{ route('user.raise.query') }}">Have more questions? Submit a query!</a>
+                <p class="text-dark">Have more questions?</p><a type="button" class="btn btn-login" href="{{ route('user.raise.query') }}"> Submit a query!</a>
             </div>
         </div>
     </div>

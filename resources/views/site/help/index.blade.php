@@ -18,7 +18,7 @@ style="background: url({{URL::to('/').'/Demo/' .$demo}})">
                         <div class="col-10 col-md fcontrol position-relative">
                             <div class="form-floating">
                                 <input type="search" name="term" id="term" class="form-control" placeholder="Search here.." value="{{app('request')->input('term')}}" autocomplete="off">
-                                <label for="searchbykeyword" placeholder="Nom">Search by keyword</label>
+                                <label for="searchbykeyword" placeholder="Nom">Search by category</label>
                             </div>
                         </div>
                         <div class="col-2 col-sm-auto">
@@ -42,7 +42,7 @@ style="background: url({{URL::to('/').'/Demo/' .$demo}})">
                 <li>
                     <a href="{!! URL::to('help/category/'.$category->slug) !!}">
                         {{ $category->title }}
-                        <span>{{ $category->description }}</span>
+                        {{-- <span>{{ $category->description }}</span> --}}
                     </a>
                 </li>
                 @endforeach

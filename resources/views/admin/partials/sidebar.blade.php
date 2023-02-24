@@ -334,13 +334,13 @@
                     <span class="app-menu__label">Category</span>
                 </a>
             </li>
-            <li>
+            {{-- <li>
                 <a class="app-menu__item {{ request()->is('admin/helpsubcategory*') ? 'active' : '' }}"
                     href="{{ route('admin.helpsubcategory.index') }}">
                     <i class="app-menu__icon fa fa-cubes"></i>
                     <span class="app-menu__label">SubCatagory</span>
                 </a>
-            </li>
+            </li> --}}
             <li>
                 <a class="app-menu__item {{ request()->is('admin/userhelp*') ? 'active' : '' }}"
                     href="{{ route('admin.userhelp.index') }}">

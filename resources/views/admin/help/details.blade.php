@@ -20,26 +20,17 @@
                        
                         <tr>
                             <td>Article Content</td>
-                            <td>@php
-                                $desc = strip_tags($blog['description']);
-                                $length = strlen($desc);
-                                if($length>50)
-                                {
-                                    $desc = substr($desc,0,50)."...";
-                                }else{
-                                    $desc = substr($desc,0,50);
-                                }
-                            @endphp
-                            {!! $desc !!}</td>
+                            <td>
+                            {!! $blog->description !!}</td>
                         </tr>
                         <tr>
                             <td>Article Category</td>
                             <td>{{$blog->category ? $blog->category->title : '' }}</td>
                         </tr>
-                        <tr>
+                        {{-- <tr>
                             <td>Article Sub Category</td>
                             <td>{{ $blog->subcategory ? $blog->subcategory->title : '' }}</td>
-                        </tr>
+                        </tr> --}}
                         {{-- <tr>
                             <td>Pincode</td>
                             <td>{{$blog->pincode ? $blog->pincode->pin : '' }}</td>

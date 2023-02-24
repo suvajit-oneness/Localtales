@@ -11,11 +11,16 @@ class HelpCategory extends Model
         'title', 'description','status'
     ];
 
-    public static function insertData($data) {
-        $value = DB::table('help_categories')->where('title', $data['title'])->where('slug', $data['slug'])->get();
+    public static function insertData($data,$count) {
+        $value = DB::table('help_categories')->where('title', $data['title'])->get();
         if($value->count() == 0) {
-           DB::table('blog_categories')->insert($data);
+           DB::table('help_categories')->insert($data);
+           $count++;
         }
+        $resp = [
+            "count" => $count,
+        ];
+        return $resp;
     }
 
     

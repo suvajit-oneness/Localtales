@@ -34,7 +34,7 @@
                             </div>
 
                         </div>
-                        <div class="tile-body">
+                        {{-- <div class="tile-body">
                             <div class="form-group">
                                 <label class="control-label" for="sub_cat_id"> Sub Category <span class="m-l-5 text-danger"> *</span></label>
                                 <select class="form-control" name="sub_cat_id">
@@ -46,7 +46,7 @@
                                 @error('sub_cat_id') <p class="small text-danger">{{ $message }}</p> @enderror
                             </div>
 
-                        </div>
+                        </div> --}}
 
 
                         <div class="form-group">

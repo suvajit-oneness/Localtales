@@ -12,7 +12,6 @@
             <div class="tile">
                 <h3 class="tile-title">{{ $subTitle }}
                     <span class="top-form-btn">
-                        <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save Category</button>
                         <a class="btn btn-secondary" href="{{ route('admin.helpcategory.index') }}"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
                     </span>
                 </h3>

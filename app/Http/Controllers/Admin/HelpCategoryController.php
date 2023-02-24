@@ -11,7 +11,9 @@ use Session;
 use Illuminate\Support\Str;
 use App\Exports\CategoryExport;
 use Maatwebsite\Excel\Facades\Excel;
-
+use DB;
+use Illuminate\Support\Facades\Session as FacadesSession;
+use Carbon\Carbon;
 class HelpCategoryController extends BaseController
 {
      /**
@@ -47,7 +49,7 @@ class HelpCategoryController extends BaseController
 
 
         $this->setPageTitle('Category', 'List of all categories');
-        return view('admin.help.category.index', compact('categories', 'data'));
+        return view('admin.help.category.index', compact('categories', 'data','request'));
     }
 
     /**
@@ -210,23 +212,31 @@ class HelpCategoryController extends BaseController
                         $i++;
                     }
                     fclose($file);
-
+                    $count = 0;
                     // echo '<pre>';print_r($importData_arr);exit();
 
                     // Insert into database
-                    foreach ($importData_arr as $importData) {
-                        $storeData = 0;
-                        if (isset($importData[5]) == "Carry In") $storeData = 1;
+                    foreach ($importData_arr as $importData) { 
+                        $slug = Str::slug($importData[0], '-');
+                        $slugExistCount = DB::table('help_categories')->where('title', $importData[0])->count();
+                        if ($slugExistCount > 0) $slug = $slug . '-' . ($slugExistCount + 1);
 
                         $insertData = array(
                             "title" => isset($importData[0]) ? $importData[0] : null,
-                            "slug" => isset($importData[1]) ? $importData[1] : null,
-
+                            "description" => isset($importData[1]) ? $importData[1] : null,
+                            "slug" => $slug,
+                            "created_at" => Carbon::now(),
+                            "updated_at"=> now(),
                         );
                         // echo '<pre>';print_r($insertData);exit();
-                        BlogCategory::insertData($insertData);
+                        $resp = HelpCategory::insertData($insertData,$count);
+                        $count = $resp['count'];
                     }
-                    Session::flash('message', 'Import Successful.');
+                    if($count == 0){
+                        FacadesSession::flash('csv', 'Already Uploaded. ');
+                    } else{
+                         FacadesSession::flash('csv', 'Import Successful. '.$count.' Data Uploaded');
+                    }
                 } else {
                     Session::flash('message', 'File too large. File must be less than 50MB.');
                 }
@@ -241,9 +251,58 @@ class HelpCategoryController extends BaseController
     // csv upload
 
     // export
-    public function export()
+    public function export(Request $request)
     {
-        return Excel::download(new CategoryExport, 'helpcategory.xlsx');
+        //return Excel::download(new CategoryExport, 'helpcategory.xlsx');
+
+        if (!empty($request->term)) {
+            // dd($request->term);
+            $data = $this->HelpcategoryRepository->getSearchCategories($request->term);
+
+            // dd($categories);
+        } else {
+            $data = HelpCategory::latest('id')->paginate(20);
+        }
+
+        if (($data)) {
+            $delimiter = ",";
+            $filename = "category".".xlsx";
+
+            // Create a file pointer 
+            $f = fopen('php://memory', 'w');
+
+            // Set column headers 
+            $fields = array('SR', 'Title', 'Description','Status', 'Created at');
+            fputcsv($f, $fields, $delimiter); 
+
+            $count = 1;
+
+            foreach($data as $row) {
+               
+                $datetime = date('j M Y g:i A', strtotime($row['created_at']));
+                $lineData = array(
+                    $count,
+                    $row['title'] ?? '',
+                    strip_tags($row->description),
+                    ($row->status == 1) ? 'Active' : 'Blocked',
+                    $datetime
+                );
+
+                fputcsv($f, $lineData, $delimiter);
+
+                $count++;
+            }
+
+            // Move back to beginning of file
+            fseek($f, 0);
+
+            // Set headers to download file rather than displayed
+            header('Content-Type: text/csv');
+            header('Content-Disposition: attachment; filename="' . $filename . '";');
+
+            //output all remaining data on a file pointer
+            fpassthru($f);
+        }
     }
     // export
 }

@@ -11,7 +11,7 @@
             <div class="col-md-6 text-right">
                 <a href="{{ route('admin.helpcategory.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Add New</a>
                 <a href="#csvUploadModal" data-toggle="modal" class="btn btn-primary "><i class="fa fa-cloud-upload"></i> CSV Upload</a>
-                <a href="{{ route('admin.helpcategory.data.csv.export') }}" class="btn btn-primary "><i class="fa fa-cloud-download"></i> CSV Export</a>
+                <a href="{{ route('admin.helpcategory.data.csv.export',['term'=>$request->term]) }}" class="btn btn-primary "><i class="fa fa-cloud-download"></i> CSV Export</a>
             </div>
         </div>
     </div>
@@ -101,6 +101,8 @@
                         <br>
                         <p class="small">Please select csv file</p>
                         <button type="submit" class="btn btn-sm btn-primary" id="csvImportBtn">Import <i class="fas fa-upload"></i></button>
+                        <p><a href="{{URL::to('/')}}/admin/csvexample/helpcategory.csv" target="_blank">
+                            <i class="fa fa-download"></i>Download Example File</a></p>
                     </form>
                 </div>
             </div>
@@ -161,4 +163,9 @@
               });
         });
     </script>
+       @if (session('csv'))
+       <script>
+           swal("Success!", "{{ session('csv') }}", "success");
+       </script>
+   @endif
 @endpush

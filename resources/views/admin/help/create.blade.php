@@ -49,7 +49,7 @@
                                 <p class="small text-danger">{{ $message }}</p>
                             @enderror
                         </div>
-
+{{-- 
                         <div class="form-group">
                             <label class="control-label" for="pin"> Sub Category <span class="m-l-5 text-danger">
                                     *</span></label>
@@ -62,7 +62,7 @@
                             @error('blog_sub_category_id')
                                 <p class="small text-danger">{{ $message }}</p>
                             @enderror
-                        </div>
+                        </div> --}}
 
                         <div class="form-group">
                             <label class="control-label" for="description">Content</label>
