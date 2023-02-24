@@ -150,8 +150,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title"><a href="{{ URL::to('directory/'.$business->slug) }}" class="location_btn">{{ $business->name }}</a></h5>
 
-                                    {!! directoryRatingHtml($business->rating) !!}
-
+                                    {!! directoryRatingHtml(number_format(getDirectoryReviewDetails($business->id)['average_star_count'],1)) !!}
                                     <p><i class="fas fa-map-marker-alt"></i> {!! $business->address !!}</p>
 
                                     <div class="directory_block">
@@ -278,9 +277,14 @@
         foreach($directories as $business) {
             $page_link = URL::to('directory/'.strtolower(preg_replace("/[^a-zA-Z0-9]+/", "-", $business->name)));
 
-            $data = array($business->name,floatval($business->latitude),floatval($business->longitude),$business->address,$page_link);
+            // dd($business->latitude);
 
-            array_push($locations,$data);
+            if(!empty($business->latitude) || !empty($business->longitude)){
+                $data = array($business->name,floatval($business->latitude),floatval($business->longitude),$business->address,$page_link);
+            } else {
+                $data = array($business->name, 0.00, 0.00, $business->address, $page_link);
+            }
+            array_push($locations, $data);
         }
         @endphp
 

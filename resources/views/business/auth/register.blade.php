@@ -12,7 +12,9 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('front/css/swiper-bundle.min.css')}}" />
         <link rel="stylesheet" type="text/css" href="{{ asset('front/css/main.css')}}">
         <link rel="stylesheet" type="text/css" href="{{ asset('front/css/responsive.css')}}">
-
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet">
+        <script src="{{ asset('backend/js/jquery-3.2.1.min.js') }}"></script>
+      
         <script src="https://maps.googleapis.com/maps/api/js?key=&libraries=places"></script>
     </head>
 
@@ -94,15 +96,62 @@
                                         <p class="small text-danger" id="businessPhoneErr"></p>
                                     </div>
                                     <div class="did-floating-label-content">
-                                    <input class="did-floating-input @error('address') is-invalid @enderror" type="text" name="address" id="address" onblur="validateAddress(this.value)" value="@php
-                                                    if (request()->input('address')) {
-                                                        if (request()->input('address') != 'undefined') {
-                                                            echo request()->input('address');
+                                        <label>Street Address <span class="m-l-5 text-danger">
+                                            *</span></label>
+                                    <input class="did-floating-input @error('street_address') is-invalid @enderror" type="text" name="street_address" id="address" onblur="validateAddress(this.value)" value="@php
+                                                    if (request()->input('street_address')) {
+                                                        if (request()->input('street_address') != 'undefined') {
+                                                            echo request()->input('street_address');
                                                         }
                                                     }
                                                     @endphp" >
-                                        <label class="did-floating-label">Business Address <span class="m-l-5 text-danger">
+                                        
+                                        <p class="small text-danger" id="businessAddressErr"></p>
+                                    </div>
+                                    <div class="did-floating-label-content">
+                                        <label>Postcode <span class="m-l-5 text-danger">
                                             *</span></label>
+                                        <div class="filterSearchBox">
+                                            <div class="row">
+                                                <div
+                                                    class="mb-sm-0 col col-lg fcontrol position-relative filter_selectWrap filter_selectWrap2">
+                                                    <div class="select-floating-admin">
+                                                        <label class="control-label" for="pincode"></label>
+                                                        <select
+                                                            class="filter_select did-floating-input @error('postcode') is-invalid @enderror"
+                                                            name="postcode">
+                                                            <option value="" hidden selected>Select Postcode...</option>
+                                                            @foreach ($pin as $index => $item)
+                                                                <option value="{{ $item->pin }}">{{ $item->pin }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        @error('postcode')
+                                                            <p class="small text-danger">{{ $message }}</p>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                                    <div class="did-floating-label-content">
+                                        <label>Suburb <span class="m-l-5 text-danger">
+                                            *</span></label>
+                                        <select class="did-floating-input @error('suburb') is-invalid @enderror" name="suburb">
+                                            <option value="" selected disabled>Select Postcode first</option>
+                                        </select>
+                                        @error('suburb')
+                                            <p class="small text-danger">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    <div class="did-floating-label-content">
+                                        <label>State <span class="m-l-5 text-danger">
+                                            *</span></label>
+                                    <input class="did-floating-input @error('state') is-invalid @enderror" type="text" name="state" id="address" onblur="validateAddress(this.value)" value=" ">
+                                    @error('state')
+                                    <p class="small text-danger">{{ $message }}</p>
+                                    @enderror
                                         <p class="small text-danger" id="businessAddressErr"></p>
                                     </div>
                                     <div class="did-floating-label-content">
@@ -167,15 +216,24 @@
                                 <div class="div1" id="st3">
                                     <h6><span>3</span>Business Overview:</h6>
                                     <div class="did-floating-label-content">
-                                    <select class="form-control" name="category_id[]" multiple>
-                                            <option value="" hidden selected>Select Category...</option>
-                                            @foreach ($dircategory as $index => $item)
-                                                <option value="{{$item->id}}">{{ $item->child_category }}</option>
-                                            @endforeach
-                                    </select>
+                                        <div class="filterSearchBox">
+                                            <div class="row">
+                                                <div class="mb-sm-0 col col-lg fcontrol position-relative filter_selectWrap filter_selectWrap2">
+                                                    <div class="select-floating-admin">
+                                                    <label>Categories <span class="m-l-5 text-danger">
+                                                        *</span></label>
+                                                    <select class="filter_select did-floating-input @error('category_id') is-invalid @enderror" name="category_id[]" multiple>
+                                                            <option value="" hidden selected>Select Category...</option>
+                                                            @foreach ($dircategory as $index => $item)
+                                                                <option value="{{$item->id}}">{{ $item->child_category }}</option>
+                                                            @endforeach
+                                                    </select>
                                     @error('category_id') <p class="small text-danger">{{ $message }}</p> @enderror
-                                        <label class="did-floating-label">Categories <span class="m-l-5 text-danger">
-                                            *</span></label>
+                                       
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="did-floating-label-content">
                                     <textarea class="did-floating-input" rows="4" name="description" id="description" onblur="validateDes(this.value)" value="{{ old('description') }}"/>@error('description') {{ $message ?? '' }} @enderror</textarea>
@@ -315,11 +373,12 @@
         </section>
 
 
-        <script type="text/javascript" src="{{ asset('front/js/jquery-3.6.0.min.js')}}"></script>
+        <script type="text/javascript" src="{{ asset('front/js/jquery-3.6.0.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('front/js/popper.min.js')}}"></script>
         <script type="text/javascript" src="{{ asset('front/js/bootstrap.min.js')}}"></script>
         <script type="text/javascript" src="{{ asset('front/js/swiper-bundle.min.js')}}"></script>
         <script type="text/javascript" src="{{ asset('front/js/custom.js')}}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
         <script>
 
         </script>
@@ -943,6 +1002,60 @@
     });
 
     })(jQuery, window);
+
+
+    </script>
+     <script>
+        $('select[name="postcode"]').on('change', (event) => {
+            var value = $('select[name="postcode"]').val();
+
+            $.ajax({
+                url: '{{ url('/') }}/api/postcode-suburb/' + value,
+                method: 'GET',
+                success: function(result) {
+                    var content = '';
+                    var slectTag = 'select[name="suburb"]';
+                    var displayCollection = (result.data.postcode == "all") ? "All postcode" :
+                        " Select";
+
+                    content += '<option value="" selected>' + displayCollection + '</option>';
+                    $.each(result.data.suburb, (key, value) => {
+                        content += '<option value="' + value.suburb_title + '">' + value
+                            .suburb_title + '</option>';
+                    });
+                    $(slectTag).html(content).attr('disabled', false);
+                }
+            });
+        });
+    </script>
+     <script>
+        // $('.filter_select').select2({
+        //   width:"100%",
+        // });
+
+
+    //     $('.filter_select').select2().on('select2:select', function (e) {
+    //       var data = e.params.data;
+
+    //   });
+
+
+            $('.filter_select').select2().on('select2:open', (elm) => {
+        const targetLabel = $(elm.target).prev('label');
+        targetLabel.addClass('filled active');
+    }).on('select2:close', (elm) => {
+        const target = $(elm.target);
+        const targetLabel = target.prev('label');
+        const targetOptions = $(elm.target.selectedOptions);
+        if (targetOptions.length === 0) {
+            targetLabel.removeClass('filled active');
+        }
+    });
+
+
+        $(document).on('.filter_selectWrap select2:open', () => {
+          document.querySelector('.select2-search__field').focus();
+        });
     </script>
     </body>
 

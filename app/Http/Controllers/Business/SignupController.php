@@ -48,23 +48,41 @@ class SignupController extends BaseController
     {
         $this->setPageTitle('Business ', 'Business Signup');
         $dircategory = $this->DirectoryRepository->getDirectorycategories();
+        $pin=PinCode::orderby('pin')->get();
         $directory = $request->session()->get('directory');
-        return view('business.auth.register', compact('dircategory', 'directory'));
+        return view('business.auth.register', compact('dircategory', 'directory','pin'));
     }
     public function store(Request $request)
     {
-        
+        //dd($request->all());
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:directories',
             'mobile' => 'required|digits:10',
+            'trading_name' => 'required',
+            'address' => 'required',
+            'suburb' => 'required',
+            'state' => 'required',
+            'postcode' => 'required',
+            'website' => 'required',
+            'primary_name' => 'required',
+            'primary_email' => 'required',
+            'primary_phone' => 'required',
+            'category_id' => 'required',
+            'description' => 'required',
+            'service_description' => 'required',
             //'password' => 'required|string|min:6',
         ]);
         $business = new Directory();
         $business->name = $request->name;
+         // generate slug
+        $slug = Str::slug($request->name, '-');
+        $slugExistCount = Directory::where('slug', $slug)->count();
+        if ($slugExistCount > 0) $slug = $slug.'-'.($slugExistCount+1);
+        $business->slug = $slug;
         $business->trading_name = $request->trading_name;
         $business->email = $request->email;
-        $business->address = $request->address;
+        $business->address = $request->street_address.', '.$request->suburb.', '.$request->state.', '.$request->postcode;
         $business->mobile = $request->mobile;
         // $business->pin = $request->pin;
         $business->description = $request->description;
@@ -87,6 +105,7 @@ class SignupController extends BaseController
         $business->instagram_link = $request->instagram_link;
         $business->password = bcrypt('Welcome@2022');
         $saved = $business->save();
+        dd($saved);
         $token = Str::random(64);
   
         $user= new DirectoryLoginVerify();

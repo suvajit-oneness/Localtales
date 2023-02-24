@@ -11,6 +11,18 @@
     <div class="row">
         <div class="col-md-12">
             <div class="tile">
+                @if ($event->end_date < \Carbon\Carbon::now() )
+                <h3 class="text-danger mt-3 fw-bold">EXPIRED</h3>
+                @else
+                <h3 class="text-danger mt-3 fw-bold">ONGOING</h3>
+                @endif
+                <span class="top-form-btn">
+                    <a class="btn btn-primary" href="{{ route('business.event.edit',$event->id) }}">
+                        <i class="fa fa-edit"></i> Edit
+                    </a>
+                </span>
+                <h3 class="tile-title"></h3>
+                <br>
                 <table class="table table-hover custom-data-table-style table-striped table-col-width" id="sampleTable">
                     <tbody>
                         <tr>
