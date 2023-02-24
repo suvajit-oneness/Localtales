@@ -38,9 +38,8 @@ class CollectionController extends BaseController
      */
     public function index(Request $request)
     {
-
         if (!empty($request->term)) {
-            // dd($request->term);
+            // 
             $col = $this->CollectionRepository->getSearchCollection($request->term);
 
             //dd($col);
@@ -48,7 +47,7 @@ class CollectionController extends BaseController
             $col =  Collection::where('status', 1)->paginate(20);
         }
         $this->setPageTitle('Collection', 'List of all collection');
-        return view('admin.collection.index', compact('col'));
+        return view('admin.collection.index', compact('col','request'));
     }
 
     /**
@@ -366,16 +365,14 @@ class CollectionController extends BaseController
     // csv upload
 
 
-    public function export()
+    public function export(Request $request)
     {
-        //return Excel::download(new CollectionExport, 'collection.xlsx');
         if (!empty($request->term)) {
-            // dd($request->term);
-            $col = $this->CollectionRepository->getSearchCollection($request->term);
-
-            //dd($col);
+            $data = $this->CollectionRepository->getSearchCollection($request->term);
+            //dd('hi');
         } else {
-            $col =  Collection::where('status', 1)->get();
+            $data =  Collection::where('status', 1)->get();
+           // dd('hello');
         }
         if (($data)) {
             $delimiter = ",";
