@@ -10,7 +10,7 @@
             <div class="col-md-9 text-right">
                 <a href="{{ route('admin.collection.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Add New</a>
                 <a href="#csvUploadModal" data-toggle="modal" class="btn btn-primary "><i class="fa fa-cloud-upload"></i> CSV Upload</a>
-                <a href="{{ route('admin.collection.data.csv.export') }}" class="btn btn-primary "><i class="fa fa-cloud-download"></i> CSV Export</a>
+                <a href="{{ route('admin.collection.data.csv.export',['term'=>$request->term]) }}" class="btn btn-primary "><i class="fa fa-cloud-download"></i> CSV Export</a>
                 <a href="javascript:void(0)" class="btn btn-primary"><label for="bulkimage" class="fa fa-cloud-upload">
                         Upload Bulk Image</label> </a>
                 <form action="{{ route('admin.collection.image.upload') }}" enctype="multipart/form-data" id="bulk_image_form"
