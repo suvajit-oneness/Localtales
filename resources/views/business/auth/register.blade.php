@@ -74,6 +74,9 @@
                                                         }
                                                     }
                                                     @endphp" >
+                                                     @error('email')
+                                                     <p class="small text-danger">{{ $message }}</p>
+                                                     @enderror
                                         <label class="did-floating-label">Business Email <span class="m-l-5 text-danger">
                                             *</span></label>
                                         <p class="small text-danger" id="businessEmailErr"></p>

@@ -17,7 +17,6 @@
         "laravel/tinker": "^2.0",
         "maatwebsite/excel": "^3.1",
         "pragmarx/countries": "^0.7.0",
-        "rakibdevs/openweather-laravel-api": "^1.9",
         "stripe/stripe-php": "^7.27",
         "tymon/jwt-auth": "dev-develop",
         "typicms/nestablecollection": "^1.1"
