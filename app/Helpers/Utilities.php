@@ -1082,6 +1082,35 @@ if(!function_exists('directoryNotify')) {
                 }
                 break;
 
+            case 'weekly-visit-count':
+                // if directory wants to receive email
+                if ($noti->notification_email == 1) {
+                    
+                }
+                // if directory wants to receive push notification
+                if ($noti->notification_push == 1) {
+                    $sender = 0;
+                    $receiver = $directory_id;
+                    $type = 'weekly-visit-count';
+                    $route = '';
+                    $title = 'This week your business has been viewed '.$data->count.' amount of times.';
+                    $body = 'This week your business has been viewed '.$data->count.' amount of times from '.$data->week_start.' to '.$data->week_end.' .';
+
+                    sendPushNotification($sender, $receiver, $type, $route, $title, $body);
+                }
+                // if directory wants to receive in app notification
+                if ($noti->notification_in_app == 1) {
+                    $sender = 0;
+                    $receiver = $directory_id;
+                    $type = 'weekly-visit-count';
+                    $route = '';
+                    $title = 'This week your business has been viewed '.$data->count.' amount of times.';
+                    $body = 'This week your business has been viewed '.$data->count.' amount of times from '.$data->week_start.' to '.$data->week_end.' .';
+
+                    sendNotification($sender, $receiver, $type, $route, $title, $body);
+                }
+                break;
+
             default:
                 break;
         }
@@ -1231,4 +1260,18 @@ if(!function_exists('directoryRatingHtml')) {
 
         return $resp;
     }
+}
+
+function getStartAndEndDate() {
+    $date = date('Y-m-d');
+    $year = date('Y');
+    $date = new DateTime($date);
+    $week = $date->format("W");
+
+    $dto = new DateTime();
+    $dto->setISODate($year, $week);
+    $ret['start'] = $dto->format('Y-m-d');
+    $dto->modify('+6 days');
+    $ret['end'] = $dto->format('Y-m-d');
+    return $ret;
 }

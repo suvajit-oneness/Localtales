@@ -90,6 +90,22 @@ class DirectoryController extends BaseController
         $review =  Review::where('directory_id', $id)->orderby('created_at','desc')->take(4)->get();
         $this->setPageTitle($business->title, 'Directory Details : '.$business->title);
 
+        // visit count - using all counts as weekly count needed
+        // 1. check visit
+        // $visitChk = DB::table('directory_visits')->where('ip', $_SERVER['REMOTE_ADDR'])->first();
+
+        // if (!empty($visitChk)) {
+        //     DB::table('directory_visits')->where('ip', $_SERVER['REMOTE_ADDR'])->update([
+        //         'count' => $visitChk->count+1
+        //     ]);
+        // } else {
+            DB::table('directory_visits')->insert([
+                'directory_id' => $business->id,
+                'user_id' => Auth::guard('user')->check() ? Auth::guard('user')->user()->id : 0,
+                'ip' => $_SERVER['REMOTE_ADDR'],
+            ]);
+        // }
+
         return view('site.directory.detail', compact('business', 'businessSaved', 'review'));
     }
 

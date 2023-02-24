@@ -48,6 +48,9 @@ Route::group(['prefix' => 'business'], function () {
 		Route::get('/event/status/end', 'Business\EventController@endStatus')->name('business.event.end.status');
 		Route::get('/event/status/after/end', 'Business\EventController@afterEndStatus')->name('business.event.after.end.status');
 
+		// business visit count
+		Route::get('/visit/count', 'Business\VisitController@index')->name('business.visit.count');
+
 
 
 		Route::get('2fa', 'Business\TwoFAController@index')->name('2fa.index');

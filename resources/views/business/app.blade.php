@@ -179,6 +179,14 @@
         }
         afterEventEndsNotification();
 
+        // weekly visit show
+        function weeklyVisitCount() {
+            $.ajax({
+                url: "{{ route('business.visit.count') }}",
+            });
+        }
+        weeklyVisitCount();
+
         // check for push notifications
         function pushNotifications() {
             $.ajax({

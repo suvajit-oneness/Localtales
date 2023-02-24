@@ -193,13 +193,16 @@ class EventController extends BaseController
      * @throws \Illuminate\Validation\ValidationException
      */
     public function updateStatus(Request $request){
-        //dd($request->all());
+        // dd($request->all());
         $params = $request->except('_token');
 
         $event = $this->eventRepository->updateEventStatus($params);
 
+        // dd($event);
+
         if ($event) {
-            return redirect()->route('business.event.index')->with('success','Event status has been successfully updated','success',false, false);
+            return response()->json(array('message' => 'Event status has been successfully updated'));
+            // return redirect()->route('business.event.index')->with('success','Event status has been successfully updated','success',false, false);
         }
     }
 
