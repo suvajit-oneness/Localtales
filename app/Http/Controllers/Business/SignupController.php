@@ -136,7 +136,7 @@ class SignupController extends BaseController
   
             if(!is_null($verifyUser) ){
                 $user = $verifyUser->business_id;
-                $business=DirectoryLoginVerify::where('id',$user)->first();
+                $business=Directory::where('id',$user)->first();
                 if(!$business->is_email_verified) {
                     $verifyUser->business->is_email_verified = 1;
                     $verifyUser->business->save();

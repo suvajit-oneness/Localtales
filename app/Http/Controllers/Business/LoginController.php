@@ -121,6 +121,10 @@ class LoginController extends BaseController
 
                     return redirect()->route('business.dashboard')->with('success', 'login successful');
                 }
+            }else{
+                auth()->logout();
+                return redirect()->route('business.login')
+                        ->with('message', 'You need to confirm your account. We have sent you an verification mail, please check your email.');
             }
         } else {
             return redirect()->route('business.login')->with('failure', 'Wrong credential!');
