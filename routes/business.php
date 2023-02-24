@@ -43,6 +43,11 @@ Route::group(['prefix' => 'business'], function () {
 		Route::get('/deal/status/end', 'Business\DealController@endStatus')->name('business.deal.end.status');
 		Route::get('/deal/status/after/end', 'Business\DealController@afterEndStatus')->name('business.deal.after.end.status');
 
+		// events status check for notification
+		Route::get('/event/status/start', 'Business\EventController@startStatus')->name('business.event.start.status');
+		Route::get('/event/status/end', 'Business\EventController@endStatus')->name('business.event.end.status');
+		Route::get('/event/status/after/end', 'Business\EventController@afterEndStatus')->name('business.event.after.end.status');
+
 
 
 		Route::get('2fa', 'Business\TwoFAController@index')->name('2fa.index');

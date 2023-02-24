@@ -12,9 +12,9 @@
         <div class="col-md-12">
             <div class="tile">
                 @if ($deal->expiry_date < \Carbon\Carbon::now() )
-                <h3 class="text-danger mt-3 fw-bold">EXPIRED</h3>
-                @else
-                <h3 class="text-danger mt-3 fw-bold">ONGOING</h3>
+                    <h3 class="text-danger mt-3 fw-bold">EXPIRED</h3>
+                {{-- @else
+                    <h3 class="text-danger mt-3 fw-bold">ONGOING</h3> --}}
                 @endif
                 <span class="top-form-btn">
                     <a class="btn btn-primary" href="{{ route('business.deal.edit',$deal->id) }}">

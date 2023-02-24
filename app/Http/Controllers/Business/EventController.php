@@ -14,6 +14,7 @@ use App\Models\Event;
 use App\Models\State;
 use DB;
 use Auth;
+
 class EventController extends BaseController
 {
     /**
@@ -213,5 +214,77 @@ class EventController extends BaseController
 
         $this->setPageTitle('Event', 'Event Details : '.$event->title);
         return view('business.event.details', compact('event'));
+    }
+
+    public function startStatus()
+    {
+        $current_date = date('Y-m-d', strtotime('+1day'));
+        $userId = Auth::guard('business')->user()->id;
+
+        $data = Event::where('created_by', $userId)->where('start_date', $current_date)->where('before_24_hour_notify', 0)->where('status', 1)->get();
+
+        if (count($data) > 0) {
+            foreach($data as $event) {
+                $eventUpdate = Event::findOrFail($event->id);
+                $eventUpdate->before_24_hour_notify = 1;
+                $eventUpdate->save();
+
+                // Notify Diretcory about event starting in 24 hours
+                /**
+                 * @param int $directoryId
+                 * @param string $type
+                 * @param object $data
+                 */
+                directoryNotify($userId, 'event-starts-in-24-hours', $event);
+            }
+        }
+    }
+
+    public function endStatus()
+    {
+        $current_date = date('Y-m-d', strtotime('+1day'));
+        $userId = Auth::guard('business')->user()->id;
+
+        $data = Event::where('created_by', $userId)->where('end_date', $current_date)->where('end_before_24_hour_notify', 0)->where('status', 1)->get();
+
+        if (count($data) > 0) {
+            foreach($data as $event) {
+                $eventUpdate = Event::findOrFail($event->id);
+                $eventUpdate->end_before_24_hour_notify = 1;
+                $eventUpdate->save();
+
+                // Notify Diretcory about event starting in 24 hours
+                /**
+                 * @param int $directoryId
+                 * @param string $type
+                 * @param object $data
+                 */
+                directoryNotify($userId, 'event-ends-in-24-hours', $event);
+            }
+        }
+    }
+
+    public function afterEndStatus()
+    {
+        $current_date = date('Y-m-d');
+        $userId = Auth::guard('business')->user()->id;
+
+        $data = Event::where('created_by', $userId)->where('end_date', '<', $current_date)->where('event_end_notify', 0)->where('status', 1)->get();
+
+        if (count($data) > 0) {
+            foreach($data as $event) {
+                $eventUpdate = Event::findOrFail($event->id);
+                $eventUpdate->event_end_notify = 1;
+                $eventUpdate->save();
+
+                // Notify Diretcory about event starting in 24 hours
+                /**
+                 * @param int $directoryId
+                 * @param string $type
+                 * @param object $data
+                 */
+                directoryNotify($userId, 'event-expired', $event);
+            }
+        }
     }
 }

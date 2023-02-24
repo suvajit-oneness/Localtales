@@ -995,6 +995,93 @@ if(!function_exists('directoryNotify')) {
                 }
                 break;
 
+            case 'event-starts-in-24-hours':
+                // if directory wants to receive email
+                if ($noti->notification_email == 1) {
+                    
+                }
+                // if directory wants to receive push notification
+                if ($noti->notification_push == 1) {
+                    $sender = 0;
+                    $receiver = $directory_id;
+                    $type = 'event-starts-in-24-hours';
+                    $route = 'business/event/'.$data->id.'/details';
+                    $title = 'A quick reminder your event is starting soon.';
+                    $body = 'A quick reminder your event is starting soon. There&apos;s still time to update any details for it. We hope the community enjoys it!';
+
+                    sendPushNotification($sender, $receiver, $type, $route, $title, $body);
+                }
+                // if directory wants to receive in app notification
+                if ($noti->notification_in_app == 1) {
+                    $sender = 0;
+                    $receiver = $directory_id;
+                    $type = 'event-starts-in-24-hours';
+                    $route = 'business/event/'.$data->id.'/details';
+                    $title = 'A quick reminder your event is starting soon.';
+                    $body = 'A quick reminder your event is starting soon. There&apos;s still time to update any details for it. We hope the community enjoys it!';
+
+                    sendNotification($sender, $receiver, $type, $route, $title, $body);
+                }
+                break;
+
+            case 'event-ends-in-24-hours':
+                // if directory wants to receive email
+                if ($noti->notification_email == 1) {
+                    
+                }
+                // if directory wants to receive push notification
+                if ($noti->notification_push == 1) {
+                    $sender = 0;
+                    $receiver = $directory_id;
+                    $type = 'event-ends-in-24-hours';
+                    $route = 'business/event/'.$data->id.'/details';
+                    $title = 'Your event is ending soon, if you&apos;d like to extend it if you like.';
+                    $body = 'Just to let you know your event is expiring soon. If you want to extend the timeframe you can by tapping here.';
+
+                    sendPushNotification($sender, $receiver, $type, $route, $title, $body);
+                }
+                // if directory wants to receive in app notification
+                if ($noti->notification_in_app == 1) {
+                    $sender = 0;
+                    $receiver = $directory_id;
+                    $type = 'event-ends-in-24-hours';
+                    $route = 'business/event/'.$data->id.'/details';
+                    $title = 'Your event is ending soon, if you&apos;d like to extend it if you like.';
+                    $body = 'Just to let you know your event is expiring soon. If you want to extend the timeframe you can by tapping here.';
+
+                    sendNotification($sender, $receiver, $type, $route, $title, $body);
+                }
+                break;
+
+            case 'event-expired':
+                // if directory wants to receive email
+                if ($noti->notification_email == 1) {
+                    
+                }
+                // if directory wants to receive push notification
+                if ($noti->notification_push == 1) {
+                    $sender = 0;
+                    $receiver = $directory_id;
+                    $type = 'event-expired';
+                    $route = 'business/event/'.$data->id.'/details';
+                    $title = 'Your event has now expired.';
+                    $body = 'Your event has now expired. You can relist this if you wish, if not you don&apos;t need to do anything else. We hope the community enjoyed it!';
+
+                    sendPushNotification($sender, $receiver, $type, $route, $title, $body);
+                }
+                // if directory wants to receive in app notification
+                if ($noti->notification_in_app == 1) {
+                    $sender = 0;
+                    $receiver = $directory_id;
+                    $type = 'event-expired';
+                    $route = 'business/event/'.$data->id.'/details';
+                    $title = 'Your event has now expired.';
+                    $body = 'Your event has now expired. You can relist this if you wish, if not you don&apos;t need to do anything else. We hope the community enjoyed it!';
+
+                    sendNotification($sender, $receiver, $type, $route, $title, $body);
+                }
+                break;
+
             default:
                 break;
         }

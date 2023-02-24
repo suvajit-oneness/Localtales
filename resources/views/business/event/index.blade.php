@@ -22,6 +22,7 @@
                         <th> Image </th>
                         <th> Category </th>
                         <th> Start Date </th>
+                        <th> Expiry Date </th>
                         <th> Status </th>
                         <th style="width:100px; min-width:100px;" class="text-center">Action</th>
                     </tr>
@@ -40,6 +41,7 @@
                                 {!! eventCategory($event->category_id) !!}
                             </td>
                             <td>{{ date('j M, Y', strtotime($event->start_date)) }}</td>
+                            <td>{{ date('j M, Y', strtotime($event->end_date)) }}</td>
                             <td class="text-center">
                                 <div class="toggle-button-cover margin-auto">
                                     <div class="button-cover">

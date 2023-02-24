@@ -155,6 +155,30 @@
         }
         afterDealEndsNotification();
 
+        // before event starts, notify 24 hours ago
+        function eventStartStatusForNotification() {
+            $.ajax({
+                url: "{{ route('business.event.start.status') }}",
+            });
+        }
+        eventStartStatusForNotification();
+
+        // before event ends, notify 24 hours ago
+        function eventEndStatusForNotification() {
+            $.ajax({
+                url: "{{ route('business.event.end.status') }}",
+            });
+        }
+        eventEndStatusForNotification();
+
+        // after event ends
+        function afterEventEndsNotification() {
+            $.ajax({
+                url: "{{ route('business.event.after.end.status') }}",
+            });
+        }
+        afterEventEndsNotification();
+
         // check for push notifications
         function pushNotifications() {
             $.ajax({
