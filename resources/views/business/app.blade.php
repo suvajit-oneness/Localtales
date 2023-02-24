@@ -131,6 +131,30 @@
             });
         }
 
+        // before deal starts, notify 24 hours ago
+        function dealStartStatusForNotification() {
+            $.ajax({
+                url: "{{ route('business.deal.start.status') }}",
+            });
+        }
+        dealStartStatusForNotification();
+
+        // before deal ends, notify 24 hours ago
+        function dealEndStatusForNotification() {
+            $.ajax({
+                url: "{{ route('business.deal.end.status') }}",
+            });
+        }
+        dealEndStatusForNotification();
+
+        // after deal ends
+        function afterDealEndsNotification() {
+            $.ajax({
+                url: "{{ route('business.deal.after.end.status') }}",
+            });
+        }
+        afterDealEndsNotification();
+
         // check for push notifications
         function pushNotifications() {
             $.ajax({
@@ -150,7 +174,7 @@
 
                                     // looping through notifications
                                     $.each(result.data, (key, val) => {
-                                        let title = val.title+val.id;
+                                        let title = val.title;
                                         let text = val.description;
                                         let url = "{{url('/')}}/"+val.route;
 
