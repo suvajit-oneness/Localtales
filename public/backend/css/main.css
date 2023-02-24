@@ -17501,6 +17501,11 @@ input:checked+.slider:before {
   font-size: 14px;
 }
 
+.notification-list .card-body {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
 .notification-list .unread, .dropdown-item.unread {
   background-color: #d1d1d1;
 }
@@ -17664,4 +17669,13 @@ input:checked+.slider:before {
 
 .all-notifications .dropdown-item.read {
   background-color: #f1f1f16e;
+}
+
+.notification-list a p:nth-child(2) {
+  white-space: pre-wrap;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

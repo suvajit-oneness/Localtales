@@ -25,8 +25,8 @@
                             <div class="d-flex">
                                 <p class="mb-0 mr-3"><strong class="text-dark">{{ $index + $data->firstItem() }}</strong></p>
                                 <div class="noti">
-                                    <p class="mb-0">{{ $noti->title }}</p>
-                                    <p class="small mb-0">{{ $noti->description }}</p>
+                                    <p class="mb-0">{!! $noti->title !!}</p>
+                                    <p class="small mb-0">{!! $noti->description !!}</p>
                                 </div>
                             </div>
                         </a>

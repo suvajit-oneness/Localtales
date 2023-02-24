@@ -55,25 +55,30 @@ class LoginController extends BaseController
     public function check(Request $request)
     {
         // dd($request->all());
+
         $this->validate($request, [
             'email' => 'required|email|exists:directories,email',
             'password' => 'required',
         ]);
+
         $credentials = $request->only('email', 'password');
         $remember_me = $request->has('remember') ? true : false;
-        if (Auth::guard('business')->attempt($credentials))
-        {
+
+        if (Auth::guard('business')->attempt($credentials)) {
             $verify = Auth::guard('business')->user()->is_email_verified;
             if ($verify== 1) {
                 $status = Auth::guard('business')->user()->is_2fa_enable;
+
                 if ($status == 1) {
                     Auth::guard('business')->user()->generateCode();
     
                     return redirect()->route('2fa.index');
-                }else{
-                      // login activity store
+                } else {
+                    $userId = Auth::guard('business')->user()->id;
+
+                    // 1. login activity store
                     $activityData = [
-                        'user_id' => Auth::guard('business')->user()->id,
+                        'user_id' => $userId,
                         'user_type' => 'business',
                         'date' => date('Y-m-d'),
                         'time' => date('H:i:s'),
@@ -81,12 +86,43 @@ class LoginController extends BaseController
                         'location' => $_SERVER['REMOTE_ADDR'],
                     ];
                     activityStore($activityData);
-                return redirect()->route('business.dashboard')->with('success','login successful');
+
+                    // 2. check for profile incompletion after 3 logins
+                    $activityData = Activity::where('user_id', $userId)->where('type', 'login')->count();
+                    if ($activityData == 3) {
+                        // get business informations
+                        $directoryData = Directory::findOrFail($userId);
+
+                        $notifyBusiness = 0;
+                        if (empty($directoryData->name)) $notifyBusiness = 1;
+                        if (empty($directoryData->category_id)) $notifyBusiness = 1;
+                        if (empty($directoryData->trading_name)) $notifyBusiness = 1;
+                        if (empty($directoryData->mobile)) $notifyBusiness = 1;
+                        if (empty($directoryData->address)) $notifyBusiness = 1;
+                        if (empty($directoryData->monday)) $notifyBusiness = 1;
+                        if (empty($directoryData->tuesday)) $notifyBusiness = 1;
+                        if (empty($directoryData->wednesday)) $notifyBusiness = 1;
+                        if (empty($directoryData->thursday)) $notifyBusiness = 1;
+                        if (empty($directoryData->friday)) $notifyBusiness = 1;
+                        if (empty($directoryData->saturday)) $notifyBusiness = 1;
+                        if (empty($directoryData->sunday)) $notifyBusiness = 1;
+
+                        // notify business
+                        if ($notifyBusiness == 1) {
+                            // Notify Diretcory about incomplete profile
+                            /**
+                             * @param int $directoryId
+                             * @param string $type
+                             * @param object $data
+                             */
+                            directoryNotify($userId, 'incomplete-profile', $directoryData);
+                        }
+                    }
+
+                    return redirect()->route('business.dashboard')->with('success', 'login successful');
                 }
-            } 
-        }
-        else {
-           
+            }
+        } else {
             return redirect()->route('business.login')->with('failure', 'Wrong credential!');
         }
     }

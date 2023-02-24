@@ -154,26 +154,17 @@
                                         let text = val.description;
                                         let url = "{{url('/')}}/"+val.route;
 
-                                        // if (key < 2) {
-                                            let notification = new Notification(title, {
-                                                body: text,
-                                                icon: img
-                                            });
+                                        let notification = new Notification(title, {
+                                            body: text,
+                                            icon: img
+                                        });
 
-                                            notification.onclick = function () {
-                                                window.open(url);
-                                            };
-
-                                            notification.addEventListener('close', function() {
-                                                pushNotificationRead(val.id);
-                                            });
-
-                                            setTimeout(() => {console.log(val.id)}, 5000)
-
-                                            // setTimeout(() => notification.close(), 10*1000);
-                                        // }
-
-                                        // pushNotificationRead(val.id);
+                                        notification.onclick = function () {
+                                            window.open(url);
+                                        };
+                                        notification.addEventListener('close', function() {
+                                            pushNotificationRead(val.id);
+                                        });
                                     });
                                 }
                             });

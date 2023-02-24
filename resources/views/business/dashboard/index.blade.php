@@ -3,7 +3,7 @@
 
 @section('content')
     @php
-        $deals = App\Models\Deal::where('created_by',Auth::guard('business')->user()->id)->get();
+        $deals = App\Models\Deal::where('created_by',Auth::guard('business')->user()->id)->where('status', 1)->get();
     @endphp
 
     <div class="app-title">

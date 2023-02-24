@@ -871,7 +871,7 @@
         // directory bookmark/ save/ wishlist
         function directoryBookmark(collectionId) {
             $.ajax({
-                url: '{{ route('user.directory.save.toggle') }}',
+                url: '{{ route('directory.save.toggle') }}',
                 method: 'post',
                 data: {
                     '_token': '{{ csrf_token() }}',
@@ -880,10 +880,12 @@
                 success: function(result) {
                     // alert(result);
                     if (result.type == 'add') {
-                        toastr.success(result.message);
+                        // toastr.success(result.message);
+                        toastFire('success', result.message);
                         $('#saveBtn').attr('fill', '#fff');
                     } else {
-                        toastr.error(result.message);
+                        // toastr.error(result.message);
+                        toastFire('warning', result.message);
                         $('#saveBtn').attr('fill', 'none');
                     }
                 }

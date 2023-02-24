@@ -21,6 +21,7 @@ Route::get('directory/{slug}','Site\DirectoryController@detail')->name('director
 Route::post('directory/related','Site\DirectoryController@relatedDirectory')->name('directory.related');
 Route::post('/directory/review/create', 'Site\DirectoryController@reviewstore')->name('directory.review.store');
 Route::post('/directory/add/review/ajax', 'Site\DirectoryController@reviewAdd')->name('directory.add.review.ajax');
+Route::post('/directory/save/toggle', 'Site\DirectoryController@save')->name('directory.save.toggle');
 Route::post('/directory/like/review', 'Site\ReviewController@likeStore')->name('directory.review.like');
 Route::post('/directory/dislike/review', 'Site\ReviewController@dislikeStore')->name('directory.review.dislike');
 // directory categories ajax fetch

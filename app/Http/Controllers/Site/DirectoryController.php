@@ -92,6 +92,33 @@ class DirectoryController extends BaseController
 
         return view('site.directory.detail', compact('business', 'businessSaved', 'review'));
     }
+
+    public function save(Request $request) {
+        $ip = $_SERVER['REMOTE_ADDR'];
+
+	    // check if collection already exists
+        if(auth()->guard('user')->check()) {
+           $collectionExistsCheck = Userbusiness::where('directory_id', $request->id)->where('ip', $ip)->orWhere('user_id', auth()->guard('user')->user()->id)->first();
+        } else {
+           $collectionExistsCheck = Userbusiness::where('directory_id', $request->id)->where('ip', $ip)->first();
+        }
+
+        if($collectionExistsCheck != null) {
+            // if found
+            $data = Userbusiness::destroy($collectionExistsCheck->id);
+            return response()->json(['status' => 200, 'type' => 'remove', 'message' => 'Directory removed from saved']);
+        } else {
+            // if not found
+            $data = new Userbusiness();
+            $data->user_id = auth()->guard('user')->user() ? auth()->guard('user')->user()->id : 0;
+            $data->directory_id = $request->id;
+            $data->ip = $ip;
+            $data->save();
+
+            return response()->json(['status' => 200, 'type' => 'add', 'message' => 'Directory saved']);
+        }
+	}
+
     //related directory
     public function relatedDirectory(Request $request)
     {

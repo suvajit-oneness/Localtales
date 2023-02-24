@@ -17,22 +17,27 @@
                 @endif
             </a>
             <div class="dropdown-menu dropdown-menu-right notification-list">
-                @forelse ($notificationList as $index => $noti)
-                    <a href="javascript:void(0)" class="dropdown-item {{ $noti->read_flag == 0 ? 'unread' : 'read' }}" onclick="readNotification({{ $noti->id }}, '{{ $noti->route }}')">
-                        <p class="mb-0">{{ $noti->title }}</p>
-                        <p class="small mb-0">{{ $noti->description }}</p>
-                    </a>
-                @empty
-                    <a class="dropdown-item" href="javascript: void(0)">
-                        <p class="small text-muted text-center mb-0">No notifications yet</p>
-                    </a>
-                @endforelse
-
-                @if (count($notificationList) > 0)
-                    <a class="dropdown-item all-notification" href="{{ route('business.notification.index') }}">
-                        View all Notifications
-                    </a>
-                @endif
+                <div class="card">
+                    <div class="card-body p-0">
+                        @forelse ($notificationList as $index => $noti)
+                            <a href="javascript:void(0)" class="dropdown-item {{ $noti->read_flag == 0 ? 'unread' : 'read' }}" onclick="readNotification({{ $noti->id }}, '{{ $noti->route }}')">
+                                <p class="mb-0">{!! $noti->title !!}</p>
+                                <p class="small mb-0">{!! $noti->description !!}</p>
+                            </a>
+                        @empty
+                            <a class="dropdown-item" href="javascript: void(0)">
+                                <p class="small text-muted text-center mb-0">No notifications yet</p>
+                            </a>
+                        @endforelse
+                    </div>
+                    <div class="card-footer p-0">
+                        @if (count($notificationList) > 0)
+                            <a class="dropdown-item all-notification" href="{{ route('business.notification.index') }}">
+                                View all Notifications
+                            </a>
+                        @endif
+                    </div>
+                </div>
             </div>
         </li>
 

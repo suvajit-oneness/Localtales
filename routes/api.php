@@ -2,7 +2,6 @@
 
 Route::post('/postcode', 'Api\PostcodeController@index')->name('user.postcode');
 Route::post('/collection/save/toggle', 'Api\CollectionController@save')->name('user.collection.save.toggle');
-Route::post('/directory/save/toggle', 'Api\DirectoryController@save')->name('user.directory.save.toggle');
 
 //blog category wise subcategory
 Route::post('/primarycategory/subcategory', 'Api\ApiController@index')->name('user.category');

@@ -850,6 +850,35 @@ if(!function_exists('directoryNotify')) {
                 }
                 break;
 
+            case 'incomplete-profile':
+                // if directory wants to receive email
+                if ($noti->notification_email == 1) {
+                    
+                }
+                // if directory wants to receive push notification
+                if ($noti->notification_push == 1) {
+                    $sender = 0;
+                    $receiver = $directory_id;
+                    $type = 'incomplete-profile';
+                    $route = 'business/profile';
+                    $title = 'Don&apos;t forget to complete your profile.';
+                    $body = 'We noticed you haven&apos;t finished completing your profile. Add more information to help users understand how your business can help them.';
+
+                    sendPushNotification($sender, $receiver, $type, $route, $title, $body);
+                }
+                // if directory wants to receive in app notification
+                if ($noti->notification_in_app == 1) {
+                    $sender = 0;
+                    $receiver = $directory_id;
+                    $type = 'incomplete-profile';
+                    $route = 'business/profile';
+                    $title = 'Don&apos;t forget to complete your profile.';
+                    $body = 'We noticed you haven&apos;t finished completing your profile. Add more information to help users understand how your business can help them.';
+
+                    sendNotification($sender, $receiver, $type, $route, $title, $body);
+                }
+                break;
+
             default:
                 break;
         }
