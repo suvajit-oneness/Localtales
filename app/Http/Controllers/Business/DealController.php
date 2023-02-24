@@ -196,4 +196,76 @@ class DealController extends BaseController
         $this->setPageTitle('Deal', 'Deal Details : '.$deal->title);
         return view('business.deal.details', compact('deal','dealReview'));
     }
+
+    public function startStatus()
+    {
+        $current_date = date('Y-m-d', strtotime('+1day'));
+        $userId = Auth::guard('business')->user()->id;
+
+        $data = Deal::where('created_by', $userId)->where('start_date', $current_date)->where('before_24_hour_notify', 0)->where('status', 1)->get();
+
+        if (count($data) > 0) {
+            foreach($data as $deal) {
+                $dealUpdate = Deal::findOrFail($deal->id);
+                $dealUpdate->before_24_hour_notify = 1;
+                $dealUpdate->save();
+
+                // Notify Diretcory about deal starting in 24 hours
+                /**
+                 * @param int $directoryId
+                 * @param string $type
+                 * @param object $data
+                 */
+                directoryNotify($userId, 'deal-starts-in-24-hours', $deal);
+            }
+        }
+    }
+
+    public function endStatus()
+    {
+        $current_date = date('Y-m-d', strtotime('+1day'));
+        $userId = Auth::guard('business')->user()->id;
+
+        $data = Deal::where('created_by', $userId)->where('expiry_date', $current_date)->where('end_before_24_hour_notify', 0)->where('status', 1)->get();
+
+        if (count($data) > 0) {
+            foreach($data as $deal) {
+                $dealUpdate = Deal::findOrFail($deal->id);
+                $dealUpdate->end_before_24_hour_notify = 1;
+                $dealUpdate->save();
+
+                // Notify Diretcory about deal starting in 24 hours
+                /**
+                 * @param int $directoryId
+                 * @param string $type
+                 * @param object $data
+                 */
+                directoryNotify($userId, 'deal-ends-in-24-hours', $deal);
+            }
+        }
+    }
+
+    public function afterEndStatus()
+    {
+        $current_date = date('Y-m-d');
+        $userId = Auth::guard('business')->user()->id;
+
+        $data = Deal::where('created_by', $userId)->where('expiry_date', '<', $current_date)->where('deal_end_notify', 0)->where('status', 1)->get();
+
+        if (count($data) > 0) {
+            foreach($data as $deal) {
+                $dealUpdate = Deal::findOrFail($deal->id);
+                $dealUpdate->deal_end_notify = 1;
+                $dealUpdate->save();
+
+                // Notify Diretcory about deal starting in 24 hours
+                /**
+                 * @param int $directoryId
+                 * @param string $type
+                 * @param object $data
+                 */
+                directoryNotify($userId, 'deal-expired', $deal);
+            }
+        }
+    }
 }

@@ -908,6 +908,93 @@ if(!function_exists('directoryNotify')) {
                 }
                 break;
 
+            case 'deal-starts-in-24-hours':
+                // if directory wants to receive email
+                if ($noti->notification_email == 1) {
+                    
+                }
+                // if directory wants to receive push notification
+                if ($noti->notification_push == 1) {
+                    $sender = 0;
+                    $receiver = $directory_id;
+                    $type = 'deal-starts-in-24-hours';
+                    $route = 'business/deals/'.$data->id.'/details';
+                    $title = 'A quick reminder your deal is starting soon.';
+                    $body = 'A quick reminder your deal is starting soon. There&apos;s still time to update any details for it. We hope the community enjoys it!';
+
+                    sendPushNotification($sender, $receiver, $type, $route, $title, $body);
+                }
+                // if directory wants to receive in app notification
+                if ($noti->notification_in_app == 1) {
+                    $sender = 0;
+                    $receiver = $directory_id;
+                    $type = 'deal-starts-in-24-hours';
+                    $route = 'business/deals/'.$data->id.'/details';
+                    $title = 'A quick reminder your deal is starting soon.';
+                    $body = 'A quick reminder your deal is starting soon. There&apos;s still time to update any details for it. We hope the community enjoys it!';
+
+                    sendNotification($sender, $receiver, $type, $route, $title, $body);
+                }
+                break;
+
+            case 'deal-ends-in-24-hours':
+                // if directory wants to receive email
+                if ($noti->notification_email == 1) {
+                    
+                }
+                // if directory wants to receive push notification
+                if ($noti->notification_push == 1) {
+                    $sender = 0;
+                    $receiver = $directory_id;
+                    $type = 'deal-ends-in-24-hours';
+                    $route = 'business/deals/'.$data->id.'/details';
+                    $title = 'Your deal is ending soon, if you&apos;d like to extend it if you like.';
+                    $body = 'Just to let you know your deal is expiring soon. If you want to extend the timeframe you can by tapping here.';
+
+                    sendPushNotification($sender, $receiver, $type, $route, $title, $body);
+                }
+                // if directory wants to receive in app notification
+                if ($noti->notification_in_app == 1) {
+                    $sender = 0;
+                    $receiver = $directory_id;
+                    $type = 'deal-ends-in-24-hours';
+                    $route = 'business/deals/'.$data->id.'/details';
+                    $title = 'Your deal is ending soon, if you&apos;d like to extend it if you like.';
+                    $body = 'Just to let you know your deal is expiring soon. If you want to extend the timeframe you can by tapping here.';
+
+                    sendNotification($sender, $receiver, $type, $route, $title, $body);
+                }
+                break;
+
+            case 'deal-expired':
+                // if directory wants to receive email
+                if ($noti->notification_email == 1) {
+                    
+                }
+                // if directory wants to receive push notification
+                if ($noti->notification_push == 1) {
+                    $sender = 0;
+                    $receiver = $directory_id;
+                    $type = 'deal-expired';
+                    $route = 'business/deals/'.$data->id.'/details';
+                    $title = 'Your deal has now expired.';
+                    $body = 'Your deal has now expired. You can relist this if you wish, if not you don&apos;t need to do anything else. We hope the community enjoyed it!';
+
+                    sendPushNotification($sender, $receiver, $type, $route, $title, $body);
+                }
+                // if directory wants to receive in app notification
+                if ($noti->notification_in_app == 1) {
+                    $sender = 0;
+                    $receiver = $directory_id;
+                    $type = 'deal-expired';
+                    $route = 'business/deals/'.$data->id.'/details';
+                    $title = 'Your deal has now expired.';
+                    $body = 'Your deal has now expired. You can relist this if you wish, if not you don&apos;t need to do anything else. We hope the community enjoyed it!';
+
+                    sendNotification($sender, $receiver, $type, $route, $title, $body);
+                }
+                break;
+
             default:
                 break;
         }
