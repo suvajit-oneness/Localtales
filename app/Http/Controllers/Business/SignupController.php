@@ -69,10 +69,9 @@ class SignupController extends BaseController
             'primary_email' => 'required',
             'primary_phone' => 'required',
             'category_id' => 'required',
-            'description' => 'required',
-            'service_description' => 'required',
             //'password' => 'required|string|min:6',
         ]);
+        //dd('here');
         $business = new Directory();
         $business->name = $request->name;
          // generate slug
@@ -82,7 +81,7 @@ class SignupController extends BaseController
         $business->slug = $slug;
         $business->trading_name = $request->trading_name;
         $business->email = $request->email;
-        $business->address = $request->street_address.', '.$request->suburb.', '.$request->state.', '.$request->postcode;
+        $business->address = $request->address.', '.$request->suburb.', '.$request->state.', '.$request->postcode;
         $business->mobile = $request->mobile;
         // $business->pin = $request->pin;
         $business->description = $request->description;
@@ -105,13 +104,12 @@ class SignupController extends BaseController
         $business->instagram_link = $request->instagram_link;
         $business->password = bcrypt('Welcome@2022');
         $saved = $business->save();
-        dd($saved);
         $token = Str::random(64);
-  
+
         $user= new DirectoryLoginVerify();
         $user->business_id = $business->id;
         $user->token = $token;
-        $user->save();     
+        $user->save();
         if ($saved) {
             $template = MailTemplate::where('type', 'like', '%' . 'business-signup' . '%')->first();
             $data["email"] = $request->email;
@@ -152,7 +150,7 @@ class SignupController extends BaseController
         if(!$verifyUser->business->email){
             $message = 'Sorry your email cannot be identified.';
         }else{
-  
+
             if(!is_null($verifyUser) ){
                 $user = $verifyUser->business_id;
                 $business=Directory::where('id',$user)->first();
@@ -217,7 +215,7 @@ class SignupController extends BaseController
         $dircategory = $this->DirectoryRepository->getDirectorycategories();
         return view('business.auth.registration-form', compact('dircategory', ));
     }
-    
+
     public function registrationformstore(Request $request)
     {
 
@@ -281,5 +279,5 @@ class SignupController extends BaseController
         return redirect()->route('thank.you');
     }
 
-    
+
 }

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Contracts\HelpContract;
 use App\Contracts\HelpCategoryContract;
 use App\Models\HelpArticle;
+use App\Models\HelpCategory;
 use App\Models\ActivityLogCsv;
 use Session;
 use Maatwebsite\Excel\Facades\Excel;
@@ -35,7 +36,7 @@ class HelpController extends BaseController
      */
     public function index(Request $request)
     {
-        
+
         if (!empty($request->term)) {
             // dd($request->term);
             $blogs = $this->HelpRepository->getSearchBlog($request->term);
@@ -89,7 +90,7 @@ class HelpController extends BaseController
         $targetblog = $this->HelpRepository->findBlogById($id);
         $blogcat = $this->HelpRepository->getBlogcategories('title', 'asc');
         $blogsubcat = $this->HelpRepository->getBlogsubcategories();
-        
+
         $this->setPageTitle('Article', 'Edit Article : ' . $targetblog->title);
         return view('admin.help.edit', compact('targetblog', 'blogcat', 'blogsubcat'));
     }
@@ -216,78 +217,48 @@ class HelpController extends BaseController
                     foreach ($importData_arr as $importData) {
 
                         $commaSeperatedCats = '';
-                        
-                            $catExistCheck = HelpCategory::where('title', $importData[2])->first();
+
+                            $catExistCheck = HelpCategory::where('title', $importData[0])->first();
                             if ($catExistCheck) {
                                 $insertDirCatId = $catExistCheck->id;
                                 $commaSeperatedCats .= $insertDirCatId . ',';
                             } else {
-                                $dirCat = new BlogCategory();
-                                $dirCat->title = $importData[2];
+                                $dirCat = new HelpCategory();
+                                $dirCat->title = $importData[0];
                                 $dirCat->slug = null;
                                 $dirCat->save();
                                 $insertDirCatId = $dirCat->id;
 
                                 $commaSeperatedCats .= $insertDirCatId . ',';
                             }
-                        
+
                         $count = 0;
                         $commaSeperatedSubCats = '';
                          $count = $total = 0;
                         $successArr = $failureArr = [];
-                        
-                            $catExistCheck = SubCategory::where('title', $importData[3])->first();
-                            if ($catExistCheck) {
-                                $insertDirCatId = $catExistCheck->id;
-                                $commaSeperatedSubCats .= $insertDirCatId . ',';
-                            } else {
-                                $dirCat = new SubCategory();
-                                $dirCat->title = $importData[3];
-                                $dirCat->slug = null;
-                                $dirCat->save();
-                                $insertDirCatId = $dirCat->id;
 
-                                $commaSeperatedSubCats .= $insertDirCatId . ',';
-                            }
-                        
- 			     $commaSeperatedSublevelCats = '';
-                           
-                            $catExistCheck = HelpSubCategoryLevel::where('title', $importData[4])->first();
-                            if ($catExistCheck) {
-                                $insertDirCatId = $catExistCheck->id;
-                                $commaSeperatedSublevelCats .= $insertDirCatId . ',';
-                            } else {
-                                $dirCat = new SubCategoryLevel();
-                                $dirCat->title = $importData[4];
-                                $dirCat->slug = null;
-                                $dirCat->save();
-                                $insertDirCatId = $dirCat->id;
 
-                                $commaSeperatedSublevelCats .= $insertDirCatId . ',';
-                            }
-                        
-                        if (!empty($importData[9])) {
+
+
+
+                        if (!empty($importData[1])) {
                             // dd($importData[0]);
-                            $titleArr = explode(',', $importData[9]);
+                            $titleArr = explode(',', $importData[1]);
 
                             // echo '<pre>';print_r($titleArr);exit();
 
                             foreach ($titleArr as $titleKey => $titleValue) {
                                 // slug generate
                                 $slug = Str::slug($titleValue, '-');
-                                $slugExistCount = DB::table('blogs')->where('title', $titleValue)->count();
+                                $slugExistCount = DB::table('help_articles')->where('title', $titleValue)->count();
                                 if ($slugExistCount > 0) $slug = $slug . '-' . ($slugExistCount + 1);
 
                                 $insertData = array(
                                     "title" => $titleValue,
-                                    "content" => isset($importData[7]) ? $importData[7] : null,
-                                    "meta_title" => isset($importData[8]) ? $importData[8] : null,
-                                    "meta_key" => isset($importData[6]) ? $importData[6] : null,
-                                    "blog_category_id" => isset($commaSeperatedCats) ? $commaSeperatedCats : null,
-                                    "blog_sub_category_id" => isset($commaSeperatedSubCats) ? $commaSeperatedSubCats : null,
-                                    "blog_tertiary_category_id" => isset($commaSeperatedSublevelCats) ? $commaSeperatedSublevelCats : null,
+                                    "description" => isset($importData[2]) ? $importData[2] : null,
+
+                                    "cat_id" => isset($commaSeperatedCats) ? $commaSeperatedCats : null,
                                     "slug" => $slug,
-                                    "meta_description" => isset($importData[8]) ? $importData[8] : null,
 
                                 );
 
@@ -339,6 +310,6 @@ class HelpController extends BaseController
         $this->setPageTitle('CSV Activity', 'List of all CSV Activity');
         return view('admin.csv-activity.index', compact('csv'));
     }
-    
+
 
 }

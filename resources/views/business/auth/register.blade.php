@@ -14,7 +14,7 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('front/css/responsive.css')}}">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet">
         <script src="{{ asset('backend/js/jquery-3.2.1.min.js') }}"></script>
-      
+
         <script src="https://maps.googleapis.com/maps/api/js?key=&libraries=places"></script>
     </head>
 
@@ -52,6 +52,9 @@
                                     <h6><span>1</span>Business Contact Details:</h6>
                                     <div class="did-floating-label-content">
                                     <input type="text" name="name" value="@if(request()->input('name')){{request()->input('name')}} @endif" id="inputSearchTextFilter" class="did-floating-input" autofocus required>
+                                    @error('name')
+                                    <p class="small text-danger">{{ $message }}</p>
+                                    @enderror
                                         <label class="did-floating-label">Business Name <span class="m-l-5 text-danger">
                                             *</span></label>
                                         <p class="small text-danger" id="businessNameErr"></p>
@@ -64,6 +67,9 @@
                                             }
                                         }
                                         @endphp" >
+                                         @error('trading_name')
+                                         <p class="small text-danger">{{ $message }}</p>
+                                         @enderror
                                         <label class="did-floating-label">Trading Name <span class="m-l-5 text-danger">
                                             *</span></label>
                                         <p class="small text-danger" id="tradingNameErr"></p>
@@ -76,6 +82,9 @@
                                                         }
                                                     }
                                                     @endphp" >
+                                                     @error('mobile')
+                                                     <p class="small text-danger">{{ $message }}</p>
+                                                     @enderror
                                                      @error('email')
                                                      <p class="small text-danger">{{ $message }}</p>
                                                      @enderror
@@ -91,6 +100,9 @@
                                                         }
                                                     }
                                                     @endphp" >
+                                                    @error('mobile')
+                                                    <p class="small text-danger">{{ $message }}</p>
+                                                    @enderror
                                         <label class="did-floating-label">Business Phone <span class="m-l-5 text-danger">
                                             *</span></label>
                                         <p class="small text-danger" id="businessPhoneErr"></p>
@@ -98,14 +110,17 @@
                                     <div class="did-floating-label-content">
                                         <label>Street Address <span class="m-l-5 text-danger">
                                             *</span></label>
-                                    <input class="did-floating-input @error('street_address') is-invalid @enderror" type="text" name="street_address" id="address" onblur="validateAddress(this.value)" value="@php
-                                                    if (request()->input('street_address')) {
-                                                        if (request()->input('street_address') != 'undefined') {
-                                                            echo request()->input('street_address');
+                                    <input class="did-floating-input @error('address') is-invalid @enderror" type="text" name="address" id="address" onblur="validateAddress(this.value)" value="@php
+                                                    if (request()->input('address')) {
+                                                        if (request()->input('address') != 'undefined') {
+                                                            echo request()->input('address');
                                                         }
                                                     }
                                                     @endphp" >
-                                        
+                                                    @error('address')
+                                                    <p class="small text-danger">{{ $message }}</p>
+                                                    @enderror
+
                                         <p class="small text-danger" id="businessAddressErr"></p>
                                     </div>
                                     <div class="did-floating-label-content">
@@ -134,7 +149,7 @@
                                             </div>
                                         </div>
                                     </div>
-        
+
                                     <div class="did-floating-label-content">
                                         <label>Suburb <span class="m-l-5 text-danger">
                                             *</span></label>
@@ -162,6 +177,9 @@
                                                         }
                                                     }
                                                     @endphp" >
+                                                      @error('website')
+                                                      <p class="small text-danger">{{ $message }}</p>
+                                                  @enderror
                                         <label class="did-floating-label">Website <span class="m-l-5 text-danger">
                                             *</span></label>
                                         <p class="small text-danger" id="businessWebsiteErr"></p>
@@ -180,6 +198,9 @@
                                                         }
                                                     }
                                                     @endphp" >
+                                                @error('primary_name')
+                                                <p class="small text-danger">{{ $message }}</p>
+                                                @enderror
                                         <label class="did-floating-label">Name <span class="m-l-5 text-danger">
                                             *</span></label>
                                         <p class="small text-danger" id="NameErr"></p>
@@ -192,6 +213,9 @@
                                                         }
                                                     }
                                                     @endphp" >
+                                                    @error('primary_email')
+                                                    <p class="small text-danger">{{ $message }}</p>
+                                                    @enderror
                                         <label class="did-floating-label">Email Address <span class="m-l-5 text-danger">
                                             *</span></label>
                                         <p class="small text-danger" id="EmailErr"></p>
@@ -204,6 +228,9 @@
                                                         }
                                                     }
                                                     @endphp" >
+                                                     @error('primary_phone')
+                                                     <p class="small text-danger">{{ $message }}</p>
+                                                     @enderror
                                         <label class="did-floating-label">Phone Number <span class="m-l-5 text-danger">
                                             *</span></label>
                                         <p class="small text-danger" id="PhoneErr"></p>
@@ -215,21 +242,27 @@
                                 </div>
                                 <div class="div1" id="st3">
                                     <h6><span>3</span>Business Overview:</h6>
+
                                     <div class="did-floating-label-content">
+                                        <label>Categories <span class="m-l-5 text-danger">
+                                            *</span></label>
                                         <div class="filterSearchBox">
                                             <div class="row">
-                                                <div class="mb-sm-0 col col-lg fcontrol position-relative filter_selectWrap filter_selectWrap2">
+                                                <div
+                                                    class="mb-sm-0 col-md-12 fcontrol position-relative filter_selectWrap filter_selectWrap2">
                                                     <div class="select-floating-admin">
-                                                    <label>Categories <span class="m-l-5 text-danger">
-                                                        *</span></label>
-                                                    <select class="filter_select did-floating-input @error('category_id') is-invalid @enderror" name="category_id[]" multiple>
+                                                        <label class="control-label" for="pincode"></label>
+                                                        <select
+                                                            class="filter_select did-floating-input @error('category_id') is-invalid @enderror"
+                                                            name="category_id">
                                                             <option value="" hidden selected>Select Category...</option>
                                                             @foreach ($dircategory as $index => $item)
                                                                 <option value="{{$item->id}}">{{ $item->child_category }}</option>
                                                             @endforeach
-                                                    </select>
-                                    @error('category_id') <p class="small text-danger">{{ $message }}</p> @enderror
-                                       
+                                                        </select>
+                                                        @error('category_id')
+                                                            <p class="small text-danger">{{ $message }}</p>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
@@ -237,14 +270,17 @@
                                     </div>
                                     <div class="did-floating-label-content">
                                     <textarea class="did-floating-input" rows="4" name="description" id="description" onblur="validateDes(this.value)" value="{{ old('description') }}"/>@error('description') {{ $message ?? '' }} @enderror</textarea>
-                                    <label class="did-floating-label">Description <span class="m-l-5 text-danger">
-                                        *</span></label>
+                                    @error('description') <p class="small text-danger">{{ $message }}</p> @enderror
+
+                                    <label class="did-floating-label">Description <span class="m-l-5 text-muted">
+                                        (optional)</span></label>
                                     <p class="small text-danger" id="DescServiceErr"></p>
                                     </div>
                                     <div class="did-floating-label-content">
                                     <textarea class="did-floating-input" rows="4" name="service_description" id="service_description" onblur="validateSer(this.value)" value="{{ old('service_description') }}"/>@error('service_description') {{ $message ?? '' }} @enderror</textarea>
-                                    <label class="did-floating-label">Service Description <span class="m-l-5 text-danger">
-                                        *</span></label>
+                                    @error('service_description') <p class="small text-danger">{{ $message }}</p> @enderror
+                                    <label class="did-floating-label">Service Description <span class="m-l-5 text-muted">
+                                        (optional)</span></label>
                                     <p class="small text-danger" id="ServiceErr"></p>
                                     </div>
                                     <p class="text dark">Opening Hours</p>
@@ -362,7 +398,7 @@
                                             (optional)</span></label>
                                     </div>
                                     <div class="d-flex justify-content-end mt-4 mb-4">
-                                        <a type="button" href="{{ URL::to('/') }}" class="btn btn-login btn_buseness" >Back</a> 
+                                        <a type="button" href="{{ URL::to('/') }}" class="btn btn-login btn_buseness" >Back</a>
                                         <button type="submit" class="btn main-btn">Submit</button>
                                     </div>
                                 </div>
@@ -501,7 +537,7 @@
                         $("#primary_name").removeClass('mobile-novalide');
                     }
                 }
-                
+
                 function ValidationOfEmail(mail) {
                     console.log(mail);
                     let emailvalidation = String(mail)
@@ -550,7 +586,7 @@
                     }
 
                 }
-               
+
                 function validateSer(val) {
                     console.log(val);
                     if (val.length < 2) {
@@ -667,7 +703,7 @@
                 }
 
                 $(document).ready(function() {
-                   
+
                 });
             </script>
             <script>
@@ -969,7 +1005,8 @@
             $('#businessAddressErr').text('Please enter Business Address');
         } else if($('#website').val() == "") {
             $('#businessWebsiteErr').text('Please enter Business Website');
-        } else {
+        }
+        else {
             $("#st2").show();
             $('html, body').animate({
             scrollTop: $("#st2").offset().top - 50
@@ -989,7 +1026,7 @@
             $('#EmailErr').text('Please enter a valid email address');
         } else if($('#primary_phone').val() == "") {
             $('#PhoneErr').text('Please enter Phone number');
-      
+
         } else {
             $("#st3").show();
             $('html, body').animate({

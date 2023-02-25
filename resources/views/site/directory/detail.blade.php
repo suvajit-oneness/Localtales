@@ -62,7 +62,7 @@
     $orgCat = $business->category_id;
 
     if ($directoryLattitude == null || $directoryLongitude == null ) {
-        $url = "https://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&key=";
+        $url = "https://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&key=AIzaSyBgxDP3RxZCzlDJV3j9-mAWepNLWr5_aHA";
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -347,10 +347,10 @@
     <div class="container">
         <div class="row mb-0 mb-sm-4 justify-content-center">
             <div class="page_title text-center">
-               
+
                 <h2 class="mb-2">Review Summary</h2>
-               
-                
+
+
                 <div class="tab-pane" id="reviews" role="tabpanel">
                     <div class="row justify-content-between">
                         <div class="col-auto">
@@ -483,7 +483,7 @@
                                                 <span>{{ CountDisLikeReview($data->id)  }}</span>
                                             </a>
                                         @endif
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -643,7 +643,7 @@
 @endsection
 
 @push('scripts')
-    <script src="https://maps.google.com/maps/api/js?key=" type="text/javascript"></script>
+    <script src="https://maps.google.com/maps/api/js?key=AIzaSyBgxDP3RxZCzlDJV3j9-mAWepNLWr5_aHA" type="text/javascript"></script>
     <script async src="https://static.addtoany.com/menu/page.js"></script>
     <script>
         function reviewLike(reviewId) {
@@ -999,5 +999,5 @@
     </script>
     <script src="{{ asset('frontend/dist/owl.carousel.min.js') }}"></script>
 
-   
+
 @endpush
