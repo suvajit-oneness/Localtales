@@ -96,17 +96,9 @@
                 </div>
 
                 <div class="right-part">
-                    @if ($data->slug == "abbotsbury")
-                        <div class="weather short-width">
-                            {{-- <a class="weatherwidget-io" href="https://forecast7.com/en/n33d88150d86/abbotsbury/" data-icons="Climacons Animated" data-mode="Current" data-theme="pure">Abbotsbury NSW, Australia</a> --}}
-                            {{-- <script>
-                            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
-                            </script> --}}
-                            <div class="display">
-
-                            </div>
-                        </div>
-                    @endif
+                    <div class="weather short-width">
+                        <div id="openWeather-short"></div>
+                    </div>
                 </div>
             </div>
             <div class="page-search-block filterSearchBoxWraper">
@@ -522,27 +514,33 @@
         }
     </script>
     <script>
-    $(document).ready(function () {
-
-        function recipeDatabase() {
-            var $key = "**KEY**"
-            //var $recipeId = $blog->name;
-           // console.log($recipeId);
+          // temperature fetch
+          function weatherData() {
             $.ajax({
-                //url:"https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/" + $recipeId +"/information?includeNutrition=true",
-                url:"https://api.openweathermap.org/data/2.5/weather?q=ABBOTSBURY&appid=af58f6de0c0689247f2e20fac307a0dc",
+                url:"https://api.openweathermap.org/data/2.5/weather?q={{$data->name}},au&appid=af58f6de0c0689247f2e20fac307a0dc",
                 type: "GET",
-                async: false,
-                data: {
-
-                },
                 success: function (data) {
-                    $(".display").html(data);
+                    let temp = tempConvert(data.main.temp);
+                    let icon = "https://openweathermap.org/img/wn/"+data.weather[0].icon+"@2x.png";
+                    let beforeDecimal = temp.toString().split(".")[0];
+                    let content = `
+                        <div class="card">
+                            <div class="card-body p-1 text-center">
+                                <img src="${icon}" alt="weather-icon">
+                                <h3>${beforeDecimal} &#8451;</h3>
+                            </div>
+                        </div>
+                    `;
+
+                    $('#openWeather-short').html(content);
                 }
             })
         }
-    recipeDatabase();
-    })
+        weatherData();
+
+        function tempConvert(kelvin) {
+            return kelvin - 273.15;
+        }
     </script>
     <script>
         @php

@@ -21,7 +21,7 @@
                                 <div class="card directory-single-review">
                                     <div class="card-body">
                                         <h5>{{ $data->author_name }}</h5>
-
+                                        <p class="text-muted">{{ $data->type }}</p>
                                         <div class="rating">
                                             @php
                                                 $rating = number_format($data->rating,1);
