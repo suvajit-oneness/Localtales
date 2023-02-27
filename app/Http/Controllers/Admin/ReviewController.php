@@ -14,7 +14,7 @@ class ReviewController extends BaseController
         $directory = $request->name ?? '';
         $keyword = $request->keyword ?? '';
        
-        $query = Review::select('reviews.id AS id','reviews.author_name AS author_name','reviews.rating AS rating','reviews.created_at AS created_at','reviews.text AS text','reviews.status AS status','directories.name AS name','directories.address AS address')->join('directories', 'reviews.directory_id', 'directories.id');
+        $query = Review::select('reviews.id AS id','reviews.author_name AS author_name','reviews.rating AS rating','reviews.created_at AS created_at','reviews.text AS text','reviews.status AS status','reviews.type AS type','directories.name AS name','directories.address AS address')->join('directories', 'reviews.directory_id', 'directories.id');
       
     
         $query->when($directory, function($query) use ($directory) {

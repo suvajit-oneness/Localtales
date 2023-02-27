@@ -15,7 +15,11 @@
                 <div class="card-body">
                     <h5>{{ $data->author_name }}</h5>
                         <p>{{ $data->name }}</p>
-                        <p class="text-muted">{{ $data->type }}</p>
+                        @if($data->type != 'lt_review')
+                        <p class="text-muted"> Google Review </p>
+                            @else
+                            <p class="text-muted">Localtales Review </p>
+                            @endif
                             <div class="rating">
                                 @php
                                     $rating = number_format($data->rating,1);

@@ -39,7 +39,7 @@
                                 <div class="col col-sm">
                                     <div class="form-floating">
                                         <input id="searchbykeyword" type="text" name="name" class="form-control pl-3"
-                                            value="{{ request()->input('name') }}" placeholder="Search by keyword...">
+                                            value="{{ request()->input('name') }}" placeholder="Search by directory...">
                                         
                                     </div>
                                 </div>
@@ -72,6 +72,7 @@
                         <thead>
                             <tr>
                                 <th>#</th>
+                                <th>Type</th>
                                 <th> Directory </th>
                                 <th> Author Name </th>
                                 <th> Rating </th>
@@ -87,14 +88,22 @@
                             @foreach($review as $key => $data)
                                 <tr>
                                     <td>{{ ($review->firstItem()) + $key }}</td>
+                                    @if($data->type != 'lt_review')
+                                    <td> Google Review </td>
+                                    @else
+                                    <td>Localtales Review </td>
+                                    @endif
+                                    
                                     <td>{{ $data->name  ?? ''}}</td>
                                     <td>{{ $data->author_name }}</td>
                                     <td>{{ $data->rating }}</td>
+                                    
+                                    <td>
                                     @if($data->text!='')
-                                    <td>{{ substr($data->text,0,200) }}... </td>
+                                        {{ substr($data->text,0,200) }}... 
                                     @else
-                                    <td></td>
                                     @endif
+                                    </td>
                                     <td>{{date('d/m/Y', strtotime($data->created_at)) }}</td>
                                     <td>{{ CountLikeReview($data->id)  }}</td>
                                     <td>{{ CountDisLikeReview($data->id)  }}</td>

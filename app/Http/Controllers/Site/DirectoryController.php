@@ -87,7 +87,7 @@ class DirectoryController extends BaseController
             }
         }
 
-        $review =  Review::where('directory_id', $id)->orderby('created_at','desc')->take(4)->get();
+        $review =  Review::where('directory_id', $id)->where('status',1)->orderby('created_at','desc')->take(4)->get();
         $this->setPageTitle($business->title, 'Directory Details : '.$business->title);
 
         // visit count - using all counts as weekly count needed
