@@ -118,4 +118,14 @@ class NotificationController extends BaseController
             ]);
         }
     }
+
+    public function markAllRead(Request $request)
+    {
+        $user = Auth::guard('business')->user();
+        Notification::where('receiver', $user->id)->update([
+            'read_flag' => 1
+        ]);
+
+        return redirect()->route('business.notification.index')->with('success', 'All unread notifications are marked as read');
+    }
 }

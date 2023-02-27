@@ -126,7 +126,11 @@
                     id: id
                 },
                 success: function(result) {
-                    window.location = "{{url('/')}}/"+route;
+                    if(route.length > 0) {
+                        window.location = "{{url('/')}}/"+route;
+                    } else {
+                        window.location = "{{url('/')}}/business/notification";
+                    }
                 }
             });
         }

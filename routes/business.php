@@ -33,6 +33,7 @@ Route::group(['prefix' => 'business'], function () {
 		Route::get('/notification/setup', 'Business\NotificationController@setup')->name('business.notification.setup');
 		Route::post('/notification/toggle', 'Business\NotificationController@toggle')->name('business.notification.toggle');
 		Route::post('/notification/receive/toggle', 'Business\NotificationController@NotificationReceiveType')->name('business.notification.receive.toggle');
+		Route::get('/notification/marl/all/read', 'Business\NotificationController@markAllRead')->name('business.notification.mark-all-read');
 
 		// push notification
 		Route::get('/push/notification', 'Business\NotificationController@checkPushNotification')->name('business.push.notification.check');

@@ -14,6 +14,13 @@
             <div class="card">
                 <div class="card-body all-notifications">
                     <div class="preference text-right mb-3">
+                        @if($totalUnreadNotifications > 0)
+                            <a href="{{ route('business.notification.mark-all-read') }}" class="btn btn-secondary" onclick="return confirm('Are you sure ?')">
+                                <i class="fa fa-check"></i>
+                                Mark all As Read
+                            </a>
+                        @endif
+
                         <a href="{{ route('business.notification.setup') }}" class="btn btn-secondary">
                             <i class="fa fa-cogs"></i>
                             Setup Notification Preference

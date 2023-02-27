@@ -414,11 +414,11 @@
                                     @endphp
                                     <a href="{!! URL::to('suburb/' . $blog->slug) !!}" class="location_btn"><img src="{{URL::to('/').'/Demo/'}}{{$demo}}" class="card-img-top"></a>
                                 @else
-                                <a href="{!! URL::to('suburb/' . $blog->slug) !!}" class="location_btn"><img src="{{ asset('/admin/uploads/suburb/' . $blog->image) }}" class="card-img-top"></a>
+                                    <a href="{!! URL::to('suburb/' . $blog->slug) !!}" class="location_btn"><img src="{{ asset('/admin/uploads/suburb/' . $blog->image) }}" class="card-img-top"></a>
                                 @endif
 
                                 <h4><a href="{!! URL::to('suburb/' . $blog->slug) !!}" class="location_btn">{{ $blog->name }} </a></h4>
-                                <p>{{ $blog->description }}</p>
+                                <p>{!! $blog->description !!}</p>
                                 <h5>{{ $blog->pin_code }}</h5>
                             </div>
                         </div>

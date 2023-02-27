@@ -69,7 +69,7 @@
                 <tbody>
                     @forelse($deals as $key => $deal)
                         <tr>
-                            <td>{{ $deal->id }}</td>
+                            <td>{{ $deals->firstItem() + $key }}</td>
                             <td>{{ $deal->title }}</td>
                             <td>
                                 @if($deal->image!='')
