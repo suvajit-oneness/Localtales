@@ -49,20 +49,20 @@ class ReviewController extends BaseController
         } else {
            $reviewExistsCheck  = ReviewVote::where('review_id', $request->id)->first();
         }
-        $count=ReviewVote::where('review_id',$request->id)->get()->count();
+        //$count=ReviewVote::where('review_id',$request->id)->get()->count();
         if($reviewExistsCheck != null) {
             $reviewDetails=ReviewVote::where('review_id', $request->id)->where('user_id', auth()->guard('user')->user()->id)->where('vote_status',0)->first();
             if($reviewDetails == null) {
             // if found
                 $data = ReviewVote::destroy($reviewExistsCheck->id);
-                $count= $count-1;
+               // $count= $count-1;
                 return response()->json(['status' => 200, 'count'=>$count,'type' => 'remove', 'message' => 'Feedback added']);
             } else {
                 // if not found
                 $data = ReviewVote::findOrFail($reviewDetails->id);
                 $data->vote_status = 1;
                 $data->save();
-                $count = $count+1;
+               // $count = $count+1;
                 return response()->json(['status' => 200, 'count'=>$count,'type' => 'add', 'message' => 'Feedback added']);
             }
             // if found
@@ -75,7 +75,7 @@ class ReviewController extends BaseController
             $data->review_id = $request->id;
             $data->vote_status = 1;
             $data->save();
-            $count = $count+1;
+           // $count = $count+1;
             return response()->json(['status' => 200,'count'=>$count, 'type' => 'add', 'message' => 'Feedback added']);
         }
 	}
@@ -88,20 +88,20 @@ class ReviewController extends BaseController
          } else {
             $reviewExistsCheck =  ReviewVote::where('review_id', $request->id)->first();
          }
-         $count=ReviewVote::where('review_id',$request->id)->get()->count();
+         //$count=ReviewVote::where('review_id',$request->id)->get()->count();
         if($reviewExistsCheck != null) {
             $reviewDetails=ReviewVote::where('review_id', $request->id)->where('user_id', auth()->guard('user')->user()->id)->where('vote_status',1)->first();
             if($reviewDetails == null) {
             // if found
                 $data = ReviewVote::destroy($reviewExistsCheck->id);
-                $count= $count-1;
+               // $count= $count-1;
                 return response()->json(['status' => 200, 'count'=>$count,'type' => 'remove', 'message' => 'Feedback added']);
             } else {
                 // if not found
                 $data = ReviewVote::findOrFail($reviewDetails->id);
                 $data->vote_status = 0;
                 $data->save();
-                $count= $count+1;
+                //$count= $count+1;
                 return response()->json(['status' => 200, 'count'=>$count,'type' => 'add', 'message' => 'Feedback added']);
             }
         } else {
@@ -111,7 +111,7 @@ class ReviewController extends BaseController
             $data->review_id = $request->id;
             $data->vote_status = 0;
             $data->save();
-            $count= $count+1;
+            //$count= $count+1;
             return response()->json(['status' => 200,'count'=>$count, 'type' => 'add', 'message' => 'Feedback added']);
         }
 	}

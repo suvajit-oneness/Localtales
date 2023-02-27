@@ -253,21 +253,13 @@
                     $('#reviewlikeBtn_' + reviewId + '_list').attr('fill', '#ff6153');
                     $('#reviewdislikeBtn_' + reviewId + '_grid').attr('fill', 'none');
                     $('#reviewdislikeBtn_' + reviewId + '_list').attr('fill', 'none');
-                    if(result.count > 0){
-                     $(".likeReviewCount").html(result.count);
-                    }else{
-                        $(".likeReviewCount").html();
-                    }
+                   
                 } else {
                     toastFire("warning", result.message);
                     // toastr.error(result.message);
                     $('#reviewlikeBtn_' + reviewId + '_grid').attr('fill', 'none');
                     $('#reviewlikeBtn_' + reviewId + '_list').attr('fill', 'none');
-                    if(result.count > 0){
-                     $(".likeReviewCount").html(result.count);
-                    }else{
-                        $(".likeReviewCount").html();
-                    }
+                    
                 }
             }
         });
