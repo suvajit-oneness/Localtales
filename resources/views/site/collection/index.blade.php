@@ -3,17 +3,8 @@
 @section('title'){{seoManagement('collection')->title}}@endsection
 @section('description'){{seoManagement('collection')->meta_desc}}@endsection
 
-{{-- @section('title')
-@php
- $meta_title=DB::table('seo_management')->where('page', '=', 'collection')->get();
-$title=$meta_title[0]->title;
-$description=$meta_title[0]->meta_desc;
-@endphp
- {{$title}}
-@endsection --}}
-
 @section('content')
-<section class="inner_banner articles_inbanner" style="background: url({{asset('site/images/banner')}}-image.jpg) no-repeat center center; background-size:cover;">
+<section class="inner_banner articles_inbanner" style="background: url({{asset('site/images/banner')}}-image.webp) no-repeat center center; background-size:cover;">
 	<div class="container position-relative">
         <div class="row m-0 mb-4">
             <h1>Collection</h1>
@@ -47,7 +38,7 @@ $description=$meta_title[0]->meta_desc;
                                 </div>
                             </div>
                             <div class="col-auto col-sm-auto">
-                                <a href="javascript:void(0);" id="btnFilter" class="w-100 btn btn-blue text-center ml-auto"><img src="{{ asset('front/img/search.svg')}}"></a>
+                                <a href="javascript:void(0);" id="btnFilter" class="w-100 btn btn-blue text-center ml-auto"><img src="{{ asset('front/img/search.svg')}}" width="20px" height="20px" alt=""></a>
                             </div>
                         </div>
                     </div>

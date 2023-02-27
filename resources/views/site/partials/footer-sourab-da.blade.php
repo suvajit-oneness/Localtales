@@ -1,3 +1,4 @@
+<!-- ========== Subscribe ========== -->
 <section class="py-4 subscribe">
     <div class="container">
         <div class="row align-items-center">
@@ -25,20 +26,21 @@
             <div class="col-12 col-lg-4 mb-4 mb-lg-0">
                 <div class="f-menu">
                     <img src="{{ asset('front/img/footer-logo.png')}}" alt="Local Tales" width="180px" height="36px" class="mb-3">
-                    @php
-                        // social link
-                        $linkExists = Schema::hasTable('settings');
-                        if ($linkExists) {
-                            $facebook = DB::table('settings')->where('key','=','social_facebook')->get();
-                            $facebookLink= strip_tags(preg_replace('/\s+/', '', $facebook[0]->content));
-                            $twitter = DB::table('settings')->where('key','=','social_twitter')->get();
-                            $twitterLink= strip_tags(preg_replace('/\s+/', '', $twitter[0]->content));
-                            $instagram = DB::table('settings')->where('key','=','social_instagram')->get();
-                            $instagramLink= strip_tags(preg_replace('/\s+/', '', $instagram[0]->content));
-                            $linkedin = DB::table('settings')->where('key','=','social_linkedin')->get();
-                            $linkedinLink= strip_tags(preg_replace('/\s+/', '', $linkedin[0]->content));
-                        }
-                    @endphp
+                            @php
+                                // social link
+                                $linkExists = Schema::hasTable('settings');
+                                if ($linkExists) {
+                                    $facebook = DB::table('settings')->where('key','=','social_facebook')->get();
+                                    $facebookLink= strip_tags(preg_replace('/\s+/', '', $facebook[0]->content));
+                                    $twitter = DB::table('settings')->where('key','=','social_twitter')->get();
+                                    $twitterLink= strip_tags(preg_replace('/\s+/', '', $twitter[0]->content));
+                                    $instagram = DB::table('settings')->where('key','=','social_instagram')->get();
+                                    $instagramLink= strip_tags(preg_replace('/\s+/', '', $instagram[0]->content));
+                                    $linkedin = DB::table('settings')->where('key','=','social_linkedin')->get();
+                                    $linkedinLink= strip_tags(preg_replace('/\s+/', '', $linkedin[0]->content));
+
+                                }
+                            @endphp
                     <ul class="social-icons d-flex mt-0 mb-4">
                         <li>
                             <a href="{{url($facebookLink)}}" target="_blank" class="mb-0"><i class="fab fa-facebook-f"></i></a>

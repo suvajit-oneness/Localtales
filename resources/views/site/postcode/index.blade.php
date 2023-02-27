@@ -4,7 +4,7 @@
 @section('description'){{seoManagement('postcode')->meta_desc}}@endsection
 
 @section('content')
-    <section class="inner_banner articles_inbanner" style="background: url({{ asset('site/images/banner') }}-image.jpg) no-repeat center center; background-size:cover;">
+    <section class="inner_banner articles_inbanner" style="background: url({{ asset('site/images/banner') }}-image.webp) no-repeat center center; background-size:cover;">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 mb-4">
@@ -26,7 +26,7 @@
                                         </div>
                                         <div class="col-auto col-sm-auto">
                                             <a href="javascript:void(0);" id="btnFilter" class="w-100 btn btn-blue text-center ml-auto">
-                                                <img src="{{ asset('front/img/search.svg') }}">
+                                                <img src="{{ asset('front/img/search.svg') }}" width="20px" height="20px" alt="">
                                             </a>
                                         </div>
                                     </div>

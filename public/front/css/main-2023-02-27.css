@@ -93,7 +93,7 @@ button {
 /* ========== Header ========== */
 .banner {
     width: 100%;
-    background: #F7F7FD url('../img/localtales_banner.webp');
+    background: #F7F7FD url('../img/localtales_banner.png');
     background-size: auto 100%;
     background-position: center right;
     background-repeat: no-repeat;
@@ -421,10 +421,6 @@ header nav {
 .available-section h2 {
     font-size: 38px;
     font-weight: 700;
-}
-
-.available-section img {
-    height: auto;
 }
 
 .available-section ul {
@@ -1359,6 +1355,10 @@ header nav {
     height: 100%;
     object-fit: cover;
     transition: all 0.5s ease-out;
+}
+
+.collectionCard:hover img {
+    /* transform: scale(1.2); */
 }
 
 .collectionCard .card-body {

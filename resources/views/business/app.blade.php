@@ -222,9 +222,12 @@
                                         notification.onclick = function () {
                                             window.open(url);
                                         };
-                                        notification.addEventListener('close', function() {
-                                            pushNotificationRead(val.id);
-                                        });
+
+                                        pushNotificationRead(val.id);
+
+                                        // notification.addEventListener('close', function() {
+                                        //     pushNotificationRead(val.id);
+                                        // });
                                     });
                                 }
                             });

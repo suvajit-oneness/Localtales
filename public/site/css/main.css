@@ -423,6 +423,11 @@ header nav {
     font-weight: 700;
 }
 
+.available-section img {
+    max-width: 100%;
+    height: auto;
+}
+
 .available-section ul {
     margin-bottom: 30px;
 }
@@ -1355,10 +1360,6 @@ header nav {
     height: 100%;
     object-fit: cover;
     transition: all 0.5s ease-out;
-}
-
-.collectionCard:hover img {
-    /* transform: scale(1.2); */
 }
 
 .collectionCard .card-body {

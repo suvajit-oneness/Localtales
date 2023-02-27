@@ -28,19 +28,7 @@
         height: 300px;
         overflow: hidden;
     }
-    .weather.short-width {
-        padding-right: 5px;
-    }
-    .weather.short-width a {
-        width: 240px;
-        border-radius: 5px 5px 0px 0px;
-    }
-    .weather.short-width .currentTemp {
-        color: #000000;
-        font-size: 20px;
-        font-weight: 700;
-    }
-</style>
+    </style>
 @section('content')
     @php
     $businesses = [];
@@ -89,18 +77,9 @@
 
     <section class="inner_banner" @if($data->image) style="background: url({{asset('/admin/uploads/suburb/' . $data->image)}})" @else style="background: url({{URL::to('/').'/Demo/' .$demo}})" @endif>
         <div class="container position-relative">
-            <div class="d-flex justify-content-between">
-                <div class="left-part">
-                    <h1>{{ $data->name }}</h1>
-                    <h4>{{ $data->state }}, {{ $data->pin_code }}</h4>
-                </div>
 
-                <div class="right-part">
-                    <div class="weather short-width">
-                        <div id="openWeather-short"></div>
-                    </div>
-                </div>
-            </div>
+            <h1>{{ $data->name }}</h1>
+            <h4>{{ $data->state }}, {{ $data->pin_code }}</h4>
             <div class="page-search-block filterSearchBoxWraper">
                 <form action="" id="checkout-form">
                     <div class="filterSearchBox">
@@ -124,7 +103,7 @@
                                 </div>
                             </div>
                             <div class="col-2 col-sm-auto">
-                                <a href="javascript:void(0);" id="btnFilter" class="w-100 btn btn-blue filterBtnOrange text-center ml-auto"><img src="{{ asset('front/img/search.svg') }}"></a>
+                                <a href="javascript:void(0);" id="btnFilter" class="w-100 btn btn-blue filterBtnOrange text-center ml-auto"><img src="{{ asset('front/img/search.svg') }}" width="20px" height="20px" alt=""></a>
                             </div>
                         </div>
                     </div>
@@ -132,7 +111,6 @@
             </div>
         </div>
     </section>
-
     <section class="pb-4 pb-lg-5 our-process pt-5 mt-3">
         <div class="container">
         <ul class="breadcumb_list mb-4 pb-2">
@@ -144,32 +122,19 @@
         </ul>
        </div>
     </section>
-
     <section class="map_section pt-1">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12">
                     <p>{!! ($data) ? $data->description : '' !!}</p>
                 </div>
-
-                @if ($data->slug == "abbotsbury")
-                    <div class="col-12 mt-4">
-                        <div class="weather full-width">
-                            <a class="weatherwidget-io" href="https://forecast7.com/en/n33d88150d86/abbotsbury/" data-icons="Climacons Animated" data-theme="pure" >Abbotsbury NSW, Australia</a>
-                            <script>
-                            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
-                            </script>
-                        </div>
-                    </div>
-                @endif
-
                 @if(count($directories) > 0)
-                    <div class="col-12">
-                        <div class="map map-margintop">
-                            <div id="mapShow" style="height: 600px;"></div>
-                            <input type="hidden" id="googlemapaddress" value="{{ $data ? $data->pin_code : '' }}">
-                        </div>
+                <div class="col-12">
+                    <div class="map map-margintop">
+                        <div id="mapShow" style="height: 600px;"></div>
+                        <input type="hidden" id="googlemapaddress" value="{{ $data ? $data->pin_code : '' }}">
                     </div>
+                </div>
                 @endif
             </div>
         </div>
@@ -202,7 +167,7 @@
                 <div class="tab-content smallGapGrid" id="grid">
                     <div class="row Bestdeals">
                         @foreach($directories as $key => $business)
-                        <div class="col-6 col-md-4 col-lg-4 mb-3 mb-lg-4">
+                        <div class="col-6 col-md-4 col-lg-4 jQueryEqualHeight">
                             <div class="card directoryCard border-0 v3card">
 
                                 <div class="card-body">
@@ -248,163 +213,33 @@
         </div>
     </section>
     @endif
-{{--review---}}
-    @if(count($reviews)>0)
-    <section class="py-2 py-sm-4 py-lg-5 similar_postcode more-collection">
-        <div class="container">
-            <div class="row mb-0 mb-sm-4 justify-content-center">
-                <div class="page_title text-center">
-                    <h2 class="mb-2"><a href="{{route('review')}}" class="location_btn">Recent Reviews</a></h2>
-                </div>
-            </div>
-            <div class="row">
-            @foreach ($reviews as $key => $data)
-            {{-- {{dd($data)}} --}}
-            <div class="col-6 col-md-3 mb-2 mb-sm-4 mb-lg-3">
-                <div class="card directory-single-review">
-                    <div class="card-body">
-                        <h5>{{ $data->author_name }}</h5>
-                        <p>{{ $data->name }}</p>
-                        <div class="rating">
-                            @php
-                                $rating = number_format($data->rating,1);
-                                for ($i = 1; $i < 6; $i++) {
-                                    if ($rating >= $i) {
-                                        echo '<i class="fas fa-star"></i>';
-                                    } elseif (($rating < $i) && ($rating > $i-1)) {
-                                        echo '<i class="fas fa-star-half-alt"></i>';
-                                    } else {
-                                        echo '<i class="far fa-star"></i>';
-                                    }
-                                }
-                            @endphp
-                        </div>
-                        @if(!empty($data->time))
-                        <p>{{date('d/m/Y', $data->time) }}</p>
-                        @else
-                        <p>{{date('d/m/Y', strtotime($data->created_at)) }}</p>
-                        @endif
-                        <div class="desc">
-                            @if(strlen($data->text) > 200)
-                                <p>{{ substr($data->text,0,200) }} <small class="text text-primary showMore" style="cursor: pointer">...Read more</small></p>
 
-                                <p style="display: none">{{$data->text}}<small class="text text-primary showLess" style="cursor: pointer">Read less</small></p>
-                            @else
-                                <p>{{$data->text}}</p>
-                            @endif
-                        </div>
-
-                            {{-- review like/ dislike --}}
-                            @if(Auth::guard('user')->check())
-                                <a href="javascript:void(0)" class="location_btn ms-auto"
-                                onclick="reviewLike({{ $data->id }})"
-                                title="Like">
-
-                                @php
-                                    if(Auth::guard('user')->check()){
-                                        $reviewExistsCheck = \App\Models\ReviewVote::where('review_id', $data->id)
-                                            ->where('user_id',auth()->guard('user')->user()->id)
-                                            ->where('vote_status',1)->first();
-                                    } else {
-                                        $reviewExistsCheck = \App\Models\ReviewVote::where('review_id', $data->id)
-                                            ->where('user_id',auth()->guard('user')->user()->id)
-                                            ->where('vote_status',0)->first();
-                                        //$reviewExistsCheck ==null;
-                                    }
-
-                                    if ($reviewExistsCheck != null) {
-                                        // if found
-                                        $heartColor = '#ff6153';
-                                    } else {
-                                        // if not found
-                                        $heartColor = 'none';
-                                    }
-                                @endphp
-                                    <svg id="reviewlikeBtn_{{ $data->id }}_grid" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="{{ $heartColor }}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
-                                    <span>{{ CountLikeReview($data->id)  }}</span>
-                                </a>
-                                <a href="javascript:void(0)" class="location_btn ms-auto"
-                                onclick="reviewDisLike({{ $data->id }})"
-                                title="DisLike">
-
-                                @php
-                                     if(Auth::guard('user')->check()){
-                                        $reviewExistsCheck = \App\Models\ReviewVote::where('review_id', $data->id)
-                                            ->where('user_id',auth()->guard('user')->user()->id)
-                                            ->where('vote_status',0)->first();
-                                    } else {
-                                        $reviewExistsCheck = \App\Models\ReviewVote::where('review_id', $data->id)
-                                            ->where('user_id',auth()->guard('user')->user()->id)
-                                            ->where('vote_status',1)->first();
-                                        //$reviewExistsCheck ==null;
-                                    }
-                                    if ($reviewExistsCheck != null) {
-                                        // if found
-                                        $heartColor = '#ff6153';
-                                    } else {
-                                        // if not found
-                                        $heartColor = 'none';
-                                    }
-                                @endphp
-                                    <svg id="reviewdislikeBtn_{{ $data->id }}_grid" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="{{ $heartColor }}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path></svg>
-                                    <span id="like_">{{ CountDisLikeReview($data->id)  }}</span>
-                                </a>
-                            @else
-                                <a href="javascript:void(0)" class="ms-auto" title="Like" onclick="toastFire('warning', 'Login to continue');">
-                                    <svg id="reviewlikeBtn_{{ $data->id }}_grid" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
-                                    <span>{{ CountLikeReview($data->id)  }}</span>
-                                </a>
-                                <a href="javascript:void(0)" class="location_btn ms-auto" title="Dislike" onclick="toastFire('warning', 'Login to continue');">
-                                    <svg id="reviewlikeBtn_{{ $data->id }}_grid" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path></svg>
-                                    <span>{{ CountDisLikeReview($data->id)  }}</span>
-                                </a>
-                            @endif
-                    </div>
-                </div>
-            </div>
-            @endforeach
-        </div>
-        </div>
-    </section>
-    @endif
-    {{-- job---}}
   @if (count($jobs)>0)
-  <section class="py-2 py-sm-4 py-lg-5 similar_postcode more-collection">
+  <section class="py-2 py-sm-4 py-lg-5 similar_postcode">
       <div class="container">
           <div class="row mb-0 mb-sm-4 justify-content-center">
               <div class="page_title text-center">
                   <h2 class="mb-2"><a href="{{route('front.job.index')}}" class="location_btn">Top Jobs</a></h2>
               </div>
           </div>
-          <div class="row">
-            @foreach ($jobs as $key => $data)
+          <div class="row justify-content-center">
+              @foreach ($jobs as $key => $data)
                 <div class="col-6 col-md-3 mb-2 mb-sm-4 mb-lg-3">
                     <div class="smplace_card text-center">
                         <div class="job-desc job-desc--mod">
-                            <h4 class="job__role">
-                                <a href="{!! URL::to('jobs/' . $data->slug) !!}" class="location_btn">
-                                    {{ $data->title ?? ''}}
-                                </a>
-                            </h4>
                             <h4 class="job__location">{{ $data->company_name?? '' }}</h4>
-                            <p class="job__adress" title="{{$data->postcode ? $data->postcode : ''}}{{$data->suburb ? ', '.$data->suburb : ''}}{{$data->state ? ', '.$data->state : ''}}">
-                                <i class="fas fa-map-marker-alt"></i>
-                                {{$data->postcode ? $data->postcode : ''}}{{$data->suburb ? ', '.$data->suburb : ''}}{{$data->state ? ', '.$data->state : ''}}
-                            </p>
 
-                            <span class="badge jobType">Full Time</span>
+                            <h4 class="job__role"><a href="{!! URL::to('job/' . $data->slug) !!}" class="location_btn">{{ $data->title ?? ''}}</a>
+                            </h4>
 
-                            <div class="desc job__desc">
-                                <p>{!! $data->description ?? '' !!}</p>
-                            </div>
+                            <p class="job__adress"><i class="fas fa-map-marker-alt"></i>{{ $data->address . ',' . $data->suburb . ',' . $data->state . ',' . $data->postcode ?? ''}}</p>
+
+                            <div class="desc job__desc">{!! $data->description ?? '' !!}</div>
                         </div>
-                        <a type="button" class="job__list__btn text-right" style="font-size: 16px"
-                            href="{!! URL::to('jobs/' . $data->slug) !!}">
-                            Learn More
-                        </a>
+                        <a type="button" class="job__list__btn text-right" style="font-size: 16px" href="{!! URL::to('job/' . $data->slug) !!}">Learn More</a>
                     </div>
                 </div>
-            @endforeach
+              @endforeach
           </div>
       </div>
   </section>
@@ -444,104 +279,8 @@
 @endsection
 
 @push('scripts')
-<script src="https://api.openweathermap.org/data/2.5/weather?q={$blog->name},{$blog->state}&appid=af58f6de0c0689247f2e20fac307a0dc"type="text/javascript"></script>
     <script src="https://maps.google.com/maps/api/js?key=" type="text/javascript"></script>
-    <script async src="https://static.addtoany.com/menu/page.js"></script>
-    <script>
-        $('.showMore').click(function(){
-            $(this).parent().hide();
-            $(this).parent().next().show();
-        })
-        $('.showLess').click(function(){
-            $(this).parent().hide();
-            $(this).parent().prev().show();
-        })
-    </script>
-    <script>
-        function reviewLike(reviewId) {
-            $.ajax({
-                url: '{{ route('directory.review.like') }}',
-                method: 'post',
-                data: {
-                    '_token': '{{ csrf_token() }}',
-                    id: reviewId,
-                },
-                success: function(result) {
-                    // alert(result);
-                    if (result.type == 'add') {
-                        // toastr.success(result.message);
-                        toastFire("success", result.message);
-                        $('#reviewlikeBtn_' + reviewId + '_grid').attr('fill', '#ff6153');
-                        $('#reviewlikeBtn_' + reviewId + '_list').attr('fill', '#ff6153');
-                        $('#reviewdislikeBtn_' + reviewId + '_grid').attr('fill', 'none');
-                        $('#reviewdislikeBtn_' + reviewId + '_list').attr('fill', 'none');
-                    } else {
-                        toastFire("warning", result.message);
-                        // toastr.error(result.message);
-                        $('#reviewlikeBtn_' + reviewId + '_grid').attr('fill', 'none');
-                        $('#reviewlikeBtn_' + reviewId + '_list').attr('fill', 'none');
-                    }
-                }
-            });
-        }
-    </script>
-    <script>
-        function reviewDisLike(reviewId) {
-            $.ajax({
-                url: '{{ route('directory.review.dislike') }}',
-                method: 'post',
-                data: {
-                    '_token': '{{ csrf_token() }}',
-                    id: reviewId,
-                },
-                success: function(result) {
-                    // alert(result);
-                    if (result.type == 'add') {
-                        // toastr.success(result.message);
-                        toastFire("success", result.message);
-                        $('#reviewdislikeBtn_' + reviewId + '_grid').attr('fill', '#ff6153');
-                        $('#reviewdislikeBtn_' + reviewId + '_list').attr('fill', '#ff6153');
-                        $('#reviewlikeBtn_' + reviewId + '_grid').attr('fill', 'none');
-                        $('#reviewlikeBtn_' + reviewId + '_list').attr('fill', 'none');
-                    } else {
-                        toastFire("warning", result.message);
-                        // toastr.error(result.message);
-                        $('#reviewdislikeBtn_' + reviewId + '_grid').attr('fill', 'none');
-                        $('#reviewdislikeBtn_' + reviewId + '_list').attr('fill', 'none');
-                    }
-                }
-            });
-        }
-    </script>
-    <script>
-          // temperature fetch
-          function weatherData() {
-            $.ajax({
-                url:"https://api.openweathermap.org/data/2.5/weather?q={{$data->name}},au&appid=af58f6de0c0689247f2e20fac307a0dc",
-                type: "GET",
-                success: function (data) {
-                    let temp = tempConvert(data.main.temp);
-                    let icon = "https://openweathermap.org/img/wn/"+data.weather[0].icon+"@2x.png";
-                    let beforeDecimal = temp.toString().split(".")[0];
-                    let content = `
-                        <div class="card">
-                            <div class="card-body p-1 text-center">
-                                <img src="${icon}" alt="weather-icon">
-                                <h3>${beforeDecimal} &#8451;</h3>
-                            </div>
-                        </div>
-                    `;
 
-                    $('#openWeather-short').html(content);
-                }
-            })
-        }
-        weatherData();
-
-        function tempConvert(kelvin) {
-            return kelvin - 273.15;
-        }
-    </script>
     <script>
         @php
         $locations = [];

@@ -93,7 +93,7 @@ button {
 /* ========== Header ========== */
 .banner {
     width: 100%;
-    background: #F7F7FD url('../img/localtales_banner.webp');
+    background: #F7F7FD url('../img/localtales_banner.png');
     background-size: auto 100%;
     background-position: center right;
     background-repeat: no-repeat;
@@ -421,10 +421,6 @@ header nav {
 .available-section h2 {
     font-size: 38px;
     font-weight: 700;
-}
-
-.available-section img {
-    height: auto;
 }
 
 .available-section ul {
@@ -2286,7 +2282,7 @@ header nav {
 }
 
 .art-dtls img {
-    /* height: 280px; */
+    height: 280px;
     object-fit: cover;
     border-radius: 6px;
 }
@@ -4572,7 +4568,6 @@ select.did-floating-select::-ms-expand {
 .blogCart {
     background: none;
     margin-bottom: 8px;
-    transition: all 200ms ease-in;
 }
 
 .blogCart:hover {
@@ -4752,6 +4747,32 @@ select.did-floating-select::-ms-expand {
 .form-floating>.form-select {
     padding-bottom: 0;
     padding-top: 19px;
+}
+
+.form-floating>.form-control[type="date"]{
+    padding: 0 10px;
+}
+input[type=date]::-webkit-datetime-edit-text {
+    -webkit-appearance: none;
+    display: none;
+}
+input[type=date]::-webkit-datetime-edit-month-field{
+    -webkit-appearance: none;
+    display: none;
+}
+input[type=date]::-webkit-datetime-edit-day-field {
+    -webkit-appearance: none;
+    display: none;
+}
+input[type=date]::-webkit-datetime-edit-year-field {
+    -webkit-appearance: none;
+    display: none;
+}
+
+.form-floating>.form-control[type="date"]~label{
+    top: 12px;
+    transform: unset;
+    opacity: 1;
 }
 
 .form-floating {
@@ -5620,14 +5641,128 @@ select.did-floating-select::-ms-expand {
     border: none;
 }
 
-.map-top {
-    margin-top: 50px;
+.a2a_svg svg {
+    margin-right: 0 !important;
 }
 
-.terms p span {
-    font-family: 'GT Walsheim Pro' !important;
+.Articletag {
+    padding: 0 15px !important;
+    line-height: 32px;
 }
 
-.privacy-policy p span {
-    font-family: 'GT Walsheim Pro' !important;
+.job-details-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.job-margin-top {
+    margin-top: 10px;
+}
+
+.job-details-sec h4 {
+    font-size: 14px;
+    color: #444;
+    text-transform: capitalize;
+    font-weight: 600;
+}
+
+.job-details-sec h5 {
+    font-size: 1.2rem;
+    color: #444;
+    text-transform: capitalize;
+}
+
+.job-qualifications ul {
+    margin-top: 12px !important;
+}
+
+
+.full-job-desc h5 {
+    margin-top: 14px;
+    margin-bottom: 10px;
+    text-transform: capitalize;
+}
+
+.job-details-sec hr {
+    margin: 25px 0 !important;
+    background: rgba(0, 0, 0, 0.01) !important;
+}
+
+
+.job__details h1 {
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.job__details .category__title,
+.job__details .articlecat li {
+    font-size: 16px;
+    color: #666;
+    display: flex;
+    align-items: center;
+}
+
+.job__details .category__title svg {
+    color: #ff6153;
+    margin-right: 8px;
+}
+.job__details .company-name{
+    font-size: 18px;
+    color: #ed5d54;
+    margin-bottom: 4px;
+}
+
+.job-details-sec h3{
+    font-size: 20px;
+    text-transform: capitalize;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+}
+.job__types li{
+    margin-bottom: 15px;
+}
+.job__types li p{
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+    margin-top: 2px;
+}
+.job_right_sidebar{
+    padding-left: 30px;
+    border-left: 1px solid #0000002e;
+}
+.full-job-desc p{
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    margin-bottom: 6px !important;
+    line-height: 1.3 !important;
+}
+.full-job-desc .article_content ul li{
+    font-size: 16px !important;
+    font-weight: 400 !important;
+}
+.job-qualifications ul li{
+    font-size: 16px;
+    font-weight: 400;
+}
+
+
+
+
+
+
+
+
+@media(max-width: 768px) {
+    .job_right_sidebar{
+        padding-left: 0;
+        border-left: 0;
+        margin-top: 15px;
+    }
+    .job__details h1{
+        font-size: 22px;
+    }
 }

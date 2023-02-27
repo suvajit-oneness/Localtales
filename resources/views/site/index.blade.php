@@ -72,7 +72,7 @@
                                 </svg>
                             </div>
 
-                            <video controls class="video" id="video" preload="metadata" poster="{{ asset('front/img/Local-Tales.jpg') }}">
+                            <video controls class="video" id="video" preload="metadata" poster="{{ asset('front/img/Local-Tales.webp') }}">
                                 <source src="{{URL::to('/').'/Extra/'}}{{$blog->image}}" type="video/mp4">
                             </video>
 
@@ -192,7 +192,7 @@
                 </div>
                 <div class="col-5 p-0 col-lg-7 mb-0 mb-sm-4 mb-lg-0 order-1 order-lg-2">
                     @if($blog->image2!='')
-                    <img class="w-100"  src="{{URL::to('/').'/Splash/'}}{{$blog->image2}}">
+                    <img class="w-100"  src="{{URL::to('/').'/Splash/'}}{{$blog->image2}}" width="747px" height="654px">
                 @endif
                 </div>
                 @endforeach
@@ -285,4 +285,3 @@
         }
     </script>
 @endpush
-

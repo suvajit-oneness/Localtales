@@ -5,7 +5,8 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
         </button>
-        <a class="navbar-brand" href="{{ URL::to('/') }}"><img class="w-100" src="{{ asset('front/img/main-logo.png')}}" alt="Local Tales"></a>
+        {{-- <a class="navbar-brand" href="{{ URL::to('/') }}"><img class="w-100" src="{{ asset('front/img/main-logo.png')}}" alt="Local Tales"></a> --}}
+        <a class="navbar-brand" href="{{ URL::to('/') }}"><img class="w-100" width="223px" height="45px" src="{{ asset('front/img/main-logo.webp')}}" alt="Local Tales"></a>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav m-auto">
@@ -50,10 +51,12 @@
                     <span class="ml-1" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Hi, {{ $explodesUserName[0] }}</span>
                 </a>
             @else
+                {{-- <a type="button" class="btn btn-login d-flex align-items-center justify-content-center" href="{!! URL::to('user/login') !!}" style="height: 35px;"><img src="{{ asset('front/img/login.svg')}}"> Login</a> --}}
                 <a type="button" class="btn btn-login d-flex align-items-center justify-content-center" href="{!! URL::to('user/login') !!}" style="height: 35px;"><img src="{{ asset('front/img/login.svg')}}"> Login</a>
             @endif
 
-            <a type="button" class="btn btn-login btn_buseness" href="{{ route('business.register')}}"><img src="{{ asset('front/img/briefcase.svg')}}"> Business Signup</a>
+            {{-- <a type="button" class="btn btn-login btn_buseness" href="{{ route('business.register')}}"><img src="{{ asset('front/img/briefcase.svg')}}"> Business Signup</a> --}}
+            <a type="button" class="btn btn-login btn_buseness" href="{{ route('business.register')}}"><img src="{{ asset('front/img/briefcase.svg')}}" width="18px" height="18px" alt=""> Business Signup</a>
           </div>
         </div>
     </nav>
