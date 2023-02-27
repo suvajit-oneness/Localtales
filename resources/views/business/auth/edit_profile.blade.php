@@ -612,14 +612,11 @@
                 dataType:'JSON',
                 url:"{{route('business.twoFacAuth.toggle')}}",
                 data:{ _token: CSRF_TOKEN, id:event_id, check_status:check_status},
-                success:function(response)
-                {
-                  swal("Success!", response.message, "success");
+                success:function(response) {
+                    toastFire("success", response.message);
                 },
-                error: function(response)
-                {
-                    
-                  swal("Error!", response.message, "error");
+                error: function(response) {
+                    toastFire("warning", response.message);
                 }
             });
         });

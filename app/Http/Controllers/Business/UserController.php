@@ -169,6 +169,10 @@ class UserController extends Controller
         $noti = Directory::findOrFail(Auth::guard('business')->user()->id);
         $noti->is_2fa_enable = $request->check_status;
         $noti->save();
-        return redirect()->route('business.profile')->with('success','You have successfully enabled 2FA Authentication');
+        return response()->json([
+            'status' => 200,
+            'message' => ($request->check_status == 1) ? 'Two Factor Authentication Enabled' : 'Two Factor Authentication Disabled',
+        ]);
+        // return redirect()->route('business.profile')->with('success','You have successfully enabled 2FA Authentication');
     }
 }
