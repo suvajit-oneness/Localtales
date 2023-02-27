@@ -91,22 +91,18 @@ class DirectoryController extends BaseController
         $this->setPageTitle($business->title, 'Directory Details : '.$business->title);
 
         // visit count - using all counts as weekly count needed
-        // 1. check visit
-        // $visitChk = DB::table('directory_visits')->where('ip', $_SERVER['REMOTE_ADDR'])->first();
+        DB::table('directory_visits')->insert([
+            'directory_id' => $business->id,
+            'user_id' => Auth::guard('user')->check() ? Auth::guard('user')->user()->id : 0,
+            'ip' => $_SERVER['REMOTE_ADDR'],
+        ]);
 
-        // if (!empty($visitChk)) {
-        //     DB::table('directory_visits')->where('ip', $_SERVER['REMOTE_ADDR'])->update([
-        //         'count' => $visitChk->count+1
-        //     ]);
-        // } else {
-            DB::table('directory_visits')->insert([
-                'directory_id' => $business->id,
-                'user_id' => Auth::guard('user')->check() ? Auth::guard('user')->user()->id : 0,
-                'ip' => $_SERVER['REMOTE_ADDR'],
-            ]);
-        // }
+        $overall_rating_count = DB::select("SELECT rating, count(rating) AS total FROM reviews
+        WHERE directory_id = $id
+        GROUP BY rating
+        ORDER BY rating DESC");
 
-        return view('site.directory.detail', compact('business', 'businessSaved', 'review'));
+        return view('site.directory.detail', compact('business', 'businessSaved', 'review', 'overall_rating_count'));
     }
 
     public function save(Request $request) {

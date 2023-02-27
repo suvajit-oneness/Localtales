@@ -343,33 +343,51 @@
     </div>
 </section>
 
-<section>
+<section class="mt-5">
     <div class="container">
         <div class="row mb-0 mb-sm-4 justify-content-center">
             <div class="page_title text-center">
 
                 <h2 class="mb-2">Review Summary</h2>
 
+                <div class="directoryRating">
+                    <div>
+                        {!! directoryRatingHtml(number_format(getDirectoryReviewDetails($business->id)['average_star_count'],1)) !!}
+                        @if(getDirectoryReviewDetails($business->id)['total_reviews'] > 0)
+                            @if(getDirectoryReviewDetails($business->id)['total_reviews'] == 1)
+                                <small>{{ number_format(getDirectoryReviewDetails($business->id)['total_reviews']) }} Review</small>
+                            @else
+                                <small>{{ number_format(getDirectoryReviewDetails($business->id)['total_reviews']) }} Reviews</small>
+                            @endif
+                        @endif
+                    </div>
+                </div>
 
-                <div class="tab-pane" id="reviews" role="tabpanel">
-                    <div class="row justify-content-between">
-                        <div class="col-auto">
-                            <div class="directoryRating">
-                                {{-- <span>{{ number_format(getDirectoryReviewDetails($business->id)['average_star_count'],1) }}</span> --}}
-                                <div>
-                                    {!! directoryRatingHtml(number_format(getDirectoryReviewDetails($business->id)['average_star_count'],1)) !!}
-                                    @if(getDirectoryReviewDetails($business->id)['total_reviews'] > 0)
-                                        @if(getDirectoryReviewDetails($business->id)['total_reviews'] == 1)
-                                            <small>{{ number_format(getDirectoryReviewDetails($business->id)['total_reviews']) }} Review</small>
-                                        @else
-                                            <small>{{ number_format(getDirectoryReviewDetails($business->id)['total_reviews']) }} Reviews</small>
-                                        @endif
-                                    @endif
-                                </div>
+                <div class="overall-review">
+                    <div class="row jusify-content-center">
+                        <div class="col-md-12">
+
+                            <div class="row">
+                                @foreach ($overall_rating_count as $item)
+                                    @php
+                                        $calculate_percent = ($item->total * 100)/ (count($overall_rating_count));
+                                    @endphp
+
+                                    <div class="col-2 text-right p-0">
+                                        <p class="mb-0 small" style="line-height: 18px;">{{$item->rating}}</p>
+                                    </div>
+                                    <div class="col-10">
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar" style="width: {{$calculate_percent}}%;" aria-valuenow="{{$calculate_percent}}" aria-valuemin="0" aria-valuemax="100">{{$item->total}} {{($item->total == 1) ? 'review' : 'reviews'}}</div>
+                                        </div>
+                                    </div>
+                                @endforeach
                             </div>
+
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
