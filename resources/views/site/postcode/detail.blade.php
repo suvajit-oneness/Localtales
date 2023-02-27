@@ -70,7 +70,7 @@
     @endphp
 
     <section class="inner_banner"
-        {{-- @if($postcode_img->image)
+        @if($postcode_img->image)
             style="background: url({{asset('/admin/uploads/suburb/'.$postcode_img->image)}})"
         @else
             @if($data->image)
@@ -82,21 +82,17 @@
             style="background: url({{asset('Directory/placeholder-image.png')}})"
             @endif
             @endif
-        @endif --}}
+        @endif
         >
-        <div class="container position-relative">
-            <h1>{{ $data ? $data->pin : '' }}</h1>
-            <h4>{{ $data->state_name ? $data->state_name : '' }}</h4>
+        <div class="container position-relative d-flex justify-content-between">
+            <div class="left-part">
+                <h1 id="postcode">{{ $data ? $data->pin : '' }}</h1>
+                <h4>{{ $data->state_name ? $data->state_name : '' }}</h4>
+            </div>
             <div class="right-part">
-
-                    <div class="weather short-width">
-                        {{-- <a class="weatherwidget-io" href="https://forecast7.com/en/n33d88150d86/abbotsbury/" data-icons="Climacons Animated" data-mode="Current" data-theme="pure">Abbotsbury NSW, Australia</a> --}}
-                        {{-- <script>
-                        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
-                        </script> --}}
-                            <a class="display" href="" data-icons="Climacons Animated" data-mode="Current" data-theme="pure"></a>
-
-                    </div>
+                <div class="weather short-width">
+                    <div id="openWeather-short"></div>
+                </div>
             </div>
             <div class="page-search-block filterSearchBoxWraper">
                 <form action="" id="checkout-form">
@@ -574,32 +570,35 @@
                 }
             });
         }
-    </script>
-      <script>
-        $(document).ready(function () {
 
-            function recipeDatabase() {
-                var $key = "**KEY**"
-                //var $recipeId = $blog->name;
-               // console.log($recipeId);
-                $.ajax({
-                    //url:"https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/" + $recipeId +"/information?includeNutrition=true",
-                    url:"https://api.openweathermap.org/data/2.5/weather?q=2007&appid=af58f6de0c0689247f2e20fac307a0dc",
-                    type: "GET",
-                    async: false,
-                    data: {
+        // temperature fetch
+        function weatherData() {
+            $.ajax({
+                url:"https://api.openweathermap.org/data/2.5/weather?q={{$data->pin}}&appid=af58f6de0c0689247f2e20fac307a0dc",
+                type: "GET",
+                success: function (data) {
+                    let temp = tempConvert(data.main.temp);
+                    let icon = "https://openweathermap.org/img/wn/"+data.weather[0].icon+"@2x.png";
+                    let beforeDecimal = temp.toString().split(".")[0];
+                    let content = `
+                        <div class="card">
+                            <div class="card-body p-1 text-center">
+                                <img src="${icon}" alt="weather-icon">
+                                <h3>${beforeDecimal} &#8451;</h3>
+                            </div>
+                        </div>
+                    `;
 
-                    },
-                    success: function (data) {
-                        $(".display").html(data);
-                        console.log(data.main.temp);
-                    }
-                })
-            }
-        recipeDatabase();
-        })
-        </script>
-    <script>
+                    $('#openWeather-short').html(content);
+                }
+            })
+        }
+        weatherData();
+
+        function tempConvert(kelvin) {
+            return kelvin - 273.15;
+        }
+
         @php
         $locations = [];
         foreach ($businesses as $business) {

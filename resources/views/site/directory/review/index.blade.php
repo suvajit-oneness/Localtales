@@ -169,7 +169,7 @@
                                                 }
                                             @endphp
                                                 <svg id="reviewlikeBtn_{{ $data->id }}_grid" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="{{ $heartColor }}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
-                                                <span>{{ CountLikeReview($data->id)  }}</span>
+                                                <span class="likeReviewCount">{{ CountLikeReview($data->id)  }}</span>
                                             </a>
                                             <a href="javascript:void(0)" class="location_btn ms-auto"
                                             onclick="reviewDisLike({{ $data->id }})"
@@ -195,7 +195,7 @@
                                                 }
                                             @endphp
                                                 <svg id="reviewdislikeBtn_{{ $data->id }}_grid" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="{{ $heartColor }}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path></svg>
-                                                <span id="like_">{{ CountDisLikeReview($data->id)  }}</span>
+                                                <span class="dislikeReviewCount">{{ CountDisLikeReview($data->id)  }}</span>
                                             </a>
                                         @else
                                             <a href="javascript:void(0)" class="ms-auto" title="Like" onclick="toastFire('warning', 'Login to continue');">
@@ -253,11 +253,21 @@
                     $('#reviewlikeBtn_' + reviewId + '_list').attr('fill', '#ff6153');
                     $('#reviewdislikeBtn_' + reviewId + '_grid').attr('fill', 'none');
                     $('#reviewdislikeBtn_' + reviewId + '_list').attr('fill', 'none');
+                    if(result.count > 0){
+                     $(".likeReviewCount").html(result.count);
+                    }else{
+                        $(".likeReviewCount").html();
+                    }
                 } else {
                     toastFire("warning", result.message);
                     // toastr.error(result.message);
                     $('#reviewlikeBtn_' + reviewId + '_grid').attr('fill', 'none');
                     $('#reviewlikeBtn_' + reviewId + '_list').attr('fill', 'none');
+                    if(result.count > 0){
+                     $(".likeReviewCount").html(result.count);
+                    }else{
+                        $(".likeReviewCount").html();
+                    }
                 }
             }
         });
@@ -281,11 +291,17 @@
                     $('#reviewdislikeBtn_' + reviewId + '_list').attr('fill', '#ff6153');
                     $('#reviewlikeBtn_' + reviewId + '_grid').attr('fill', 'none');
                     $('#reviewlikeBtn_' + reviewId + '_list').attr('fill', 'none');
+                    if(result.count > 0){
+                     $(".dislikeReviewCount").html(result.count);
+                    }
                 } else {
                     toastFire("warning", result.message);
                     // toastr.error(result.message);
                     $('#reviewdislikeBtn_' + reviewId + '_grid').attr('fill', 'none');
                     $('#reviewdislikeBtn_' + reviewId + '_list').attr('fill', 'none');
+                    if(result.count > 0){
+                     $(".dislikeReviewCount").html(result.count);
+                    }
                 }
             }
         });
