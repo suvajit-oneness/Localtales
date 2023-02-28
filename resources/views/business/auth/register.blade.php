@@ -17,7 +17,11 @@
 
         <script src="https://maps.googleapis.com/maps/api/js?key=&libraries=places"></script>
     </head>
-
+    <style>
+        .register_select .filterSearchBox .select2-container {
+            width: 100%!important;
+        }
+    </style>
     <body>
 
         <section class="inner_banner articles_inbanner">
@@ -246,14 +250,14 @@
                                     <div class="did-floating-label-content">
                                         <label>Categories <span class="m-l-5 text-danger">
                                             *</span></label>
-                                        <div class="filterSearchBox">
+                                        <div class="filterSearchBox register_select">
                                             <div class="row">
                                                 <div
-                                                    class="mb-sm-0 col-md-12 fcontrol position-relative filter_selectWrap filter_selectWrap2">
+                                                    class="mb-sm-0 col col-lg fcontrol position-relative filter_selectWrap filter_selectWrap2">
                                                     <div class="select-floating-admin">
                                                         <label class="control-label" for="pincode"></label>
                                                         <select
-                                                            class="filter_select did-floating-input @error('category_id') is-invalid @enderror"
+                                                            class="filter_select  did-floating-input @error('category_id') is-invalid @enderror"
                                                             name="category_id">
                                                             <option value="" hidden selected>Select Category...</option>
                                                             @foreach ($dircategory as $index => $item)

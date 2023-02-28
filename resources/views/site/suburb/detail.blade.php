@@ -38,7 +38,7 @@
         $address = $business->address;
 
         if ($directoryLattitude == null || $directoryLongitude == null ) {
-            $url = 'https://maps.google.com/maps/api/geocode/json?address=' . urlencode($address) . '&key=';
+            $url = 'https://maps.google.com/maps/api/geocode/json?address=' . urlencode($address) . '&key=AIzaSyBgxDP3RxZCzlDJV3j9-mAWepNLWr5_aHA';
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -76,10 +76,16 @@
     @endphp
 
     <section class="inner_banner" @if($data->image) style="background: url({{asset('/admin/uploads/suburb/' . $data->image)}})" @else style="background: url({{URL::to('/').'/Demo/' .$demo}})" @endif>
-        <div class="container position-relative">
-
-            <h1>{{ $data->name }}</h1>
-            <h4>{{ $data->state }}, {{ $data->pin_code }}</h4>
+        <div class="container position-relative  d-flex justify-content-between">
+            <div class="left-part">
+                <h1>{{ $data->name }}</h1>
+                <h4>{{ $data->state }}, {{ $data->pin_code }}</h4>
+            </div>
+            <div class="right-part">
+                <div class="weather short-width">
+                    <div id="openWeather-short"></div>
+                </div>
+            </div>
             <div class="page-search-block filterSearchBoxWraper">
                 <form action="" id="checkout-form">
                     <div class="filterSearchBox">
@@ -279,8 +285,37 @@
 @endsection
 
 @push('scripts')
-    <script src="https://maps.google.com/maps/api/js?key=" type="text/javascript"></script>
+    <script src="https://maps.google.com/maps/api/js?key=AIzaSyBgxDP3RxZCzlDJV3j9-mAWepNLWr5_aHA" type="text/javascript"></script>
+    <script>
+         // temperature fetch
+ function weatherData() {
+            $.ajax({
+                url:"https://api.openweathermap.org/data/2.5/weather?q={{$data->name}},au&appid=af58f6de0c0689247f2e20fac307a0dc",
+                type: "GET",
+                success: function (data) {
+                    let temp = tempConvert(data.main.temp);
+                    console.log(temp);
+                    let icon = "https://openweathermap.org/img/wn/"+data.weather[0].icon+"@2x.png";
+                    let beforeDecimal = temp.toString().split(".")[0];
+                    let content = `
+                        <div class="card">
+                            <div class="card-body p-1 text-center">
+                                <img src="${icon}" alt="weather-icon">
+                                <h3>${beforeDecimal} &#8451;</h3>
+                            </div>
+                        </div>
+                    `;
 
+                    $('#openWeather-short').html(content);
+                }
+            })
+        }
+        weatherData();
+
+        function tempConvert(kelvin) {
+            return kelvin - 273.15;
+        }
+    </script>
     <script>
         @php
         $locations = [];
@@ -289,7 +324,7 @@
             if($business->image = ''){
 	        $img = "https://demo91.co.in/localtales-prelaunch/public/Directory/placeholder-image.png";
             }else{
-                $img = "https://maps.googleapis.com/maps/api/streetview?size=640x640&location=".$business->latitude.",".$business->longitude."&fov=120&heading=0&key=";
+                $img = "https://maps.googleapis.com/maps/api/streetview?size=640x640&location=".$business->latitude.",".$business->longitude."&fov=120&heading=0&key=AIzaSyBgxDP3RxZCzlDJV3j9-mAWepNLWr5_aHA";
             }
 
             $page_link = URL::to('directory/' . $business->slug );
@@ -572,6 +607,7 @@
             var keycode = (event.keyCode ? event.keyCode : event.which);  if(keycode == '13'){    $('#checkout-form').submit();
          }
         });
+
 
 
     </script>

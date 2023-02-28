@@ -14,6 +14,8 @@ use Session;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PinCodeExport;
 use App\Http\Controllers\BaseController;
+use DB;
+use Auth;
 use Illuminate\Support\Facades\Session as FacadesSession;
 
 class HelpController extends BaseController
@@ -300,9 +302,57 @@ class HelpController extends BaseController
     }
     // csv upload
 
-    public function export()
+    public function export(Request $request)
     {
-        return Excel::download(new BlogExport, 'blog.xlsx');
+        if (!empty($request->term)) {
+            // dd($request->term);
+            $data = HelpArticle::where([['title', 'LIKE', '%' . $request->term . '%']])
+            ->orWhere('description', 'LIKE', '%' . $request->term . '%')
+            ->get();
+        } else {
+            $data = HelpArticle::latest('id')->get();
+        }
+
+        if (($data)) {
+            $delimiter = ",";
+            $filename = "help".".xlsx";
+
+            // Create a file pointer 
+            $f = fopen('php://memory', 'w');
+
+            // Set column headers 
+            $fields = array('SR','Category', 'Title', 'Description','Status');
+            fputcsv($f, $fields, $delimiter); 
+
+            $count = 1;
+
+            foreach($data as $row) {
+               
+                //$datetime = date('j M Y g:i A', strtotime($row['created_at']));
+                $lineData = array(
+                    $count,
+                    $row->category ? $row->category->title : '',
+                    $row['title'] ?? '',
+                    strip_tags($row->description),
+                    ($row->status == 1) ? 'Active' : 'Blocked',
+                   // $datetime
+                );
+
+                fputcsv($f, $lineData, $delimiter);
+
+                $count++;
+            }
+
+            // Move back to beginning of file
+            fseek($f, 0);
+
+            // Set headers to download file rather than displayed
+            header('Content-Type: text/csv');
+            header('Content-Disposition: attachment; filename="' . $filename . '";');
+
+            //output all remaining data on a file pointer
+            fpassthru($f);
+        }
     }
      public function csv(Request $request)
     {
