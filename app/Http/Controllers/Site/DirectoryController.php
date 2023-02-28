@@ -97,10 +97,16 @@ class DirectoryController extends BaseController
             'ip' => $_SERVER['REMOTE_ADDR'],
         ]);
 
-        $overall_rating_count = DB::select("SELECT rating, count(rating) AS total FROM reviews
-        WHERE directory_id = $id
-        GROUP BY rating
-        ORDER BY rating DESC");
+        // $overall_rating_count = DB::select("SELECT rating, count(rating) AS total FROM reviews
+        // WHERE directory_id = $id
+        // GROUP BY rating
+        // ORDER BY rating DESC");
+
+        $overall_rating_count = Review::selectRaw('rating, count(rating) AS total')
+        ->where('directory_id', $id)
+        ->groupBy('rating')
+        ->orderBy('rating', 'desc')
+        ->get()->toArray();
 
         return view('site.directory.detail', compact('business', 'businessSaved', 'review', 'overall_rating_count'));
     }

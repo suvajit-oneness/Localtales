@@ -353,6 +353,7 @@
                 <div class="directoryRating">
                     <div>
                         {!! directoryRatingHtml(number_format(getDirectoryReviewDetails($business->id)['average_star_count'],1)) !!}
+
                         @if(getDirectoryReviewDetails($business->id)['total_reviews'] > 0)
                             @if(getDirectoryReviewDetails($business->id)['total_reviews'] == 1)
                                 <small>{{ number_format(getDirectoryReviewDetails($business->id)['total_reviews']) }} Review</small>
@@ -366,24 +367,23 @@
                 <div class="overall-review">
                     <div class="row jusify-content-center">
                         <div class="col-md-12">
+                            @foreach ($overall_rating_count as $item)
+                                @php
+                                    $calculate_percent = ($item['total'] * 100) / (count($overall_rating_count));
+                                @endphp
 
-                            <div class="row">
-                                @foreach ($overall_rating_count as $item)
-                                    @php
-                                        $calculate_percent = ($item->total * 100)/ (count($overall_rating_count));
-                                    @endphp
-
-                                    <div class="col-2 text-right p-0">
-                                        <p class="mb-0 small" style="line-height: 18px;">{{$item->rating}}</p>
+                                <div class="row">
+                                    <div class="col-1 text-right p-0">
+                                        <p class="mb-0 small" style="line-height: 18px;">{{$item['rating']}}</p>
                                     </div>
-                                    <div class="col-10">
+                                    <div class="col-11">
                                         <div class="progress">
-                                            <div class="progress-bar" role="progressbar" style="width: {{$calculate_percent}}%;" aria-valuenow="{{$calculate_percent}}" aria-valuemin="0" aria-valuemax="100">{{$item->total}} {{($item->total == 1) ? 'review' : 'reviews'}}</div>
+                                            <div class="progress-bar" role="progressbar" style="width: {{$calculate_percent}}%;" aria-valuenow="{{$calculate_percent}}" aria-valuemin="0" aria-valuemax="100">{{$item['total']}} {{($item['total'] == 1) ? 'review' : 'reviews'}}</div>
                                         </div>
                                     </div>
-                                @endforeach
-                            </div>
+                                </div>
 
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -416,11 +416,11 @@
                                                 $rating = number_format($data->rating,1);
                                                 for ($i = 1; $i < 6; $i++) {
                                                     if ($rating >= $i) {
-                                                        echo '<i class="fas fa-star"></i>';
+                                                        echo '<i class="fas fa-star text-lt"></i>';
                                                     } elseif (($rating < $i) && ($rating > $i-1)) {
-                                                        echo '<i class="fas fa-star-half-alt"></i>';
+                                                        echo '<i class="fas fa-star-half-alt text-lt"></i>';
                                                     } else {
-                                                        echo '<i class="far fa-star"></i>';
+                                                        echo '<i class="far fa-star text-lt"></i>';
                                                     }
                                                 }
                                             @endphp
@@ -432,9 +432,9 @@
                                         @endif
                                         <div class="desc">
                                             @if(strlen($data->text) > 200)
-                                                <p>{{ substr($data->text,0,200) }} <small class="text text-primary showMore" style="cursor: pointer">...Read more</small></p>
+                                                <p>{{ substr($data->text,0,200) }}<small class="text text-lt showMore" style="cursor: pointer">...Read more</small></p>
 
-                                                <p style="display: none">{{$data->text}}<small class="text text-primary showLess" style="cursor: pointer">Read less</small></p>
+                                                <p style="display: none">{{$data->text}} <small class="text text-lt showLess" style="cursor: pointer">Read less</small></p>
                                             @else
                                                 <p>{{$data->text}}</p>
                                             @endif

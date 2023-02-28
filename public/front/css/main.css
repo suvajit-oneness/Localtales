@@ -5631,3 +5631,11 @@ select.did-floating-select::-ms-expand {
 .privacy-policy p span {
     font-family: 'GT Walsheim Pro' !important;
 }
+
+.progress-bar {
+    background-color: #ff6155;
+}
+
+.text-lt {
+    color: #ff6155 !important;
+}
