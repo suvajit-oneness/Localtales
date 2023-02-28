@@ -3,6 +3,7 @@
 @section('title'){{seoManagement('directory')->title}}@endsection
 @section('description'){{seoManagement('directory')->meta_desc}}@endsection
 
+
 @php
     $directories = array();
 
@@ -269,7 +270,7 @@
 
 @endsection
 @push('scripts')
-    <script src="https://maps.google.com/maps/api/js?key=" type="text/javascript"></script>
+    <script src="https://maps.google.com/maps/api/js?key=&v=weekly" type="text/javascript"></script>
 
     <script>
         @php
@@ -291,7 +292,7 @@
         var locations = <?php echo json_encode($locations); ?>;
 
         var map = new google.maps.Map(document.getElementById('mapShow'), {
-            zoom: 8,
+            zoom: 13,
             center: new google.maps.LatLng(locations[0][1], locations[0][2]),
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             "styles": [{
@@ -348,7 +349,9 @@
                         }]
                     }],
         });
+        const trafficLayer = new google.maps.TrafficLayer();
 
+        trafficLayer.setMap(mapShow);
         var infowindow = new google.maps.InfoWindow();
 
         var marker, i;

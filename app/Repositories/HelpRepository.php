@@ -154,7 +154,7 @@ class HelpRepository extends BaseRepository implements HelpContract
     {
         return HelpArticle::where([['title', 'LIKE', '%' . $term . '%']])
         ->orWhere('description', 'LIKE', '%' . $term . '%')
-        ->get();
+        ->paginate(25);
     }
     /**
      * @return mixed

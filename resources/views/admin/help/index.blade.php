@@ -123,7 +123,7 @@
                         <br>
                         <p class="small">Please select csv file</p>
                         <button type="submit" class="btn btn-sm btn-primary" id="csvImportBtn">Import <i class="fas fa-upload"></i></button>
-                         <p><a href="{{URL::to('/')}}/admin/csvexample/blog.csv" target="_blank">
+                         <p><a href="{{URL::to('/')}}/admin/csvexample/help.csv" target="_blank">
                             <i class="fa fa-download"></i>Download Example File</a></p>
                         </a>
                     </form>
