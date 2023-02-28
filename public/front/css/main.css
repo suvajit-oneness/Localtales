@@ -850,6 +850,11 @@ header nav {
 
 .filterSearchBox .select2-container {
     margin-bottom: 8px;
+    
+}
+.register_select .select2-container {
+    width: 100%!important;
+    margin-bottom: 8px;
 }
 
 .filterSearchBox .row {

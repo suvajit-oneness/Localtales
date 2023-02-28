@@ -851,8 +851,11 @@ header nav {
 
 .filterSearchBox .select2-container {
     margin-bottom: 8px;
-}
 
+}
+/* .register_select .filterSearchBox .select2-container {
+    width: 100%!important;
+} */
 .filterSearchBox .row {
     margin-right: -5px;
     margin-left: -5px;
