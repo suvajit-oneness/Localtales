@@ -24,7 +24,7 @@
                         <ul class="breadcumb_list mb-2 mb-sm-4">
                             <li><a href="{!! URL::to('') !!}">Home</a></li>
                             <li>/</li>
-                            <li><a href="{!! URL::to('job') !!}">Jobs</a></li>
+                            <li><a href="{!! URL::to('jobs') !!}">Jobs</a></li>
                             <li>/</li>
                             <li><a href="{{ url()->to('jobs?key_details='.$job[0]->postcode.'&keyword='.$job[0]->postcode.'&name='.$job[0]->title) }}">Job Search</a></li>
                             <li>/</li>
