@@ -661,7 +661,7 @@
 @endsection
 
 @push('scripts')
-    <script src="https://maps.google.com/maps/api/js?key=" type="text/javascript"></script>
+    <script src="https://maps.google.com/maps/api/js?key={{$settings[17]->content}}" type="text/javascript"></script>
     <script async src="https://static.addtoany.com/menu/page.js"></script>
     <script>
         function reviewLike(reviewId) {

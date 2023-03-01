@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use App\Models\Notification;
+use App\Models\Setting;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
             $totalUnreadNotifications = 0;
 
             $notiTableExists = Schema::hasTable('notifications');
+            $settingsTableExists = Schema::hasTable('settings');
 
             if ($notiTableExists) {
                 if ($user = Auth::guard('business')->user()) {
@@ -49,8 +51,13 @@ class AppServiceProvider extends ServiceProvider
                 }
             }
 
+            if ($settingsTableExists) {
+                $settings = Setting::all();
+            }
+
             view()->share('notificationList', $notificationList);
             view()->share('totalUnreadNotifications', $totalUnreadNotifications);
+            view()->share('settings', $settings);
         });
     }
 }
