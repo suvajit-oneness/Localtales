@@ -17,6 +17,7 @@ use App\Models\Activity;
 use App\Models\Notification;
 use App\Models\PushNotification;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 
 if (!function_exists('sidebar_open')) {
     function sidebar_open($routes = []) {
@@ -812,18 +813,42 @@ function CountDisLikeReview($reviewId){
     if(($vote)>0)
     return $vote;
 }
-
+//notification email send
+if(!function_exists('sendmailNotification')) {
+    function sendmailNotification($to, $subject, $url,$blade) {
+        $data["email"] = $to;
+        $data["subject"] = $subject;
+        $data["blade_file"] = $blade;
+        $data["url"] =  $url;
+        Mail::send($data['blade_file'],$data, function ($message) use ($data) {
+            $message->to($data["email"], $data["email"])->subject($data["subject"]);
+        });
+    }
+}
 // directory notification function
 if(!function_exists('directoryNotify')) {
     function directoryNotify($directory_id, $type, $data) {
         // 1. check how the directory wants to receive notifications
-        $noti = Directory::select('notification_email', 'notification_push', 'notification_in_app')->where('id', $directory_id)->first();
+        $noti = Directory::select('notification_email', 'notification_push', 'notification_in_app','email')->where('id', $directory_id)->first();
 
         // 2. check type of notifications
         switch ($type) {
             case 'review-add':
                 // if directory wants to receive email
                 if ($noti->notification_email == 1) {
+                    $to = $noti->email;
+                    $subject = 'You have a brand review';
+                    $url =URL::to('/') . '/' . 'business/review/'.$data->id;
+                    $blade = 'business/notification/email/review-add';
+
+                    sendmailNotification($to, $subject, $url,$blade);
+
+                    // $obj["email"] = $noti->email;
+                    // $obj["title"] = 'You have a brand review';
+                    // $obj["url"] = URL::to('/') . '/' . 'business/review/'.$data->id;
+                    // Mail::send('business.notification.mail-template',$obj, function ($message) use ($obj) {
+                    //     $message->to($obj["email"], $obj["email"])->subject($obj["title"]);
+                    // });
                     
                 }
                 // if directory wants to receive push notification
@@ -853,7 +878,12 @@ if(!function_exists('directoryNotify')) {
             case 'incomplete-profile':
                 // if directory wants to receive email
                 if ($noti->notification_email == 1) {
-                    
+                    $to = $noti->email;
+                    $subject = 'Dont forget to complete your profile.';
+                    $url = URL::to('/') . '/' . 'business/profile';
+                    $blade = 'business/notification/email/incomplete-profile';
+
+                    sendmailNotification($to, $subject, $url,$blade);
                 }
                 // if directory wants to receive push notification
                 if ($noti->notification_push == 1) {
@@ -870,7 +900,7 @@ if(!function_exists('directoryNotify')) {
                 if ($noti->notification_in_app == 1) {
                     $sender = 0;
                     $receiver = $directory_id;
-                    $type = 'incomplete-profile';
+                    $type = 'Incomplete-profile';
                     $route = 'business/profile';
                     $title = 'Don&apos;t forget to complete your profile.';
                     $body = 'We noticed you haven&apos;t finished completing your profile. Add more information to help users understand how your business can help them.';
@@ -882,7 +912,13 @@ if(!function_exists('directoryNotify')) {
             case 'directory-favourite-add':
                 // if directory wants to receive email
                 if ($noti->notification_email == 1) {
-                    
+                    $to = $noti->email;
+                    $subject = 'Your business has been favourited by a community member.';
+                    $url =URL::to('/') . '/' . 'business/profile';
+                    $blade = 'business/notification/email/directory-favourite';
+
+                    sendmailNotification($to, $subject, $url,$blade);
+
                 }
                 // if directory wants to receive push notification
                 if ($noti->notification_push == 1) {
@@ -911,7 +947,12 @@ if(!function_exists('directoryNotify')) {
             case 'deal-starts-in-24-hours':
                 // if directory wants to receive email
                 if ($noti->notification_email == 1) {
-                    
+                    $to = $noti->email;
+                    $subject = 'A quick reminder your deal is starting soon.';
+                    $url =URL::to('/') . '/' . 'business/deals/'.$data->id.'/details';
+                    $blade = 'business/notification/email/deal-start';
+
+                    sendmailNotification($to, $subject, $url,$blade);
                 }
                 // if directory wants to receive push notification
                 if ($noti->notification_push == 1) {
@@ -940,7 +981,12 @@ if(!function_exists('directoryNotify')) {
             case 'deal-ends-in-24-hours':
                 // if directory wants to receive email
                 if ($noti->notification_email == 1) {
-                    
+                    $to = $noti->email;
+                    $subject = 'Your deal is ending soon, if you would like to extend it you can by logging in.';
+                    $url =URL::to('/') . '/' . 'business/deals/'.$data->id.'/details';
+                    $blade = 'business/notification/email/deal-end';
+
+                    sendmailNotification($to, $subject, $url,$blade);
                 }
                 // if directory wants to receive push notification
                 if ($noti->notification_push == 1) {
@@ -969,7 +1015,12 @@ if(!function_exists('directoryNotify')) {
             case 'deal-expired':
                 // if directory wants to receive email
                 if ($noti->notification_email == 1) {
-                    
+                    $to = $noti->email;
+                    $subject = 'Your deal has now expired.';
+                    $url =URL::to('/') . '/' . 'business/deals/'.$data->id.'/details';
+                    $blade = 'business/notification/email/deal-expire';
+
+                    sendmailNotification($to, $subject, $url,$blade);
                 }
                 // if directory wants to receive push notification
                 if ($noti->notification_push == 1) {
@@ -998,7 +1049,12 @@ if(!function_exists('directoryNotify')) {
             case 'event-starts-in-24-hours':
                 // if directory wants to receive email
                 if ($noti->notification_email == 1) {
-                    
+                    $to = $noti->email;
+                    $subject = 'A quick reminder your event is starting soon.';
+                    $url =URL::to('/') . '/' . 'business/event/'.$data->id.'/details';
+                    $blade = 'business/notification/email/event-start';
+
+                    sendmailNotification($to, $subject, $url,$blade);
                 }
                 // if directory wants to receive push notification
                 if ($noti->notification_push == 1) {
@@ -1027,7 +1083,12 @@ if(!function_exists('directoryNotify')) {
             case 'event-ends-in-24-hours':
                 // if directory wants to receive email
                 if ($noti->notification_email == 1) {
-                    
+                    $to = $noti->email;
+                    $subject = 'Your event is expiring soon, you can update the information if you need to.';
+                    $url =URL::to('/') . '/' . 'business/event/'.$data->id.'/details';
+                    $blade = 'business/notification/email/event-end';
+
+                    sendmailNotification($to, $subject, $url,$blade);
                 }
                 // if directory wants to receive push notification
                 if ($noti->notification_push == 1) {
@@ -1056,7 +1117,12 @@ if(!function_exists('directoryNotify')) {
             case 'event-expired':
                 // if directory wants to receive email
                 if ($noti->notification_email == 1) {
-                    
+                    $to = $noti->email;
+                    $subject = 'Your event has finished.';
+                    $url =URL::to('/') . '/' . 'business/event/'.$data->id.'/details';
+                    $blade = 'business/notification/email/event-expire';
+
+                    sendmailNotification($to, $subject, $url,$blade);
                 }
                 // if directory wants to receive push notification
                 if ($noti->notification_push == 1) {
@@ -1085,7 +1151,12 @@ if(!function_exists('directoryNotify')) {
             case 'weekly-visit-count':
                 // if directory wants to receive email
                 if ($noti->notification_email == 1) {
-                    
+                    $to = $noti->email;
+                    $subject = 'This week your business has been viewed' .$data->count.' amount of times.';
+                    $url ='This week your business has been viewed '.$data->count.' amount of times from '.$data->week_start.' to '.$data->week_end.' .';
+                    $blade = 'business/notification/email/visit';
+
+                    sendmailNotification($to, $subject, $url,$blade);
                 }
                 // if directory wants to receive push notification
                 if ($noti->notification_push == 1) {
