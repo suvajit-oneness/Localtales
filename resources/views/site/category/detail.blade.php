@@ -67,7 +67,7 @@ else{
                     $address = $business->address ?? '';
 
                     if ($directoryLattitude == null || $directoryLongitude == null) {
-                        $url = 'https://maps.google.com/maps/api/geocode/json?address=' . urlencode($address) . '&key=';
+                        $url = 'https://maps.google.com/maps/api/geocode/json?address=' . urlencode($address) . '&key={{$settings[17]->content}}';
 
                         $ch = curl_init();
                         curl_setopt($ch, CURLOPT_URL, $url);
@@ -680,7 +680,7 @@ else{
 @endsection
 
 @push('scripts')
-    <script src="https://maps.google.com/maps/api/js?key=" type="text/javascript">
+    <script src="https://maps.google.com/maps/api/js?key={{$settings[17]->content}}" type="text/javascript">
     </script>
 
     <script>
@@ -690,7 +690,7 @@ else{
                 foreach ($directories as $business) {
 
                     if ( !empty($business->latitude) && !empty($business->longitude) ) {
-                        $img = 'https://maps.googleapis.com/maps/api/streetview?size=640x640&location=' . $business->latitude . ',' . $business->longitude . '&fov=120&heading=0&key=';
+                        $img = 'https://maps.googleapis.com/maps/api/streetview?size=640x640&location=' . $business->latitude . ',' . $business->longitude . '&fov=120&heading=0&key={{$settings[17]->content}}';
 
                         // $page_link = URL::to('directory/'.$business->id.'/'.strtolower(preg_replace("/[^a-zA-Z0-9]+/", "-", $business->name)));
                         $page_link = URL::to('directory/' . $business->slug);
@@ -765,7 +765,9 @@ else{
                     }]
                 }],
             });
+            const trafficLayer = new google.maps.TrafficLayer();
 
+            trafficLayer.setMap(map);
             var infowindow = new google.maps.InfoWindow();
 
             var marker, i;

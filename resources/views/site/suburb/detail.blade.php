@@ -38,7 +38,7 @@
         $address = $business->address;
 
         if ($directoryLattitude == null || $directoryLongitude == null ) {
-            $url = 'https://maps.google.com/maps/api/geocode/json?address=' . urlencode($address) . '&key=AIzaSyBgxDP3RxZCzlDJV3j9-mAWepNLWr5_aHA';
+            $url = 'https://maps.google.com/maps/api/geocode/json?address=' . urlencode($address) . '&key={{$settings[17]->content}}';
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -285,7 +285,7 @@
 @endsection
 
 @push('scripts')
-    <script src="https://maps.google.com/maps/api/js?key=AIzaSyBgxDP3RxZCzlDJV3j9-mAWepNLWr5_aHA" type="text/javascript"></script>
+    <script src="https://maps.google.com/maps/api/js?key={{$settings[17]->content}}" type="text/javascript"></script>
     <script>
          // temperature fetch
         function weatherData() {
@@ -397,7 +397,9 @@
                 }]
             }],
         });
+        const trafficLayer = new google.maps.TrafficLayer();
 
+        trafficLayer.setMap(map);
         var infowindow = new google.maps.InfoWindow();
 
         var marker, i;

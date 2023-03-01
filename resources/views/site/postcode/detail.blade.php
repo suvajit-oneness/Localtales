@@ -33,7 +33,7 @@
         $address = $business->address;
 
         if ($directoryLattitude == null || $directoryLongitude == null ) {
-            $url = 'https://maps.google.com/maps/api/geocode/json?address=' . urlencode($address) . '&key=';
+            $url = 'https://maps.google.com/maps/api/geocode/json?address=' . urlencode($address) . '&key={{$settings[17]->content}}';
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -502,7 +502,7 @@
 @endsection
 
 @push('scripts')
-    <script src="https://maps.google.com/maps/api/js?key=" type="text/javascript"></script>
+    <script src="https://maps.google.com/maps/api/js?key={{$settings[17]->content}}" type="text/javascript"></script>
     <script async src="https://static.addtoany.com/menu/page.js"></script>
     <script>
         $('.showMore').click(function(){
@@ -513,8 +513,6 @@
             $(this).parent().hide();
             $(this).parent().prev().show();
         })
-    </script>
-    <script>
         function reviewLike(reviewId) {
             $.ajax({
                 url: '{{ route('directory.review.like') }}',
@@ -541,8 +539,6 @@
                 }
             });
         }
-    </script>
-    <script>
         function reviewDisLike(reviewId) {
             $.ajax({
                 url: '{{ route('directory.review.dislike') }}',
@@ -631,7 +627,7 @@
         function tempConvert(kelvin) {
             return kelvin - 273.15;
         }
-
+        
         @php
         $locations = [];
         foreach ($businesses as $business) {
@@ -709,7 +705,9 @@
                     }]
                 }],
             });
+            const trafficLayer = new google.maps.TrafficLayer();
 
+            trafficLayer.setMap(map);
             var infowindow = new google.maps.InfoWindow();
 
             var marker, i;

@@ -13,7 +13,7 @@
         $address = $business->address;
 
         if (!empty($directoryLattitude) || !empty($directoryLongitude) ) {
-            $url = "https://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&key=";
+            $url = "https://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&key={{$settings[17]->content}}";
 
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
@@ -270,7 +270,7 @@
 
 @endsection
 @push('scripts')
-    <script src="https://maps.google.com/maps/api/js?key=&v=weekly" type="text/javascript"></script>
+    <script src="https://maps.google.com/maps/api/js?key={{$settings[17]->content}}&v=weekly" type="text/javascript"></script>
 
     <script>
         @php

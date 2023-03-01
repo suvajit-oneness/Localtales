@@ -202,7 +202,7 @@
 @endsection
 
 @push('scripts')
-    <script src="https://maps.googleapis.com/maps/api/js?key=&libraries=places"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{$settings[17]->content}}&libraries=places"></script>
 
     <script>
         google.maps.event.addDomListener(window,'load',initialize);
