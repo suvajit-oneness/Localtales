@@ -62,7 +62,7 @@
     $orgCat = $business->category_id;
 
     if ($directoryLattitude == null || $directoryLongitude == null ) {
-        $url = "https://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&key=";
+        $url = "https://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&key={{$settings[17]->content}}";
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
