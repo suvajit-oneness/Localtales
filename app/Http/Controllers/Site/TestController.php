@@ -6,8 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+use App\Models\Suburb;
+
 class TestController extends Controller {
-	function reviewFetch(Request $request) {
+
+	// fetch review from google 
+	public function reviewFetch(Request $request) {
 		$data = DB::select("SELECT id, google_api_detail_fetch FROM directories_wt_google_api_detail WHERE google_api_detail_fetch IS NOT NULL AND id >= 300000");
 
 		foreach($data as $directory) {
@@ -56,5 +60,46 @@ class TestController extends Controller {
 		}
 
     }
+
+	// fetch jobs from seek
+	public function jobsFetch() {
+		// fetch job suburb wise only
+		$suburbs = Suburb::orderBy('pin_code', 'asc')->orderBy('name', 'asc')->get();
+
+		foreach($suburbs as $suburb) {
+			$location = $suburb->slug.'-'.$suburb->short_state.'-'.$suburb->pin_code;
+			$url = "http://demo91.co.in/dev/localtales_job_scrapping/job_scrap_request.php?location=".$location;
+
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			$result = curl_exec($ch);
+			curl_close($ch);
+
+			$decoded_result = json_decode($result);
+
+			foreach ($decoded_result as $key => $value) {
+				DB::table('jobs')->insert([
+					'title' => $value->title,
+					'slug' => slugGenerate($value->title, 'jobs'),
+					'company_name' => $value->company,
+					'link' => $value->link,
+					'location' => $value->job_details->location,
+					'address' => $value->job_details->location,
+					'category' => $value->job_details->category,
+					'salary' => $value->job_details->salary,
+					'employment_type' => $value->job_details->job_type,
+					'description' => $value->job_details->description,
+					'postcode' => $suburb->pin_code,
+					'suburb' => $suburb->name,
+					'state' => $suburb->state,
+					'short_state' => $suburb->short_state,
+					'status' => 1,
+				]);
+			}
+
+			// dd(count($decoded_result) . ' jobs done for ' . $suburb->name);
+		}
+	}
 
 }

@@ -431,7 +431,6 @@ if(!function_exists('directoryAddressBreakupType2')) {
     }
 }
 
-
 if (!function_exists('slugGenerate')) {
     function slugGenerate($title, $table) {
         $slug = Str::slug($title, '-');
@@ -448,7 +447,7 @@ if (!function_exists('slugGenerateUPDATED')) {
         $slugExistCount = DB::table($table)->where('title', $title)->count();
         // if ($slugExistCount > 0) $slug = $slug . '-' . ($slugExistCount + 1);
         if ($slugExistCount > 0) $number = ($slugExistCount + 1);
-        
+
         // slug check
         $slugExistCount2 = DB::table($table)->where('slug', $slug)->count();
         // if ($slugExistCount2 > 0) $slug = $slug . '-' . ($slugExistCount2 + 1);

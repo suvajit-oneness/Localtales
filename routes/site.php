@@ -164,7 +164,11 @@ Route::post('/advocate/registration/create', 'Site\AdvocateRegistrationControlle
 Route::get('search','Site\ArticleController@index')->name('site.search');
 Route::post('directory-search','Site\ContentController@search')->name('directory.search');
 
+// get google review for one server to current
 Route::get('/test/review', 'Site\TestController@reviewFetch');
+
+// get crawled jobs from one server to current
+Route::get('/test/jobs/fetch', 'Site\TestController@jobsFetch');
 
 //Route::get('directory-list-3','Site\BusinessController@index');
 //Route::get('directory-list-2','Site\BusinessController@index2');

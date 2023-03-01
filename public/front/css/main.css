@@ -5644,3 +5644,31 @@ select.did-floating-select::-ms-expand {
 .text-lt {
     color: #ff6155 !important;
 }
+
+#openWeather-short {
+    position: absolute;
+    right: 16px;
+    top: -26px;
+}
+
+#openWeather-short .card {
+    display: block;
+    border-radius: 6px;
+    background: #fff;
+    -webkit-box-shadow: 0px 0px 10px rgb(0 0 0 / 15%);
+    box-shadow: 0px 0px 10px rgb(0 0 0 / 15%);
+}
+
+#openWeather-short img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+
+#openWeather-short h3 {
+    font-size: 25px;
+    text-transform: uppercase;
+    font-weight: 400;
+    color: #ff6155;
+    line-height: 1.1;
+}

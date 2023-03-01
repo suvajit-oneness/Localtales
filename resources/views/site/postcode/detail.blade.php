@@ -499,7 +499,6 @@
         </div>
     </section>
     @endif
-
 @endsection
 
 @push('scripts')
@@ -566,6 +565,40 @@
                 }
             });
         }
+
+        // function googleLATLNGfetch() {
+        //     const GoogleAPIKey = 'AIzaSyBgxDP3RxZCzlDJV3j9-mAWepNLWr5_aHA';
+        //     const address = '{{$data->pin}}+{{$data->state_name}}';
+
+        //     // geocoding API
+        //     const geocodingURL = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${GoogleAPIKey}`;
+
+        //     $.ajax({
+        //         url: geocodingURL,
+        //         type: "GET",
+        //         success: function (data) {
+        //             let lat = results[0].geometry.location.lat();
+        //             let lng = results[0].geometry.location.lng();
+
+        //             weatherFetchUpdated(lat, lng);
+        //         }
+        //     });
+        // }
+        // function weatherFetchUpdated(lat, lng) {
+        //     const APIKey = 'af58f6de0c0689247f2e20fac307a0dc';
+        //     const foreCastdays = 7;
+        //     // const weatherURL = `api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lng}&cnt=${foreCastdays}&appid=${APIKey}`;
+        //     const weatherURL = `api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&appid=${APIKey}`;
+
+        //     $.ajax({
+        //         url: weatherURL,
+        //         type: "GET",
+        //         success: function (data) {
+                    
+        //         }
+        //     });
+        // }
+        // googleLATLNGfetch();
 
         // temperature fetch
         function weatherData() {
