@@ -288,7 +288,7 @@
     <script src="https://maps.google.com/maps/api/js?key=AIzaSyBgxDP3RxZCzlDJV3j9-mAWepNLWr5_aHA" type="text/javascript"></script>
     <script>
          // temperature fetch
- function weatherData() {
+        function weatherData() {
             $.ajax({
                 url:"https://api.openweathermap.org/data/2.5/weather?q={{$data->name}},au&appid=af58f6de0c0689247f2e20fac307a0dc",
                 type: "GET",

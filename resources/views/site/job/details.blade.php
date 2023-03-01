@@ -1,10 +1,8 @@
 @extends('site.app')
-@section('title')
-    {{ $job[0]->title }}
-@endsection
+@section('title'){{ $job[0]->title }}@endsection
 @section('description')
-@section('content')
 
+@section('content')
     <section class="artiledetails_banner mb-3 mb-sm-4">
         {{-- <div class="container-fluid">
             <div class="artiledetails_banner_img">
@@ -43,32 +41,39 @@
                         <div class="job-details-heading">
                             <div class="job-details-heading-left mb-2">
                                 <h4 class="company-name">{{$job[0]->company_name}}</h4>
+
                                 @if($job[0]->contact_number != '' && $job[0]->contact_information)
-                                <p><b>Contact Number: </b> <span class="jobsearch-JobDescription-phone-number"><a href="tel:{{$job[0]->contact_number}}">{{$job[0]->contact_number}}</a></span> ({{$job[0]->contact_information}})</p>
+                                    <p><b>Contact Number: </b> <span class="jobsearch-JobDescription-phone-number"><a href="tel:{{$job[0]->contact_number}}">{{$job[0]->contact_number}}</a></span> ({{$job[0]->contact_information}})</p>
                                 @endif
+
                                 @if($job[0]->company_website != '')
-                                <p><b>Company Website: </b> <a href="{{$job[0]->company_website}}">{{$job[0]->company_website}}</a></p>
+                                    <p><b>Company Website: </b> <a href="{{$job[0]->company_website}}">{{$job[0]->company_website}}</a></p>
                                 @endif
+
                                 @if($job[0]->company_desc != '' )
-                                <div>
-                                    {{$job[0]->company_desc}}
-                                </div>
+                                    <div>{{$job[0]->company_desc}}</div>
                                 @endif
                             </div>
                         </div>
                         <div class="row align-items-center">
-                            <div class="col-auto">
+                            {{-- <div class="col-auto">
                                 <h3 class="category__title mb-0">                                    
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"    class="feather feather-map-pin">
                                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                                         <circle cx="12" cy="10" r="3"></circle>
                                     </svg>
-                                    {{-- {{ $job[0]->postcode }} --}}
                                     {{$job[0]->postcode ? $job[0]->postcode : ''}}{{$job[0]->suburb ? ', '.$job[0]->suburb : ''}}{{$job[0]->state ? ', '.$job[0]->state : ''}}
                                 </h3>
-                            </div>
+                            </div> --}}
                             <div class="col-auto">
                                 <ul class="articlecat">
+                                    <li>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"    class="feather feather-map-pin">
+                                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                            <circle cx="12" cy="10" r="3"></circle>
+                                        </svg>
+                                        {{$job[0]->postcode ? $job[0]->postcode : ''}}{{$job[0]->suburb ? ', '.$job[0]->suburb : ''}}{{$job[0]->state ? ', '.$job[0]->state : ''}}
+                                    </li>
                                     <li>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
