@@ -16,7 +16,6 @@ use App\Models\Job;
 
 class PostcodeController extends BaseController
 {
-
     public function index(Request $request)
     {
         $this->setPageTitle('PostCode', 'Local Tales');
@@ -92,5 +91,13 @@ class PostcodeController extends BaseController
         LIMIT 4");
 
         return view('site.postcode.detail', compact('data', 'suburbs', 'articles', 'directories', 'jobs', 'reviews'));
+    }
+
+    public function latLngUpdate(Request $request)
+    {
+        $pin = PinCode::findOrFail($request->id);
+        $pin->lat = $request->lat;
+        $pin->lng = $request->lng;
+        $pin->save();
     }
 }

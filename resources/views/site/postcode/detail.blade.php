@@ -14,13 +14,13 @@
 @section('title'){{$title}}@endsection
 @section('description'){{$description}}@endsection
 <style>
-    div.desc {
+    /* div.desc {
         margin-bottom: 15px;
     }
     .job-desc{
         height: 300px;
         overflow: hidden;
-    }
+    } */
 </style>
 
 @section('content')
@@ -128,32 +128,38 @@
             </div>
         </div>
     </section>
+
     <section class="pb-4 pb-lg-5 our-process pt-5 mt-3">
         <div class="container">
-        <ul class="breadcumb_list mb-4 pb-2">
-            <li><a href="{!! URL::to('/') !!}">Home</a></li>
-            <li>/</li>
-            <li><a href="{{ route('postcode-index') }}">Postcode</a></li>
-            <li>/</li>
-            <li class="active">{{ $data ? $data->pin : '' }}</li>
-        </ul>
-       </div>
+            <ul class="breadcumb_list mb-4 pb-2">
+                <li><a href="{!! URL::to('/') !!}">Home</a></li>
+                <li>/</li>
+                <li><a href="{{ route('postcode-index') }}">Postcode</a></li>
+                <li>/</li>
+                <li class="active">{{ $data ? $data->pin : '' }}</li>
+            </ul>
+        </div>
     </section>
+
     <section class="map_section pt-1">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-12">
+                <div class="col-12 mb-5">
                     <p>{{ $data ? $data->description : '' }}</p>
                 </div>
 
-                @if(count($directories) > 0)
+                <div class="col-12 mt-3">
+                    <div class="d-flex" id="openweather-forecast" style="height: 220px;overflow-x: auto;"></div>
+                </div>
+
+                {{-- @if(count($directories) > 0) --}}
                 <div class="col-12">
                     <div class="map map-margintop">
                         <div id="mapShow" style="height: 600px;"></div>
                         <input type="hidden" id="googlemapaddress" value="{{ $data ? $data->pin : '' }}">
                     </div>
                 </div>
-                @endif
+                {{-- @endif --}}
             </div>
         </div>
     </section>
@@ -357,33 +363,59 @@
                 </div>
             </div>
             <div class="row">
-            @foreach ($jobs as $key => $data)
+            @foreach ($jobs as $key => $job)
                 <div class="col-6 col-md-3 mb-2 mb-sm-4 mb-lg-3">
                     <div class="smplace_card text-center">
                         <div class="job-desc job-desc--mod">
                             <h4 class="job__role">
-                                <a href="{!! URL::to('jobs/' . $data->slug) !!}" class="location_btn">
-                                    {{ $data->title ?? ''}}
+                                <a href="{!! URL::to('jobs/' . $job->slug) !!}" class="location_btn" data-toggle="tooltip" title="{{ $job->title}}">
+                                    {{ $job->title ?? ''}}
                                 </a>
                             </h4>
-                            <h4 class="job__location">{{ $data->company_name?? '' }}</h4>
-                            <p class="job__adress" title="{{$data->postcode ? $data->postcode : ''}}{{$data->suburb ? ', '.$data->suburb : ''}}{{$data->state ? ', '.$data->state : ''}}">
+                            <h4 class="job__location">{{ $job->company_name?? '' }}</h4>
+                            <p class="job__adress" title="{{$job->postcode ? $job->postcode : ''}}{{$job->suburb ? ', '.$job->suburb : ''}}{{$job->state ? ', '.$job->state : ''}}">
                                 <i class="fas fa-map-marker-alt"></i>
-                                {{$data->postcode ? $data->postcode : ''}}{{$data->suburb ? ', '.$data->suburb : ''}}{{$data->state ? ', '.$data->state : ''}}
+                                {{$job->postcode ? $job->postcode : ''}}{{$job->suburb ? ', '.$job->suburb : ''}}{{$job->state ? ', '.$job->state : ''}}
+                            </p>
+
+                            <span class="badge jobType" style="margin-top: 8px;">Full Time</span>
+
+                            <div class="desc job__desc">
+                                <p>{!! $job->description ?? '' !!}</p>
+                            </div>
+                        </div>
+                        <a type="button" class="job__list__btn text-right" style="font-size: 16px"
+                            href="{!! URL::to('jobs/' . $job->slug) !!}">
+                            Learn More
+                        </a>
+                    </div>
+                </div>
+                {{-- <div class="col-6 col-md-3 mb-2 mb-sm-4 mb-lg-3">
+                    <div class="smplace_card text-center">
+                        <div class="job-desc job-desc--mod">
+                            <h4 class="job__role">
+                                <a href="{!! URL::to('jobs/' . $job->slug) !!}" class="location_btn" data-toggle="tooltip" title="{{ $job->title}}">
+                                    {{ $job->title ?? ''}}
+                                </a>
+                            </h4>
+                            <h4 class="job__location">{{ $job->company_name?? '' }}</h4>
+                            <p class="job__adress" title="{{$job->postcode ? $job->postcode : ''}}{{$job->suburb ? ', '.$job->suburb : ''}}{{$job->state ? ', '.$job->state : ''}}">
+                                <i class="fas fa-map-marker-alt"></i>
+                                {{$job->postcode ? $job->postcode : ''}}{{$job->suburb ? ', '.$job->suburb : ''}}{{$job->state ? ', '.$job->state : ''}}
                             </p>
 
                             <span class="badge jobType">Full Time</span>
 
                             <div class="desc job__desc">
-                                <p>{!! $data->description ?? '' !!}</p>
+                                <p>{!! $job->description ?? '' !!}</p>
                             </div>
                         </div>
                         <a type="button" class="job__list__btn text-right" style="font-size: 16px"
-                            href="{!! URL::to('jobs/' . $data->slug) !!}">
+                            href="{!! URL::to('jobs/' . $job->slug) !!}">
                             Learn More
                         </a>
                     </div>
-                </div>
+                </div> --}}
             @endforeach
         </div>
         </div>
@@ -504,6 +536,8 @@
 @push('scripts')
     <script src="https://maps.google.com/maps/api/js?key={{$settings[17]->content}}" type="text/javascript"></script>
     <script async src="https://static.addtoany.com/menu/page.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js" integrity="sha512-42PE0rd+wZ2hNXftlM78BSehIGzezNeQuzihiBCvUEB3CVxHvsShF86wBWwQORNxNINlBPuq7rG4WWhNiTVHFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <script>
         $('.showMore').click(function(){
             $(this).parent().hide();
@@ -522,6 +556,9 @@
                     id: reviewId,
                 },
                 success: function(result) {
+                    window.location= "{{url()->current()}}";
+
+                    /*
                     // alert(result);
                     if (result.type == 'add') {
                         // toastr.success(result.message);
@@ -536,6 +573,7 @@
                         $('#reviewlikeBtn_' + reviewId + '_grid').attr('fill', 'none');
                         $('#reviewlikeBtn_' + reviewId + '_list').attr('fill', 'none');
                     }
+                    */
                 }
             });
         }
@@ -548,6 +586,9 @@
                     id: reviewId,
                 },
                 success: function(result) {
+                    window.location= "{{url()->current()}}";
+
+                    /*
                     // alert(result);
                     if (result.type == 'add') {
                         // toastr.success(result.message);
@@ -562,43 +603,57 @@
                         $('#reviewdislikeBtn_' + reviewId + '_grid').attr('fill', 'none');
                         $('#reviewdislikeBtn_' + reviewId + '_list').attr('fill', 'none');
                     }
+                    */
                 }
             });
         }
 
-        // function googleLATLNGfetch() {
-        //     const GoogleAPIKey = 'AIzaSyBgxDP3RxZCzlDJV3j9-mAWepNLWr5_aHA';
-        //     const address = '{{$data->pin}}+{{$data->state_name}}';
+        // fetch lat & lng from google
+        @if (empty($data->lat) || empty($data->lng))
+            function googleLATLNGfetch() {
+                // const GoogleAPIKey = 'AIzaSyBgxDP3RxZCzlDJV3j9-mAWepNLWr5_aHA';
+                const GoogleAPIKey = '{{$settings[17]->content}}';
+                const findAddress = '{{$data->pin}}+{{$data->state_name}}';
 
-        //     // geocoding API
-        //     const geocodingURL = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${GoogleAPIKey}`;
+                // geocoding API
+                const geocodingURL = `https://maps.googleapis.com/maps/api/geocode/json?address=${findAddress}&key=${GoogleAPIKey}`;
 
-        //     $.ajax({
-        //         url: geocodingURL,
-        //         type: "GET",
-        //         success: function (data) {
-        //             let lat = results[0].geometry.location.lat();
-        //             let lng = results[0].geometry.location.lng();
+                $.ajax({
+                    url: geocodingURL,
+                    type: "GET",
+                    success: function (data) {
+                        let lat = data.results[0].geometry.location.lat;
+                        let lng = data.results[0].geometry.location.lng;
 
-        //             weatherFetchUpdated(lat, lng);
-        //         }
-        //     });
-        // }
-        // function weatherFetchUpdated(lat, lng) {
-        //     const APIKey = 'af58f6de0c0689247f2e20fac307a0dc';
-        //     const foreCastdays = 7;
-        //     // const weatherURL = `api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lng}&cnt=${foreCastdays}&appid=${APIKey}`;
-        //     const weatherURL = `api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&appid=${APIKey}`;
+                        latLngDBUpdate(lat, lng);
 
-        //     $.ajax({
-        //         url: weatherURL,
-        //         type: "GET",
-        //         success: function (data) {
-                    
-        //         }
-        //     });
-        // }
-        // googleLATLNGfetch();
+                        // weatherFetchUpdated(lat, lng);
+                    }
+                });
+            }
+
+            // update lat, lng in database
+            function latLngDBUpdate(lat, lng) {
+                $.ajax({
+                    url: '{{route("postcode.lat.lng.update")}}',
+                    type: "post",
+                    data: {
+                        '_token': '{{csrf_token()}}',
+                        'lat': lat,
+                        'lng': lng,
+                        'id': '{{$data->id}}',
+                    }
+                });
+            }
+
+            googleLATLNGfetch();
+
+            const postcodeLat = lat;
+            const postcodeLng = lng;
+        @else
+            const postcodeLat = '{{$data->lat}}';
+            const postcodeLng = '{{$data->lng}}';
+        @endif
 
         // temperature fetch
         function weatherData() {
@@ -624,10 +679,58 @@
         }
         weatherData();
 
+        // weather forecast
+        function weatherForecastData() {
+            $.ajax({
+                url:"https://api.openweathermap.org/data/2.5/forecast?lat="+postcodeLat+"&lon="+postcodeLng+"&appid=af58f6de0c0689247f2e20fac307a0dc",
+                type: "GET",
+                success: function (data) {
+                    var content = ``;
+
+                    $.each(data.list, (key, value) => {
+                        var theDate = value.dt_txt;
+                        // skipping today's forecast
+                        if (!theDate.includes('{{date("Y-m-d")}}')) {
+
+                            // datetime to weekday
+                            var day_only = moment(theDate).format('ddd');
+                            var time_only = moment(theDate).format('h:mm a');
+                            var date_only = moment(theDate).format('Do MMM, YYYY');
+
+                            var temp = tempConvert(value.main.temp);
+                            var icon = "https://openweathermap.org/img/wn/"+value.weather[0].icon+"@2x.png";
+                            var beforeDecimal = temp.toString().split(".")[0];
+
+                            content += `
+                            <div class="col-2">
+                                <div class="card">
+                                    <div class="card-body p-1 text-center">
+                                        <h5 class="mt-3">${day_only}</h5>
+                                        <img src="${icon}" alt="weather-icon">
+                                        <div class="d-flex justify-content-between px-2">
+                                            <h3>${beforeDecimal} &#8451;</h3>
+                                            <div class="right-part text-right">
+                                                <p class="mb-0 small text-muted text-right">${time_only}</p>
+                                                <p class="mb-0 small text-muted text-right">${date_only}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            `;
+                        }
+                    });
+
+                    $('#openweather-forecast').html(content);
+                }
+            })
+        }
+        weatherForecastData();
+
         function tempConvert(kelvin) {
             return kelvin - 273.15;
         }
-        
+
         @php
         $locations = [];
         foreach ($businesses as $business) {

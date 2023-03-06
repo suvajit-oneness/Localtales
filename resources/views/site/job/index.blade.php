@@ -1,17 +1,8 @@
 @extends('site.app')
 @section('title'){{seoManagement('job')->title}}@endsection
 @section('description'){{seoManagement('job')->meta_desc}}@endsection
-@section('description')
-@endsection
-<style>
-    div.desc {
-        margin-bottom: 15px;
-    }
-    .job-desc{
-        height: 300px;
-        overflow: hidden;
-    }
-</style>
+@section('description')@endsection
+
 @section('content')
     <section class="inner_banner articles_inbanner"
         style="background: url({{ asset('site/images/banner') }}-image.jpg) no-repeat center center; background-size:cover;">
@@ -103,7 +94,7 @@
                             <div class="smplace_card text-center">
                                 <div class="job-desc job-desc--mod">
                                     <h4 class="job__role">
-                                        <a href="{!! URL::to('jobs/' . $data->slug) !!}" class="location_btn">
+                                        <a href="{!! URL::to('jobs/' . $data->slug) !!}" class="location_btn" data-toggle="tooltip" title="{{ $data->title}}">
                                             {{ $data->title ?? ''}}
                                         </a>
                                     </h4>

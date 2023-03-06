@@ -10,10 +10,12 @@ Route::get('/', 'Site\IndexController@index')->name('index');
 // postcode
 Route::get('postcode', 'Site\PostcodeController@index')->name('postcode-index');
 Route::get('postcode/{postcode}', 'Site\PostcodeController@detail')->name('postcode');
+Route::post('postcode/lat/lng/update', 'Site\PostcodeController@latLngUpdate')->name('postcode.lat.lng.update');
 
 // suburb
 Route::get('suburb', 'Site\SuburbController@index')->name('suburb-index');
 Route::get('suburb/{slug}', 'Site\SuburbController@detail')->name('suburb-details');
+Route::post('suburb/lat/lng/update', 'Site\SuburbController@latLngUpdate')->name('suburb.lat.lng.update');
 
 // directory
 Route::get('directory','Site\DirectoryController@index')->name('directory');
@@ -169,6 +171,9 @@ Route::get('/test/review', 'Site\TestController@reviewFetch');
 
 // get crawled jobs from one server to current
 Route::get('/test/jobs/fetch', 'Site\TestController@jobsFetch');
+
+// postcode weather test
+Route::view('/weather/test', 'site.test.postcode');
 
 //Route::get('directory-list-3','Site\BusinessController@index');
 //Route::get('directory-list-2','Site\BusinessController@index2');

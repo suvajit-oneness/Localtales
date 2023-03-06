@@ -152,4 +152,12 @@ class SuburbController extends BaseController
          // dd($reviews);
         return view('site.suburb.detail', compact('data', 'directories', 'similarPlaces','jobs','reviews'));
     }
+
+    public function latLngUpdate(Request $request)
+    {
+        $pin = Suburb::findOrFail($request->id);
+        $pin->lat = $request->lat;
+        $pin->lng = $request->lng;
+        $pin->save();
+    }
 }

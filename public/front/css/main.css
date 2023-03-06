@@ -906,9 +906,9 @@ header nav {
 }
 
 .map_section .card {
-    position: absolute;
+    /* position: absolute;
     top: -38px;
-    width: 100%;
+    width: 100%; */
 }
 
 .map_section .form-control {
@@ -3399,7 +3399,8 @@ select.did-floating-select::-ms-expand {
 }
 
 .job-desc.job-desc--mod {
-    height: 227px;
+    /* height: 227px; */
+    height: 221px;
 }
 
 .job__list__btn {
@@ -3407,6 +3408,7 @@ select.did-floating-select::-ms-expand {
     font-weight: 600;
     text-transform: uppercase;
     color: #f05d51;
+    margin-top: 25px;
 }
 
 .category__title {
@@ -5651,24 +5653,64 @@ select.did-floating-select::-ms-expand {
     top: -26px;
 }
 
-#openWeather-short .card {
+#openWeather-short .card, #openweather-forecast .card {
     display: block;
     border-radius: 6px;
     background: #fff;
     -webkit-box-shadow: 0px 0px 10px rgb(0 0 0 / 15%);
     box-shadow: 0px 0px 10px rgb(0 0 0 / 15%);
+    width: 100%;
 }
 
-#openWeather-short img {
+#openWeather-short img, #openweather-forecast img {
     width: 80px;
     height: 80px;
     object-fit: cover;
 }
 
-#openWeather-short h3 {
+#openWeather-short h3, #openweather-forecast h3 {
     font-size: 25px;
     text-transform: uppercase;
     font-weight: 400;
     color: #ff6155;
     line-height: 1.1;
+}
+
+#openweather-forecast h3 {
+    font-size: 30px;
+}
+
+#openWeather-short p.small, #openweather-forecast p.small {
+    font-size: 11px;
+    /* margin-top: 10px; */
+}
+
+div.desc {
+    margin-bottom: 15px;
+}
+.job-desc{
+    height: 300px;
+    overflow: hidden;
+}
+.job__role a {
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 1;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.job__desc p, .job__desc span, .job__desc h1, .job__desc h2, .job__desc h1, .job__desc h3, .job__desc h4, .job__desc h5, .job__desc h6, .job__desc ul li, .job__desc strong, .job__desc b {
+    font-size: 16px;
+    font-weight: 300;
+    margin-bottom: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    letter-spacing: 0.4px;
+    transition: all 300ms ease-in-out;
+    word-break: normal !important;
+    margin-top: 0;
+    text-transform: capitalize !important;
 }

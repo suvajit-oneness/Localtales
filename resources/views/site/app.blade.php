@@ -80,6 +80,10 @@
         $('[data-fancybox]').fancybox({
             protect: true
         });
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
     </script>
 
     <script>
