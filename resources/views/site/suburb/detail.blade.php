@@ -417,7 +417,7 @@
                             var beforeDecimal = temp.toString().split(".")[0];
 
                             content += `
-                            <div class="col-2">
+                            <div class="col-6 col-lg-2">
                                 <div class="card">
                                     <div class="card-body p-1 text-center">
                                         <h5 class="mt-3">${day_only}</h5>

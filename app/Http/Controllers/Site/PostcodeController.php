@@ -53,7 +53,7 @@ class PostcodeController extends BaseController
 
             if (!empty($keyword)) {
                 $directories = DB::table('directories')->whereRaw("name like '%$keyword%' and
-                ( address like '%$request->address')")->paginate(18)->appends(request()->query());
+                ( address like '%$request->address')")->where('is_deleted', 0)->paginate(18)->appends(request()->query());
             } else {
                 $directories = "";
             }
@@ -62,17 +62,17 @@ class PostcodeController extends BaseController
             // if primary category
             if ($type == "primary") {
                 $directories = DB::table('directories')->whereRaw("address like '%$address' and name like '%$keyword%' and
-                ( category_id like '$request->code,%' or category_id like '%,$request->code,%')")->paginate(18)->appends(request()->query());
+                ( category_id like '$request->code,%' or category_id like '%,$request->code,%')")->where('is_deleted', 0)->paginate(18)->appends(request()->query());
             } elseif ($type == "secondary") {
                 $directories = DB::table('directories')->whereRaw("address like '%$address' and name like '%$keyword%' and
-                ( category_id like '$request->code,%' or category_id like '%,$request->code,%')")->paginate(18)->appends(request()->query());
+                ( category_id like '$request->code,%' or category_id like '%,$request->code,%')")->where('is_deleted', 0)->paginate(18)->appends(request()->query());
             }
 
 
             // if no directory found
             if(count($directories) == 0) {
                 $directories = DB::table('directories')->whereRaw("address like '%$address' and
-                ( category_tree like '%$category%' )")->paginate(18)->appends(request()->query());
+                ( category_tree like '%$category%' )")->where('is_deleted', 0)->paginate(18)->appends(request()->query());
             }
         } else {
             $directories = Directory::where('address', 'LIKE', '%'.$pincode)

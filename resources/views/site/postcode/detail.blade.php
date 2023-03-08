@@ -702,7 +702,7 @@
                             var beforeDecimal = temp.toString().split(".")[0];
 
                             content += `
-                            <div class="col-2">
+                            <div class="col-6 col-lg-2">
                                 <div class="card">
                                     <div class="card-body p-1 text-center">
                                         <h5 class="mt-3">${day_only}</h5>
@@ -734,13 +734,13 @@
         @php
         $locations = [];
         foreach ($businesses as $business) {
-           if($business->image = ''){
-	        $img = "https://demo91.co.in/localtales-prelaunch/public/Directory/placeholder-image.png";
-            }else{
+           if($business->image = '') {
+                $img = "https://demo91.co.in/localtales-prelaunch/public/Directory/placeholder-image.png";
+            } else {
                 $img = "https://maps.googleapis.com/maps/api/streetview?size=640x640&location=".$business->latitude.",".$business->longitude."&fov=120&heading=0&key=";
             }
 
-            $page_link = URL::to('directory/' . $business->slug );
+            $page_link = URL::to('directory/' . $business->slug);
 
             $data = [$business->name, floatval($business->latitude), floatval($business->longitude), $business->address, $page_link];
             array_push($locations, $data);
@@ -814,7 +814,7 @@
             var infowindow = new google.maps.InfoWindow();
 
             var marker, i;
-            var iconBase = 'https://demo91.co.in/localtales-prelaunch/public/site/images/';
+            var iconBase = "{{url('/')}}/site/images/";
 
             for (i = 0; i < locations.length; i++) {
                 const contentString =

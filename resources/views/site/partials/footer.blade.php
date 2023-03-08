@@ -82,6 +82,7 @@
                         <li><a href="{!! URL::to('about-us') !!}">About Us</a></li>
                         <li><a href="{!! URL::to('contact-us') !!}">Contact Us</a></li>
                         <li><a href="{!! URL::to('help') !!}">Help</a></li>
+                        <li><a href="{!! URL::to('jobs') !!}">Jobs</a></li>
                     </ul>
                 </div>
             </div>

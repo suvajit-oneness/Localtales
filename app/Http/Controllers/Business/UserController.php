@@ -14,34 +14,32 @@ use App\Models\Directory;
 use App\Models\Userbusiness;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+
 class UserController extends Controller
 {
-    /** update profile
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function profilestore(Request $request){
-        //dd($request->all());
-        $validator = Validator::make($request->all(), [
+        // dd($request->all());
+
+        // $validator = Validator::make($request->all(), [
+        $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
+            'street_address' => 'required|string|max:255',
+            'postcode' => 'required|string|max:4',
+            'suburb' => 'required|string|max:255',
+            'state' => 'required|string|max:8',
         ]);
 
-        if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
-        }
+        // if($validator->fails()){
+        //     return response()->json($validator->errors()->toJson(), 400);
+        // }
+
+        // setup address
+        $address = $request->street_address.', '.$request->suburb.', '.$request->state.', '.$request->postcode;
 
         $userId = Auth::guard('business')->user()->id;
         $params = $request->except('_token');
         $params['id'] = $userId;
-        // if($request->state !=''){
-        // $address=$request->address.", ".$request->suburb.", ".$request->state.", ".$request->pin;
-        // }
-        // else{
-            $address=$request->address;
-        //}
-       // dd($address);
         $user=Directory::where('id',$userId)->update([
             'name'=>request('name'),
             'address'=>$address,
@@ -174,5 +172,18 @@ class UserController extends Controller
             'message' => ($request->check_status == 1) ? 'Two Factor Authentication Enabled' : 'Two Factor Authentication Disabled',
         ]);
         // return redirect()->route('business.profile')->with('success','You have successfully enabled 2FA Authentication');
+    }
+
+    public function accountDelete(Request $request) {
+        $id = Auth::guard('business')->user()->id;
+
+        $directory = Directory::findOrFail($id);
+        $directory->is_deleted = 1;
+        $directory->save();
+
+        // logout
+        Auth::guard('business')->logout();
+        $request->session()->invalidate();
+        return redirect()->route('business.login')->with('success', 'Your account is deleted successfully');
     }
 }

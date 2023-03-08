@@ -27,7 +27,7 @@ class DirectoryController extends BaseController
     {
         $this->setPageTitle('Directory', 'List of all Directory');
         $value = $_COOKIE['postcode'] ?? '';
-        $directory = Directory::where('address','LIKE','%' . $value)->paginate(18);
+        $directory = Directory::where('is_deleted', 0)->where('address','LIKE','%' . $value)->paginate(18);
 
         if (isset($request->code) || isset($request->keyword) || isset($request->name)) {
             $category = $request->directory_category;
@@ -37,11 +37,11 @@ class DirectoryController extends BaseController
             $name = $request->name;
 
             if (!empty($keyword)) {
-                $directoryList = DB::table('directories')->whereRaw("address like '%$keyword'")->paginate(18)->appends(request()->query());
+                $directoryList = DB::table('directories')->where('is_deleted', 0)->whereRaw("address like '%$keyword'")->paginate(18)->appends(request()->query());
             }
             if (!empty($name)) {
                 $name = addslashes($name);
-                $directoryList = DB::table('directories')->whereRaw("name like '%$name%'")->paginate(18)->appends(request()->query());
+                $directoryList = DB::table('directories')->where('is_deleted', 0)->whereRaw("name like '%$name%'")->paginate(18)->appends(request()->query());
             }
 
             if (!empty($code)) {
@@ -49,18 +49,18 @@ class DirectoryController extends BaseController
                 if ($type == "primary") {
                     $keywordQuery = "AND name like '%$name%' ";
                     $directoryList = DB::table('directories')->whereRaw("address like '%$keyword' $keywordQuery and
-                    ( category_id like '$request->code,%' or category_id like '%,$request->code,%' or category_tree like '%$request->directory_category%')")->paginate(18)->appends(request()->query());
+                    ( category_id like '$request->code,%' or category_id like '%,$request->code,%' or category_tree like '%$request->directory_category%')")->where('is_deleted', 0)->paginate(18)->appends(request()->query());
                 } elseif ($type == "secondary") {
                     $keywordQuery = "AND name like '%$name%' ";
                     $directoryList = DB::table('directories')->whereRaw("address like '%$keyword' $keywordQuery and
-                    ( category_id like '$request->code,%' or category_id like '%,$request->code,%' or category_tree like '%$request->directory_category%')")->paginate(18)->appends(request()->query());
+                    ( category_id like '$request->code,%' or category_id like '%,$request->code,%' or category_tree like '%$request->directory_category%')")->where('is_deleted', 0)->paginate(18)->appends(request()->query());
                 }
             }
         } else {
             if(count($directory)>0){
-                $directoryList = Directory::where('address','LIKE','%' . $value)->paginate(18)->appends(request()->query());
+                $directoryList = Directory::where('address','LIKE','%' . $value)->where('is_deleted', 0)->paginate(18)->appends(request()->query());
             } else {
-                $directoryList = Directory::paginate(18)->appends(request()->query());
+                $directoryList = Directory::where('is_deleted', 0)->paginate(18)->appends(request()->query());
             }
         }
 

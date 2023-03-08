@@ -37,6 +37,7 @@
 
     @php
         $state = App\Models\State::orderby('name')->get();
+        $postcodes = App\Models\PinCode::orderby('pin', 'asc')->get();
         $dircategory = App\Models\DirectoryCategory::orderby('parent_category')
             ->groupby('parent_category')
             ->distinct()
@@ -80,6 +81,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label class="mb-1">
                                 <h6 class="mb-0 text-sm text-dark">Name<span class="m-l-5 text-danger">
@@ -91,6 +93,7 @@
                                 {{ $message ?? '' }}
                             @enderror
                         </div>
+
                         <div class="form-group">
                             <label class="mb-1">
                                 <h6 class="mb-0 text-sm text-dark">Trading Name</h6>
@@ -102,6 +105,7 @@
                                 {{ $message ?? '' }}
                             @enderror
                         </div>
+
                         <div class="form-group">
                             <label class="mb-1">
                                 <h6 class="mb-0 text-sm text-dark">Email</h6>
@@ -112,6 +116,7 @@
                                 {{ $message ?? '' }}
                             @enderror
                         </div>
+
                         <div class="form-group">
                             <label class="mb-1">
                                 <h6 class="mb-0 text-sm text-dark">Mobile No</h6>
@@ -122,6 +127,7 @@
                                 {{ $message ?? '' }}
                             @enderror
                         </div>
+
                         <div class="form-group">
                             <label class="mb-1">
                                 <h6 class="mb-0 text-sm text-dark">Primary Name</h6>
@@ -132,6 +138,7 @@
                                 <p class="small text-danger">{{ $message }}</p>
                             @enderror
                         </div>
+
                         <div class="form-group">
                             <label class="mb-1">
                                 <h6 class="mb-0 text-sm text-dark">Primary Email</h6>
@@ -142,6 +149,7 @@
                                 <p class="small text-danger">{{ $message }}</p>
                             @enderror
                         </div>
+
                         <div class="form-group">
                             <label class="mb-1">
                                 <h6 class="mb-0 text-sm text-dark">Primary Phone</h6>
@@ -152,177 +160,132 @@
                                 <p class="small text-danger">{{ $message }}</p>
                             @enderror
                         </div>
-                        
-                        {{--  --}}
+
                         <div class="form-group">
+                            @php
+                                // directory address breakups
+                                $directoryStreetAddress = directoryAddressBreakup(Auth::guard('business')->user()->address)[0];
+                                $directorySuburb = directoryAddressBreakup(Auth::guard('business')->user()->address)[1];
+                                $directoryState = directoryAddressBreakup(Auth::guard('business')->user()->address)[2];
+                                $directoryPostcode = directoryAddressBreakup(Auth::guard('business')->user()->address)[3];
+                            @endphp
+
                             <label class="mb-1">
                                 <h6 class="mb-0 text-sm text-dark">Address</h6>
                             </label>
-                            {{-- @php
-                                    $txt = Auth::guard('business')->user()->address;
-                                    $pieces = explode(' ', $txt);
-                                    dd($pieces);
-                                    $str= preg_replace('/\W\w+\s*(\W*)$/', '$1', $txt);
-                                    $string=preg_replace('/\W\w+\s*(\W*)$/', '$1', $str);
-                                    $address=preg_replace('/\W\w+\s*(\W*)$/', '$1', $string);
-                                    $addressItem=substr($address,0,-3);
-                                    //$last_word_state = strrpos($txt, ' ') + 1; // +1 so we don't include the space in our result
-                                    $last_word_state = substr($txt,-9);
-                                    $stateWord=preg_replace('/\W\w+\s*(\W*)$/', '$1', $last_word_state);
-                                    $word=str_replace(",", '',$stateWord);
 
-                                @endphp --}}
-                            <input class="form-control" type="text" name="address" id="address"
-                                value="{{ Auth::guard('business')->user()->address }}" />
+                            <p class="small text-muted mb-0">Street address</p>
+                            <input class="form-control" type="text" name="street_address" id="street_address" value="{{ $directoryStreetAddress }}" />
+                            @error('street_address')
+                                <p class="small text-danger">{{ $message }}</p>
+                            @enderror
+
+                            <div class="row mt-3">
+                                <div class="col-md-4">
+                                    <p class="small text-muted mb-0">Postcode</p>
+                                    <select name="postcode" id="postcode" class="form-control">
+                                        @foreach ($postcodes as $postcode)
+                                            <option value="{{$postcode->pin}}" {{ ($postcode->pin == $directoryPostcode) ? 'selected' : '' }}>{{$postcode->pin}}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('postcode')<p class="small text-danger">{{ $message }}</p>@enderror
+                                </div>
+
+                                <div class="col-md-4">
+                                    <p class="small text-muted mb-0">Suburb</p>
+                                    {{-- <input class="form-control" type="text" name="suburb" id="suburb" value="{{ $directorySuburb }}" /> --}}
+                                    <select name="suburb" id="suburb" class="form-control">
+                                        <option value="" selected disabled>Select Postcode</option>
+                                    </select>
+                                    @error('suburb')<p class="small text-danger">{{ $message }}</p>@enderror
+                                </div>
+
+                                <div class="col-md-4">
+                                    <p class="small text-muted mb-0">State</p>
+                                    <input class="form-control" type="text" name="state" id="state" value="Select Postcode" />
+                                    {{-- <input class="form-control" type="text" name="state" id="state" value="{{ $directoryState }}" /> --}}
+                                    @error('state')<p class="small text-danger">{{ $message }}</p>@enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="mb-1">
+                                <h6 class="control-label mb-0" for="pin">Category:</h6>
+                            </label>
+                            <div class="category-container mb-3">
+                                @php
+                                    if (!empty(Auth::guard('business')->user()->category_id)) {
+                                        $cat = substr(Auth::guard('business')->user()->category_id, 0, -1);
+                                        $displayCategoryName = '';
+                                        foreach (explode(',', $cat) as $catKey => $catVal) {
+                                            $catDetails = \App\Models\DirectoryCategory::where('id', $catVal)
+                                                ->where('status', 1)
+                                                ->first();
+
+                                            if (!empty($catDetails->child_category)) {
+                                                $confirmText = "return confirm('Are you sure ?')";
+                                                $displayCategoryName .=
+                                                    '
+                                        <div class="badge badge-primary">
+                                            ' .
+                                                    $catDetails->child_category .
+                                                    '
+                                            <a href="' .
+                                                    URL::to('business/' . Auth::guard('business')->user()->id . '/category/' . $catVal . '/delete') .
+                                                    '" onclick="' .
+                                                    $confirmText .
+                                                    '">&times;</a>
+                                        </div>
+                                        ';
+                                            }
+                                        }
+                                        $displayCategoryName = substr($displayCategoryName, 0, -2);
+                                        echo $displayCategoryName;
+                                    } else {
+                                        echo '';
+                                    }
+                                @endphp
+                            </div>
+                            <a href="#newCategoryModal" data-toggle="modal" class="btn btn-sm btn-primary">Add category</a>
+
                             @error('category_id')
                                 <p class="small text-danger">{{ $message }}</p>
                             @enderror
                         </div>
-                        {{-- <div class="form-group">
-                            <div class="select-floating-admin">
-                                <label class="mb-1">
-                                    <h6 class="mb-0 text-sm text-dark">State</h6>
-                                </label>
-                                <select class="filter_select form-control" name="state">
-                                    <option hidden selected></option>
-                                    @foreach ($state as $index => $item)
-                                        <option
-                                            value="{{ $item->short_code }}">
-                                            {{ $item->name }}({{ $item->short_code }})</option>
-                                    @endforeach
-                                </select>
 
-                                @error('state')
-                                    <p class="small text-danger">{{ $message }}</p>
-                                @enderror
-                            </div>
-                        </div>
                         <div class="form-group">
-                           
-                            <div class="select-floating-admin">
-                                <label class="mb-1">
-                                    <h6 class="mb-0 text-sm text-dark">Postcode <span
-                                            class="m-l-5 text-danger"> *</span></h6>
-                                </label>
+                            <label class="mb-1">
+                                <h6 class="mb-0 text-sm text-dark">Service Description</h6>
+                            </label>
+                            <textarea class="form-control" type="text" name="service_description" id="service_description"
+                                >{{ Auth::guard('business')->user()->service_description }}</textarea>
+                            @error('service_description')
+                                <p class="small text-danger">{{ $message }}</p>
+                            @enderror
+                        </div>
 
-                                <select class="filter_select form-control" name="pin" disabled>
-                                    <option value="">Select State first</option>
-                                </select>
+                        <div class="form-group">
+                            <label class="mb-1">
+                                <h6 class="mb-0 text-sm text-dark">Description</h6>
+                            </label>
+                            <textarea class="form-control" type="text" name="description" id="description">{{ Auth::guard('business')->user()->description }}</textarea>
+                            @error('description')
+                                <p class="small text-danger">{{ $message }}</p>
+                            @enderror
+                        </div>
 
-                                @error('pin')
-                                    <p class="small text-danger">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <div class="select-floating-admin">
-                                    <label class="mb-1">
-                                        <h6 class="mb-0 text-sm text-dark">Suburb <span
-                                                class="m-l-5 text-danger"> *</span></h6>
-                                    </label>
-                                    <select class="filter_select form-control" name="suburb" disabled>
-                                        <option value="" selected disabled>Select Postcode first</option>
-                                    </select>
-                                    @error('suburb')
-                                        <p class="small text-danger">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div> --}}
-                            <div class="form-group">
-                                <label class="mb-1">
-                                    <h6 class="control-label mb-0" for="pin">
-                                        Category:
-                                        {{-- <br>
-                                        {{ directoryCategoryStr(Auth::guard('business')->user()->category_id) }}
-                                        <span class="m-l-5 text-danger"> *</span> --}}
-                                    </h6>
-                                </label>
-                                <div class="category-container mb-3">
+                        <div class="form-group">
+                            <label class="mb-1">
+                                <h6 class="mb-0 text-sm text-dark">Website</h6>
+                            </label>
+                            <input class="form-control" type="text" name="website" id="website"
+                                value="{{ Auth::guard('business')->user()->website }}" />
+                            @error('website')
+                                <p class="small text-danger">{{ $message }}</p>
+                            @enderror
+                        </div>
 
-                                    @php
-                                        if (!empty(Auth::guard('business')->user()->category_id)) {
-                                            $cat = substr(Auth::guard('business')->user()->category_id, 0, -1);
-                                            $displayCategoryName = '';
-                                            foreach (explode(',', $cat) as $catKey => $catVal) {
-                                                $catDetails = \App\Models\DirectoryCategory::where('id', $catVal)
-                                                    ->where('status', 1)
-                                                    ->first();
-                                        
-                                                if (!empty($catDetails->child_category)) {
-                                                    // $route = route('admin.directory.category.delete', $targetdirectory->id, $catVal);
-                                                    // $route = 'admin/directory/'.$targetdirectory->id.'/category/'.$catVal.'/delete';
-                                        
-                                                    // dd($route);
-                                                    $confirmText = "return confirm('Are you sure ?')";
-                                        
-                                                    $displayCategoryName .=
-                                                        '
-                                            <div class="badge badge-primary">
-                                                ' .
-                                                        $catDetails->child_category .
-                                                        '
-                                                <a href="' .
-                                                        URL::to('business/' . Auth::guard('business')->user()->id . '/category/' . $catVal . '/delete') .
-                                                        '" onclick="' .
-                                                        $confirmText .
-                                                        '">&times;</a>
-                                            </div>
-                                            ';
-                                                }
-                                            }
-                                            $displayCategoryName = substr($displayCategoryName, 0, -2);
-                                            echo $displayCategoryName;
-                                        } else {
-                                            echo '';
-                                        }
-                                    @endphp
-                                </div>
-                                <a href="#newCategoryModal" data-toggle="modal" class="btn btn-sm btn-primary">Add
-                                    category</a>
-
-                                @error('category_id')
-                                    <p class="small text-danger">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            {{-- <div class="form-group">
-                                <label class="mb-1">
-                                    <h6 class="mb-0 text-sm text-dark">Category tree</h6>
-                                </label>
-                                <input class="form-control" type="text" name="category_tree" id="category_tree"
-                                    value="{{ Auth::guard('business')->user()->category_tree }}" />
-                                @error('category_id')
-                                    <p class="small text-danger">{{ $message }}</p>
-                                @enderror
-                            </div> --}}
-                            <div class="form-group">
-                                <label class="mb-1">
-                                    <h6 class="mb-0 text-sm text-dark">Service Description</h6>
-                                </label>
-                                <textarea class="form-control" type="text" name="service_description" id="service_description"
-                                    >{{ Auth::guard('business')->user()->service_description }}</textarea>
-                                @error('service_description')
-                                    <p class="small text-danger">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <label class="mb-1">
-                                    <h6 class="mb-0 text-sm text-dark">Description</h6>
-                                </label>
-                                <textarea class="form-control" type="text" name="description" id="description">{{ Auth::guard('business')->user()->description }}</textarea>
-                                @error('description')
-                                    <p class="small text-danger">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <label class="mb-1">
-                                    <h6 class="mb-0 text-sm text-dark">Website</h6>
-                                </label>
-                                <input class="form-control" type="text" name="website" id="website"
-                                    value="{{ Auth::guard('business')->user()->website }}" />
-                                @error('website')
-                                    <p class="small text-danger">{{ $message }}</p>
-                                @enderror
-                            </div>
                             <div class="form-group">
                                 <label class="mb-1">
                                     <h6 class="mb-0 text-sm text-dark">Facebook Link</h6>
@@ -333,6 +296,7 @@
                                     <p class="small text-danger">{{ $message }}</p>
                                 @enderror
                             </div>
+
                             <div class="form-group">
                                 <label class="mb-1">
                                     <h6 class="mb-0 text-sm text-dark">Twitter Link</h6>
@@ -343,6 +307,7 @@
                                     <p class="small text-danger">{{ $message }}</p>
                                 @enderror
                             </div>
+
                             <div class="form-group">
                                 <label class="mb-1">
                                     <h6 class="mb-0 text-sm text-dark">Instagram Link</h6>
@@ -353,7 +318,9 @@
                                     <p class="small text-danger">{{ $message }}</p>
                                 @enderror
                             </div>
+
                             <div class="card-header">Opening Hour</div>
+
                             <div class="form-group">
                                 <label class="mb-1">
                                     <h6 class="mb-0 text-sm text-dark">Monday</h6>
@@ -364,6 +331,7 @@
                                     <p class="small text-danger">{{ $message }}</p>
                                 @enderror
                             </div>
+
                             <div class="form-group">
                                 <label class="mb-1">
                                     <h6 class="mb-0 text-sm text-dark">Tuesday</h6>
@@ -374,6 +342,7 @@
                                     <p class="small text-danger">{{ $message }}</p>
                                 @enderror
                             </div>
+
                             <div class="form-group">
                                 <label class="mb-1">
                                     <h6 class="mb-0 text-sm text-dark">Wednesday</h6>
@@ -384,6 +353,7 @@
                                     <p class="small text-danger">{{ $message }}</p>
                                 @enderror
                             </div>
+
                             <div class="form-group">
                                 <label class="mb-1">
                                     <h6 class="mb-0 text-sm text-dark">Thursday</h6>
@@ -394,6 +364,7 @@
                                     <p class="small text-danger">{{ $message }}</p>
                                 @enderror
                             </div>
+
                             <div class="form-group">
                                 <label class="mb-1">
                                     <h6 class="mb-0 text-sm text-dark">Friday</h6>
@@ -404,6 +375,7 @@
                                     <p class="small text-danger">{{ $message }}</p>
                                 @enderror
                             </div>
+
                             <div class="form-group">
                                 <label class="mb-1">
                                     <h6 class="mb-0 text-sm text-dark">Saturday</h6>
@@ -414,6 +386,7 @@
                                     <p class="small text-danger">{{ $message }}</p>
                                 @enderror
                             </div>
+
                             <div class="form-group">
                                 <label class="mb-1">
                                     <h6 class="mb-0 text-sm text-dark">Sunday</h6>
@@ -424,6 +397,7 @@
                                     <p class="small text-danger">{{ $message }}</p>
                                 @enderror
                             </div>
+
                             <div class="form-group">
                                 <label class="mb-1">
                                     <h6 class="mb-0 text-sm text-dark">Public Holiday</h6>
@@ -434,6 +408,7 @@
                                     <p class="small text-danger">{{ $message }}</p>
                                 @enderror
                             </div>
+
                             <div class="form-group">
                                 <label class="mb-1">
                                     <h6 class="mb-0 text-sm text-dark">ABN</h6>
@@ -444,6 +419,7 @@
                                     <p class="small text-danger">{{ $message }}</p>
                                 @enderror
                             </div>
+
                             <div class="form-group">
                                 <label class="mb-1">
                                     <h6 class="mb-0 text-sm text-dark">Establish Year</h6>
@@ -455,16 +431,15 @@
                                 @enderror
                             </div>
                         </div>
-                        {{-- <div class="col-sm-12">
-                                <label class="mb-1">
-                                    <h6 class="mb-0 text-sm text-dark">Country</h6>
-                                </label>
-                                <input class="form-control" type="text" name="country" id="country"
-                                    value="{{ Auth::user()->country }}" />
-                            </div> --}}
                         <div class="tile-footer">
-                            <button type="submit" class="btn btn-primary"><i
-                                    class="fa fa-fw fa-lg fa-check-circle"></i>Update</button>
+                            <div class="d-flex justify-content-between">
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-fw fa-lg fa-check-circle"></i>Update</button>
+
+                                <a href="jaavscript: void(0)" class="btn btn-primary" onclick="deleteAccount()">
+                                    Delete your account
+                                    <i class="fa fa-fw fa-lg fa-trash"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -620,5 +595,79 @@
                 }
             });
         });
+
+        // postcode info fetch
+        $('select[name="postcode"]').on('change', function() {
+            postcodeInfoFetch();
+        });
+
+        function postcodeInfoFetch() {
+            var val = $('select[name="postcode"] option:selected').val();
+            
+            $.ajax({
+                url: '{{route("business.postcode.detail")}}',
+                type: 'post',
+                data: {
+                    '_token': '{{csrf_token()}}',
+                    'postcode': val
+                },
+                success: function(resp) {
+                    if (resp.status == 200) {
+                        // get state
+                        let state = resp.data[0].short_state;
+                        let currentSuburb = '{{$directorySuburb}}';
+
+                        let suburbContent = ``;
+                        let checked = ``;
+                        $.each(resp.data, (key, val) => {
+                            if(currentSuburb == val.name) checked = 'selected';
+                            else checked = '';
+
+                            suburbContent += `
+                            <option value="${val.name}" ${checked}>${val.name}</option>
+                            `;
+                        });
+
+                        // show state
+                        $('input[name="state"]').val(state);
+                        // show suburbs
+                        $('select[name="suburb"]').html(suburbContent);
+                    } else {
+                        
+                    }
+                }
+            });
+        }
+
+        postcodeInfoFetch();
+
+        // delete account
+        function deleteAccount() {
+            Swal.fire({
+                title: 'Are you sure you want to delete your account ?',
+                showCancelButton: true,
+                focusCancel: true,
+                confirmButtonColor: '#ff6155',
+                confirmButtonText: 'Yes, Delete my account',
+                cancelButtonText: 'No',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location = '{{route("business.account.delete")}}';
+                }
+            });
+
+
+            // $.ajax({
+            //     url: '{{route("business.account.delete")}}',
+            //     type: 'post',
+            //     data: {
+            //         '_token': '{{csrf_token()}}',
+            //         'postcode': val
+            //     },
+            //     success: function(resp) {
+
+            //     }
+            // });
+        }
     </script>
 @endpush

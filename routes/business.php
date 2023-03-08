@@ -52,6 +52,13 @@ Route::group(['prefix' => 'business'], function () {
 		// business visit count
 		Route::get('/visit/count', 'Business\VisitController@index')->name('business.visit.count');
 
+		// postcode details find
+		Route::post('/postcode/detail', 'Business\PostcodeController@detail')->name('business.postcode.detail');
+
+		// account delete
+		Route::get('/account/delete', 'Business\UserController@accountDelete')->name('business.account.delete');
+
+
 
 
 		Route::get('2fa', 'Business\TwoFAController@index')->name('2fa.index');

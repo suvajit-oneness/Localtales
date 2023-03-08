@@ -109,7 +109,7 @@ class SuburbController extends BaseController
             $address=$request->address;
 
             if (!empty($keyword)) {
-                $directories = DB::table('directories')->whereRaw("name like '%$keyword%'")->paginate(18)->appends(request()->query());
+                $directories = DB::table('directories')->whereRaw("name like '%$keyword%'")->where('is_deleted', 0)->paginate(18)->appends(request()->query());
             } else {
                 $directories = "";
             }
@@ -118,18 +118,18 @@ class SuburbController extends BaseController
             if ($type == "primary") {
 
                 $directories = DB::table('directories')->whereRaw("address like '%$data->name%' and name like '%$keyword%' and
-                ( category_id like '$code,%' or category_id like '%,$code,%')")->paginate(18)->appends(request()->query());
+                ( category_id like '$code,%' or category_id like '%,$code,%')")->where('is_deleted', 0)->paginate(18)->appends(request()->query());
 
             } elseif ($type == "secondary") {
 
                 $directories = DB::table('directories')->whereRaw("address like '%$data->name%' and name like '%$keyword%' and
-                ( category_id like '$code,%' or category_id like '%,$code,%')")->paginate(18)->appends(request()->query());
+                ( category_id like '$code,%' or category_id like '%,$code,%')")->where('is_deleted', 0)->paginate(18)->appends(request()->query());
 
             }
             // if no directory found
             if(count($directories) == 0) {
                 $directories = DB::table('directories')->whereRaw("address like '%$data->name%' and
-                ( category_tree like '%$category%' )")->paginate(18)->appends(request()->query());
+                ( category_tree like '%$category%' )")->where('is_deleted', 0)->paginate(18)->appends(request()->query());
             }
         } else {
             $directories = Directory::where('address', 'LIKE', '%'.$data->name.'%')
