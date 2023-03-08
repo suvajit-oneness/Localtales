@@ -13,6 +13,7 @@ use Auth;
 use App\Models\DealReview;
 use App\Models\State;
 use App\Models\DirectoryCategory;
+
 class DealController extends BaseController
 {
     /**

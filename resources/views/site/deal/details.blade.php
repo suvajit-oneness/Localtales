@@ -131,7 +131,8 @@
 						</figure>
 						<figcaption>
 							<h5>Category</h5>
-							<a href="{!! URL::to('category/' . $deal->category->parent_category_slug) !!}"><p>{{$deal->category->parent_category}}</p></a>
+							{{-- <a href="{!! URL::to('category/' . $deal->category->parent_category_slug) !!}"><p>{{$deal->category->parent_category}}</p></a> --}}
+							<p style="text-transform: capitalize!important;">{!! dealCategory($deal->category_id) !!}</p>
 						</figcaption>
 					</div>
 					<div class="banner_meta_item col-lg-2 col-md-4 col-sm-6 mb-3 mb-lg-0">

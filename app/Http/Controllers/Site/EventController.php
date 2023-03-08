@@ -64,10 +64,10 @@ class EventController extends BaseController
 
             if (!empty($keyword)) {
                 //$keywordQuery = "AND address like '%$keyword' ";
-                $events = DB::table('events')->whereRaw("address like '%$keyword'")->paginate(18)->appends(request()->query());
+                $events = DB::table('events')->whereRaw("address like '%$keyword'")->where('status', 1)->paginate(18)->appends(request()->query());
             }
             if (!empty($name)) {
-                $events = DB::table('events')->whereRaw("title like '%$name%'")->paginate(18)->appends(request()->query());
+                $events = DB::table('events')->whereRaw("title like '%$name%'")->where('status', 1)->paginate(18)->appends(request()->query());
             }
 
             if (!empty($code)) {
@@ -75,17 +75,17 @@ class EventController extends BaseController
                 if ($type == "primary") {
                     $keywordQuery = "AND title like '%$name%' ";
                     $events = DB::table('events')->whereRaw("address like '%$keyword' $keywordQuery and
-                    ( category_id like '$request->code%' or category_id like '%,$request->code%' )")->paginate(18)->appends(request()->query());
+                    ( category_id like '$request->code%' or category_id like '%,$request->code%' )")->where('status', 1)->paginate(18)->appends(request()->query());
                 } elseif ($type == "secondary") {
                     $keywordQuery = "AND title like '%$name%' ";
                     $events = DB::table('events')->whereRaw("address like '%$keyword' $keywordQuery and
-                    ( category_id like '$request->code%' or category_id like '%,$request->code%' )")->paginate(18)->appends(request()->query());
+                    ( category_id like '$request->code%' or category_id like '%,$request->code%' )")->where('status', 1)->paginate(18)->appends(request()->query());
                 }
             }
         } else {
               // $directoryList = Directory::paginate(18)->appends(request()->query());
              
-             $events = Event::paginate(18)->appends(request()->query());
+             $events = Event::where('status', 1)->paginate(18)->appends(request()->query());
             }
         $categories = $this->categoryRepository->listCategories();
         $displayRelated = array();

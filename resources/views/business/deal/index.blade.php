@@ -131,7 +131,7 @@
         },
         function(isConfirm){
           if (isConfirm) {
-            window.location.href = "deal/"+dealid+"/delete";
+            window.location.href = "deals/"+dealid+"/delete";
             } else {
               swal("Cancelled", "Record is safe", "error");
             }

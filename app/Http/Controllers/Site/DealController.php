@@ -59,28 +59,28 @@ class DealController extends BaseController
        
         if (!empty($keyword)) {
             //$keywordQuery = "AND address like '%$keyword' ";
-            $deals = DB::table('deals')->whereRaw("full_address like '%$keyword'")->paginate(18)->appends(request()->query());
+            $deals = DB::table('deals')->whereRaw("full_address like '%$keyword'")->where('status', 1)->paginate(18)->appends(request()->query());
         }
         if (!empty($name)) {
-            $deals = DB::table('deals')->whereRaw("title like '%$name%'")->paginate(18)->appends(request()->query());
+            $deals = DB::table('deals')->whereRaw("title like '%$name%'")->where('status', 1)->paginate(18)->appends(request()->query());
         }
         if (!empty($expiry_date)) {
-            $deals = DB::table('deals')->whereRaw("expiry_date like '%$expiry_date%'")->paginate(18)->appends(request()->query());
+            $deals = DB::table('deals')->whereRaw("expiry_date like '%$expiry_date%'")->where('status', 1)->paginate(18)->appends(request()->query());
         }
         if (!empty($code)) {
             // if primary category
             if ($type == "primary") {
                 $keywordQuery = "AND title like '%$name%' ";
                 $deals = DB::table('deals')->whereRaw("full_address like '%$keyword' $keywordQuery and
-                ( category_id like '$request->code%' or category_id like '%,$request->code%' )")->paginate(18)->appends(request()->query());
+                ( category_id like '$request->code%' or category_id like '%,$request->code%' )")->where('status', 1)->paginate(18)->appends(request()->query());
             } elseif ($type == "secondary") {
                 $keywordQuery = "AND title like '%$name%' ";
                 $deals = DB::table('deals')->whereRaw("full_address like '%$keyword' $keywordQuery and
-                ( category_id like '$request->code%' or category_id like '%,$request->code%' )")->paginate(18)->appends(request()->query());
+                ( category_id like '$request->code%' or category_id like '%,$request->code%' )")->where('status', 1)->paginate(18)->appends(request()->query());
             }
         }
         }else{
-            $deals = Deal::where('status',1)->orderby('title')->paginate(18);
+            $deals = Deal::where('status', 1)->orderby('title')->paginate(18);
         }
         //dd($deals);
         $categories = $this->categoryRepository->listCategories();

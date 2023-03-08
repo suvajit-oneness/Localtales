@@ -244,17 +244,17 @@
                 </div>
             </div>
             <div class="row">
-            @foreach ($reviews as $key => $data)
+            @foreach ($reviews as $key => $review)
             {{-- {{dd($data)}} --}}
             <div class="col-6 col-md-3 mb-2 mb-sm-4 mb-lg-3">
                 <div class="card directory-single-review">
                     <div class="card-body">
-                        <h5>{{ $data->author_name }}</h5>
-                        <p>{{ $data->name }}</p>
+                        <h5>{{ $review->author_name }}</h5>
+                        <p>{{ $review->name }}</p>
 
                         <div class="rating">
                             @php
-                                $rating = number_format($data->rating,1);
+                                $rating = number_format($review->rating,1);
                                 for ($i = 1; $i < 6; $i++) {
                                     if ($rating >= $i) {
                                         echo '<i class="fas fa-star"></i>';
@@ -266,34 +266,34 @@
                                 }
                             @endphp
                         </div>
-                        @if(!empty($data->time))
-                        <p>{{date('d/m/Y', $data->time) }}</p>
+                        @if(!empty($review->time))
+                        <p>{{date('d/m/Y', $review->time) }}</p>
                         @else
-                        <p>{{date('d/m/Y', strtotime($data->created_at)) }}</p>
+                        <p>{{date('d/m/Y', strtotime($review->created_at)) }}</p>
                         @endif
                         <div class="desc">
-                            @if(strlen($data->text) > 200)
-                                <p>{{ substr($data->text,0,200) }} <small class="text text-primary showMore" style="cursor: pointer">...Read more</small></p>
+                            @if(strlen($review->text) > 200)
+                                <p>{{ substr($review->text,0,200) }} <small class="text text-primary showMore" style="cursor: pointer">...Read more</small></p>
 
-                                <p style="display: none">{{$data->text}}<small class="text text-primary showLess" style="cursor: pointer">Read less</small></p>
+                                <p style="display: none">{{$review->text}}<small class="text text-primary showLess" style="cursor: pointer">Read less</small></p>
                             @else
-                                <p>{{$data->text}}</p>
+                                <p>{{$review->text}}</p>
                             @endif
                         </div>
 
                             {{-- review like/ dislike --}}
                             @if(Auth::guard('user')->check())
                                 <a href="javascript:void(0)" class="location_btn ms-auto"
-                                onclick="reviewLike({{ $data->id }})"
+                                onclick="reviewLike({{ $review->id }})"
                                 title="Like">
 
                                 @php
                                     if(Auth::guard('user')->check()){
-                                        $reviewExistsCheck = \App\Models\ReviewVote::where('review_id', $data->id)
+                                        $reviewExistsCheck = \App\Models\ReviewVote::where('review_id', $review->id)
                                             ->where('user_id',auth()->guard('user')->user()->id)
                                             ->where('vote_status',1)->first();
                                     } else {
-                                        $reviewExistsCheck = \App\Models\ReviewVote::where('review_id', $data->id)
+                                        $reviewExistsCheck = \App\Models\ReviewVote::where('review_id', $review->id)
                                             ->where('user_id',auth()->guard('user')->user()->id)
                                             ->where('vote_status',0)->first();
                                         //$reviewExistsCheck ==null;
@@ -307,20 +307,20 @@
                                         $heartColor = 'none';
                                     }
                                 @endphp
-                                    <svg id="reviewlikeBtn_{{ $data->id }}_grid" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="{{ $heartColor }}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
-                                    <span>{{ CountLikeReview($data->id)  }}</span>
+                                    <svg id="reviewlikeBtn_{{ $review->id }}_grid" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="{{ $heartColor }}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+                                    <span>{{ CountLikeReview($review->id)  }}</span>
                                 </a>
                                 <a href="javascript:void(0)" class="location_btn ms-auto"
-                                onclick="reviewDisLike({{ $data->id }})"
+                                onclick="reviewDisLike({{ $review->id }})"
                                 title="DisLike">
 
                                 @php
                                      if(Auth::guard('user')->check()){
-                                        $reviewExistsCheck = \App\Models\ReviewVote::where('review_id', $data->id)
+                                        $reviewExistsCheck = \App\Models\ReviewVote::where('review_id', $review->id)
                                             ->where('user_id',auth()->guard('user')->user()->id)
                                             ->where('vote_status',0)->first();
                                     } else {
-                                        $reviewExistsCheck = \App\Models\ReviewVote::where('review_id', $data->id)
+                                        $reviewExistsCheck = \App\Models\ReviewVote::where('review_id', $review->id)
                                             ->where('user_id',auth()->guard('user')->user()->id)
                                             ->where('vote_status',1)->first();
                                         //$reviewExistsCheck ==null;
@@ -333,17 +333,17 @@
                                         $heartColor = 'none';
                                     }
                                 @endphp
-                                    <svg id="reviewdislikeBtn_{{ $data->id }}_grid" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="{{ $heartColor }}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path></svg>
-                                    <span id="like_">{{ CountDisLikeReview($data->id)  }}</span>
+                                    <svg id="reviewdislikeBtn_{{ $review->id }}_grid" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="{{ $heartColor }}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path></svg>
+                                    <span id="like_">{{ CountDisLikeReview($review->id)  }}</span>
                                 </a>
                             @else
                                 <a href="javascript:void(0)" class="ms-auto" title="Like" onclick="toastFire('warning', 'Login to continue');">
-                                    <svg id="reviewlikeBtn_{{ $data->id }}_grid" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
-                                    <span>{{ CountLikeReview($data->id)  }}</span>
+                                    <svg id="reviewlikeBtn_{{ $review->id }}_grid" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+                                    <span>{{ CountLikeReview($review->id)  }}</span>
                                 </a>
                                 <a href="javascript:void(0)" class="location_btn ms-auto" title="Dislike" onclick="toastFire('warning', 'Login to continue');">
-                                    <svg id="reviewlikeBtn_{{ $data->id }}_grid" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path></svg>
-                                    <span>{{ CountDisLikeReview($data->id)  }}</span>
+                                    <svg id="reviewlikeBtn_{{ $review->id }}_grid" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path></svg>
+                                    <span>{{ CountDisLikeReview($review->id)  }}</span>
                                 </a>
                             @endif
                     </div>
