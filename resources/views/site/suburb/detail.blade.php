@@ -451,19 +451,26 @@
         
         @php
         $locations = [];
-        foreach ($businesses as $business) {
-            //$img = "https://maps.googleapis.com/maps/api/streetview?size=640x640&location=".$business->latitude.",".$business->longitude."&fov=120&heading=0&key=AIzaSyDegpPMIh4JJgSPtZwE6cfTjXSQiSYOdc4";
-            if($business->image = ''){
-	            $img = "https://demo91.co.in/localtales-prelaunch/public/Directory/placeholder-image.png";
-            }else{
-                $img = "https://maps.googleapis.com/maps/api/streetview?size=640x640&location=".$business->latitude.",".$business->longitude."&fov=120&heading=0&key={{$settings[17]->content}}";
+        if(!empty($businesses)){
+            foreach ($businesses as $business) {
+                //$img = "https://maps.googleapis.com/maps/api/streetview?size=640x640&location=".$business->latitude.",".$business->longitude."&fov=120&heading=0&key=AIzaSyDegpPMIh4JJgSPtZwE6cfTjXSQiSYOdc4";
+                if($business->image = ''){
+                    $img = "https://demo91.co.in/localtales-prelaunch/public/Directory/placeholder-image.png";
+                }else{
+                    $img = "https://maps.googleapis.com/maps/api/streetview?size=640x640&location=".$business->latitude.",".$business->longitude."&fov=120&heading=0&key={{$settings[17]->content}}";
+                }
+
+                $page_link = URL::to('directory/' . $business->slug );
+
+            // $data = [$business->name, floatval($business->latitude), floatval($business->longitude), $business->address, $img, $page_link];
+            $data = [$business->name, floatval($business->latitude), floatval($business->longitude), $business->address, $page_link];
+                array_push($locations, $data);
             }
-
-            $page_link = URL::to('directory/' . $business->slug );
-
-           // $data = [$business->name, floatval($business->latitude), floatval($business->longitude), $business->address, $img, $page_link];
-           $data = [$business->name, floatval($business->latitude), floatval($business->longitude), $business->address, $page_link];
-            array_push($locations, $data);
+        }else{ 
+            $page_link ='';
+            $img='';
+            $data = [$data->name, floatval($data->lat), floatval($data->lng), $data->pin_code, $page_link];
+                array_push($locations, $data);
         }
         @endphp
 
