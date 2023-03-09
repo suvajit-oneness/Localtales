@@ -6,23 +6,14 @@
 
 @section('content')
     <div class="app-title">
-
         <div class="row w-100">
-
             <div class="col-md-6">
-
                 <h1><i class="fa fa-file"></i> {{ 'All Queries' }}</h1>
-
                 <p></p>
-
             </div>
-
             <div class="col-md-6 text-right">
-
             </div>
-
         </div>
-
     </div>
 
     @include('admin.partials.flash')
@@ -34,109 +25,65 @@
             <div class="tile">
 
                 <div class="tile-body">
-
                     <table class="table table-hover custom-data-table-style table-striped" id="sampleTable">
-
                         <thead>
-
                             <tr>
-
                                 <th>#</th>
-
                                 <th> Name </th>
-
                                 <th> Email </th>
-
-                                <th> Query Catagory</th>
-
+                                <th> Category</th>
                                 <th> Query</th>
-
                                 <th> Status </th>
-
                                 <th style="width:100px; min-width:100px;" class="text-center">Action</th>
-
                             </tr>
-
                         </thead>
-
                         <tbody>
-
                             @foreach ($data as $key => $blog)
                                 <tr>
-
-
-
                                     <td>{{ $blog->ticked_id }}</td>
-
-
-
                                     <td>{{ $blog->name }}</td>
-
-                                    <td><a
-                                            href="https://mail.google.com/mail/?view=cm&fs=1&to={{ $blog->email }}">{{ $blog->email }}</a>
-
+                                    <td>
+                                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ $blog->email }}">{{ $blog->email }}</a>
                                     </td>
-                                     @if($blog->query_catagory =='other')
-                                     <td>other</td>
-                                     @else
-                                    <td>{{ $blog->catagory->name }}</td>
+                                    @if($blog->query_catagory =='other')
+                                        <td>other</td>
+                                    @else
+                                        @if ($blog->catagory)
+                                            <td>{{ $blog->catagory->name }}</td>
+                                        @else
+                                            <td>{{ $blog->query_catagory }}</td>
+                                        @endif
                                     @endif
-
                                     <td>{{ $blog->query }}</td>
-
                                     <td class="text-center">
-
                                         <div class="toggle-button-cover margin-auto">
-
                                             <div class="button-cover">
-
                                                 <div class="button-togglr b2" id="button-11">
-
                                                     <input id="toggle-block" type="checkbox"
                                                         onclick="changeStatus('{{ $blog['id'] }}',this)" name="status"
                                                         class="checkbox" data-id="{{ $blog['id'] }}"
                                                         {{ $blog['status'] == 1 ? 'checked' : '' }}>
-
                                                     <div class="knobs"><span>Inactive</span></div>
-
                                                     <div class="layer"></div>
-
                                                 </div>
-
                                             </div>
-
                                         </div>
-
                                     </td>
-
                                     <td class="text-center">
-
                                         <div class="btn-group" role="group" aria-label="Second group">
-
                                             {{-- <a href="{{ route('admin.collectiondir.edit', $blog['id']) }}" class="btn btn-sm btn-primary edit-btn"><i class="fa fa-edit"></i></a> --}}
-
-                                            <a href="{{ route('admin.query.detail', $blog['id']) }}"
-                                                class="btn btn-sm btn-primary edit-btn"><i class="fa fa-eye"></i></a>
-
-                                            <a href="#" onclick="deleteRow('{{ $blog['id'] }}')"
-                                                class="sa-remove btn btn-sm btn-danger edit-btn"><i
-                                                    class="fa fa-trash"></i></a>
-
+                                            <a href="{{ route('admin.query.detail', $blog['id']) }}" class="btn btn-sm btn-primary edit-btn"><i class="fa fa-eye"></i></a>
+                                            <a href="#" onclick="deleteRow('{{ $blog['id'] }}')" class="sa-remove btn btn-sm btn-danger edit-btn"><i class="fa fa-trash"></i></a>
                                         </div>
                                     </td>
                                 </tr>
                             @endforeach
 
                         </tbody>
-
                     </table>
-
                 </div>
-
             </div>
-
         </div>
-
     </div>
 @endsection
 

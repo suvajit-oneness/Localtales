@@ -30,10 +30,14 @@
                         <tr>
                             <td>Query Catagory</td>
                             @if($data->query_catagory =='other')
-                                     <td>other</td>
-                                     @else
+                                <td>other</td>
+                            @else
+                                @if ($data->catagory)
                                     <td>{{ $data->catagory->name }}</td>
-                                    @endif
+                                @else
+                                    <td>{{ $data->query_catagory }}</td>
+                                @endif
+                            @endif
                         </tr>
                         @if($data->query_catagory =='other')
                         <tr>
