@@ -378,7 +378,7 @@
                                 {{$job->postcode ? $job->postcode : ''}}{{$job->suburb ? ', '.$job->suburb : ''}}{{$job->state ? ', '.$job->state : ''}}
                             </p>
 
-                            <span class="badge jobType" style="margin-top: 8px;">Full Time</span>
+                            {{-- <span class="badge jobType" style="margin-top: 8px;">Full Time</span> --}}
 
                             <div class="desc job__desc">
                                 <p>{!! $job->description ?? '' !!}</p>
@@ -390,32 +390,6 @@
                         </a>
                     </div>
                 </div>
-                {{-- <div class="col-6 col-md-3 mb-2 mb-sm-4 mb-lg-3">
-                    <div class="smplace_card text-center">
-                        <div class="job-desc job-desc--mod">
-                            <h4 class="job__role">
-                                <a href="{!! URL::to('jobs/' . $job->slug) !!}" class="location_btn" data-toggle="tooltip" title="{{ $job->title}}">
-                                    {{ $job->title ?? ''}}
-                                </a>
-                            </h4>
-                            <h4 class="job__location">{{ $job->company_name?? '' }}</h4>
-                            <p class="job__adress" title="{{$job->postcode ? $job->postcode : ''}}{{$job->suburb ? ', '.$job->suburb : ''}}{{$job->state ? ', '.$job->state : ''}}">
-                                <i class="fas fa-map-marker-alt"></i>
-                                {{$job->postcode ? $job->postcode : ''}}{{$job->suburb ? ', '.$job->suburb : ''}}{{$job->state ? ', '.$job->state : ''}}
-                            </p>
-
-                            <span class="badge jobType">Full Time</span>
-
-                            <div class="desc job__desc">
-                                <p>{!! $job->description ?? '' !!}</p>
-                            </div>
-                        </div>
-                        <a type="button" class="job__list__btn text-right" style="font-size: 16px"
-                            href="{!! URL::to('jobs/' . $job->slug) !!}">
-                            Learn More
-                        </a>
-                    </div>
-                </div> --}}
             @endforeach
         </div>
         </div>

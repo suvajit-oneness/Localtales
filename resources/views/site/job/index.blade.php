@@ -104,7 +104,7 @@
                                         {{$data->postcode ? $data->postcode : ''}}{{$data->suburb ? ', '.$data->suburb : ''}}{{$data->state ? ', '.$data->state : ''}}
                                     </p>
 
-                                    <span class="badge jobType">Full Time</span>
+                                    {{-- <span class="badge jobType">Full Time</span> --}}
 
                                     <div class="desc job__desc">
                                         <p>{!! $data->description ?? '' !!}</p>
