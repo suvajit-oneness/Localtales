@@ -5714,3 +5714,34 @@ div.desc {
     margin-top: 0;
     text-transform: capitalize !important;
 }
+
+.query .alert-danger {
+    color: #ff6155;
+    background-color: #ffbeb994;
+    border-color: #ffbeb994;
+}
+
+.query .file-input {
+    padding: 12px 20px;
+}
+.query select.did-floating-input {
+    appearance: none;
+    cursor: pointer;
+}
+.query .select-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 2rem;
+}
+
+.query .query-input {
+    line-height: 56px;
+}
+.query .did-floating-input {
+    font-weight: 300;
+}
+
+.query textarea.did-floating-input {
+    overflow-y: hidden;
+}
