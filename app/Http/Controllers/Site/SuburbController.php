@@ -28,7 +28,8 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\BaseController;
 use Auth;
 use Symfony\Component\Console\Input\Input;
-
+use App\Models\News;
+use App\Models\Property;
 class SuburbController extends BaseController
 {
     protected $AboutRepository;
@@ -149,8 +150,11 @@ class SuburbController extends BaseController
           WHERE d.address like '%$data->name%'
           ORDER BY r.created_at DESC
           LIMIT 4");
-         // dd($reviews);
-        return view('site.suburb.detail', compact('data', 'directories', 'similarPlaces','jobs','reviews'));
+          //news
+        $news = News::where('suburb', 'LIKE', '%'.$data->name)->orderby('id','desc')->take(4)->get();
+        //property
+        $properties = Property::where('suburb', 'LIKE', '%'.$data->name)->orderby('id','desc')->take(4)->get();
+        return view('site.suburb.detail', compact('data', 'directories', 'similarPlaces','jobs','reviews','news','properties'));
     }
 
     public function latLngUpdate(Request $request)

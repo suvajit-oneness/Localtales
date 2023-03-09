@@ -434,19 +434,57 @@
             <div class="col-6 col-md-3 mb-2 mb-sm-4 mb-lg-3">
                 <div class="card directory-single-review">
                     <div class="card-body">
-                        <img src="{{URL::to('/').'/front'.'/'.'img/'}}{{$data->image}}" height="100" width="200">
+                        <img src="{{URL::to('/').'/front'.'/'.'img/'}}{{$data->image}}" height="100" width="250">
                         <h5>{{ $data->title }}</h5>
                         <p>{{ $data->state }}</p>
 
                         <p>{{date('d/m/Y', strtotime($data->created_at)) }}</p>
                         <div class="desc">
                             @if(strlen($data->description) > 200)
-                                <p>{{ substr($data->description,0,200) }} <small class="text text-primary showMore" style="cursor: pointer">...Read more</small></p>
+                                <p>{{ substr($data->description,0,200) }} <small class="text text-primary More" style="cursor: pointer">...Read more</small></p>
 
-                                <p style="display: none">{{$data->descriptions}}<small class="text text-primary showLess" style="cursor: pointer">Read less</small></p>
+                                <p style="display: none">{{$data->descriptions}}<small class="text text-primary Less" style="cursor: pointer">Read less</small></p>
                             @else
                                 <p>{{$data->description}}</p>
                             @endif
+                        </div>
+                        <a type="button" class="job__list__btn text-right" style="font-size: 16px"
+                            href="{!! URL::to('news/' . $data->slug) !!}">
+                            Learn More
+                            </a>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+        </div>
+    </section>
+    @endif
+    @if (count($properties)>0)
+    <section class="py-2 py-sm-4 py-lg-5 similar_postcode more-collection">
+        <div class="container">
+            <div class="row mb-0 mb-sm-4 justify-content-center">
+                <div class="page_title text-center">
+                    <h2 class="mb-2"><a href="{{route('property')}}" class="location_btn">Local Property</a></h2>
+                </div>
+            </div>
+            <div class="row">
+            @foreach ($properties as $key => $property)
+            <div class="col-6 col-md-3 mb-2 mb-sm-4 mb-lg-3">
+                <div class="card directory-single-review">
+                    <div class="card-body">
+                        @if($property->image)<img src="{{URL::to('/').'/front'.'/'.'img/'}}{{$property->image}}" height="100" width="250">@endif
+                        
+                        <p>{{ $property->street_address.', '.$property->suburb.', '.$property->state.', '.$property->postcode }}</p>
+                        <p>{{ $property->bedroom }} bedroom {{ $property->bathroom }} bathroom</p>
+                        <p>{{ $property->type }} </p>
+                        <p>{{ $property->price }}</p>
+                        <p>{{date('d/m/Y', strtotime($property->created_at)) }}</p>
+                        <div class="desc">
+                            <a type="button" class="job__list__btn text-right" style="font-size: 16px"
+                            href="{!! URL::to('jobs/' . $property->slug) !!}">
+                            Learn More
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -578,6 +616,14 @@
             $(this).parent().next().show();
         })
         $('.showLess').click(function(){
+            $(this).parent().hide();
+            $(this).parent().prev().show();
+        })
+        $('.More').click(function(){
+            $(this).parent().hide();
+            $(this).parent().next().show();
+        })
+        $('.Less').click(function(){
             $(this).parent().hide();
             $(this).parent().prev().show();
         })
@@ -766,17 +812,24 @@
 
         @php
         $locations = [];
-        foreach ($businesses as $business) {
-           if($business->image = '') {
-                $img = "https://demo91.co.in/localtales-prelaunch/public/Directory/placeholder-image.png";
-            } else {
-                $img = "https://maps.googleapis.com/maps/api/streetview?size=640x640&location=".$business->latitude.",".$business->longitude."&fov=120&heading=0&key=";
+        if(!empty($businesses)){
+            foreach ($businesses as $business) {
+            if($business->image = '') {
+                    $img = "https://demo91.co.in/localtales-prelaunch/public/Directory/placeholder-image.png";
+                } else {
+                    $img = "https://maps.googleapis.com/maps/api/streetview?size=640x640&location=".$business->latitude.",".$business->longitude."&fov=120&heading=0&key=";
+                }
+
+                $page_link = URL::to('directory/' . $business->slug);
+
+                $data = [$business->name, floatval($business->latitude), floatval($business->longitude), $business->address, $page_link];
+                array_push($locations, $data);
             }
-
-            $page_link = URL::to('directory/' . $business->slug);
-
-            $data = [$business->name, floatval($business->latitude), floatval($business->longitude), $business->address, $page_link];
-            array_push($locations, $data);
+        }else{ 
+            $page_link ='';
+            $img='';
+            $data = [$data->pin, floatval($data->lat), floatval($data->lng), $data->state_name, $page_link];
+                array_push($locations, $data);
         }
         @endphp
 

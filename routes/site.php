@@ -138,6 +138,10 @@ Route::group(['middleware' => ['auth:user']], function () {
 });
 //news
 Route::get('/news', 'Site\NewsController@index')->name('news');
+Route::get('/news/slug', 'Site\NewsController@detail')->name('news.detail');
+//property
+Route::get('/property', 'Site\PropertyController@index')->name('property');
+Route::get('/property/slug', 'Site\PropertyController@detal')->name('property.detail');
 // help
 Route::name('front.help.')->prefix('help')->group(function() {
 	Route::get('/', 'Front\HelpController@index')->name('index');

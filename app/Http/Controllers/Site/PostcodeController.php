@@ -93,8 +93,8 @@ class PostcodeController extends BaseController
         //news
         $news = News::where('postcode', 'LIKE', '%'.$pincode)->orderby('id','desc')->take(4)->get();
         //property
-        $property = Property::where('postcode', 'LIKE', '%'.$pincode)->orderby('id','desc')->take(4)->get();
-        return view('site.postcode.detail', compact('data', 'suburbs', 'articles', 'directories', 'jobs', 'reviews','news','property'));
+        $properties = Property::where('postcode', 'LIKE', '%'.$pincode)->orderby('id','desc')->take(4)->get();
+        return view('site.postcode.detail', compact('data', 'suburbs', 'articles', 'directories', 'jobs', 'reviews','news','properties'));
     }
 
     public function latLngUpdate(Request $request)
