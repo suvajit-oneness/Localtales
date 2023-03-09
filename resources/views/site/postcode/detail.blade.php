@@ -642,17 +642,17 @@
                         'lat': lat,
                         'lng': lng,
                         'id': '{{$data->id}}',
+                    },
+                    success: function(resp) {
+                        weatherForecastData(lat, lng);
                     }
                 });
             }
 
             googleLATLNGfetch();
 
-            const postcodeLat = lat;
-            const postcodeLng = lng;
         @else
-            const postcodeLat = '{{$data->lat}}';
-            const postcodeLng = '{{$data->lng}}';
+            weatherForecastData('{{$data->lat}}', '{{$data->lng}}');
         @endif
 
         // temperature fetch
@@ -680,7 +680,7 @@
         weatherData();
 
         // weather forecast
-        function weatherForecastData() {
+        function weatherForecastData(postcodeLat, postcodeLng) {
             $.ajax({
                 url:"https://api.openweathermap.org/data/2.5/forecast?lat="+postcodeLat+"&lon="+postcodeLng+"&appid=af58f6de0c0689247f2e20fac307a0dc",
                 type: "GET",
@@ -725,7 +725,6 @@
                 }
             })
         }
-        weatherForecastData();
 
         function tempConvert(kelvin) {
             return kelvin - 273.15;
