@@ -356,23 +356,26 @@
                         'lat': lat,
                         'lng': lng,
                         'id': '{{$data->id}}',
+                    },
+                    success: function(resp) {
+                        weatherData(lat, lng);
+                        weatherForecastData(lat, lng);
                     }
                 });
             }
 
             googleLATLNGfetch();
 
-            const postcodeLat = lat;
-            const postcodeLng = lng;
         @else
-            const postcodeLat = '{{$data->lat}}';
-            const postcodeLng = '{{$data->lng}}';
+            weatherData('{{$data->lat}}', '{{$data->lng}}');
+            weatherForecastData('{{$data->lat}}', '{{$data->lng}}');
         @endif
 
         // temperature fetch
-        function weatherData() {
+        function weatherData(lat, lng) {
             $.ajax({
-                url:"https://api.openweathermap.org/data/2.5/weather?q={{$data->name}},au&appid=af58f6de0c0689247f2e20fac307a0dc",
+                url: "https://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+lng+"&appid=af58f6de0c0689247f2e20fac307a0dc",
+                // url:"https://api.openweathermap.org/data/2.5/weather?q={{$data->name}},au&appid=af58f6de0c0689247f2e20fac307a0dc",
                 type: "GET",
                 success: function (data) {
                     let temp = tempConvert(data.main.temp);
@@ -392,10 +395,10 @@
                 }
             })
         }
-        weatherData();
+        // weatherData();
 
         // weather forecast
-        function weatherForecastData() {
+        function weatherForecastData(postcodeLat, postcodeLng) {
             $.ajax({
                 url:"https://api.openweathermap.org/data/2.5/forecast?lat="+postcodeLat+"&lon="+postcodeLng+"&appid=af58f6de0c0689247f2e20fac307a0dc",
                 type: "GET",
@@ -440,13 +443,12 @@
                 }
             })
         }
-        weatherForecastData();
+        //weatherForecastData();
 
         function tempConvert(kelvin) {
             return kelvin - 273.15;
         }
-    </script>
-    <script>
+        
         @php
         $locations = [];
         foreach ($businesses as $business) {
@@ -739,8 +741,6 @@
             var keycode = (event.keyCode ? event.keyCode : event.which);  if(keycode == '13'){    $('#checkout-form').submit();
          }
         });
-
-
 
     </script>
 @endpush

@@ -13,7 +13,8 @@ use App\Models\Suburb;
 use App\Models\Blog;
 use App\Models\Directory;
 use App\Models\Job;
-
+use App\Models\News;
+use App\Models\Property;
 class PostcodeController extends BaseController
 {
     public function index(Request $request)
@@ -89,8 +90,11 @@ class PostcodeController extends BaseController
         WHERE d.address like '%$pincode'
         ORDER BY r.created_at DESC
         LIMIT 4");
-
-        return view('site.postcode.detail', compact('data', 'suburbs', 'articles', 'directories', 'jobs', 'reviews'));
+        //news
+        $news = News::where('postcode', 'LIKE', '%'.$pincode)->orderby('id','desc')->take(4)->get();
+        //property
+        $property = Property::where('postcode', 'LIKE', '%'.$pincode)->orderby('id','desc')->take(4)->get();
+        return view('site.postcode.detail', compact('data', 'suburbs', 'articles', 'directories', 'jobs', 'reviews','news','property'));
     }
 
     public function latLngUpdate(Request $request)

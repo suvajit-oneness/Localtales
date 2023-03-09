@@ -136,7 +136,8 @@ Route::group(['middleware' => ['auth:user']], function () {
     Route::get('/notification/setup', 'Site\UserNotificationController@setup')->name('user.notification.setup');
     Route::post('/notification/toggle', 'Site\UserNotificationController@toggle')->name('user.notification.toggle');
 });
-
+//news
+Route::get('/news', 'Site\NewsController@index')->name('news');
 // help
 Route::name('front.help.')->prefix('help')->group(function() {
 	Route::get('/', 'Front\HelpController@index')->name('index');
