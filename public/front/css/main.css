@@ -5724,10 +5724,12 @@ div.desc {
 .query .file-input {
     padding: 12px 20px;
 }
+
 .query select.did-floating-input {
     appearance: none;
     cursor: pointer;
 }
+
 .query .select-icon {
     position: absolute;
     top: 50%;
@@ -5738,10 +5740,21 @@ div.desc {
 .query .query-input {
     line-height: 56px;
 }
+
 .query .did-floating-input {
     font-weight: 300;
 }
 
 .query textarea.did-floating-input {
     overflow-y: hidden;
+}
+
+.directory-single-review .desc {
+    min-height: 65px;
+    overflow: hidden;
+}
+
+.directory-single-review .desc p {
+    font-size: 12px;
+    line-height: 18px;
 }

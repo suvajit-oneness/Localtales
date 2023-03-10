@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+
 class ReviewController extends BaseController
 {
     public function index(Request $request)
@@ -20,7 +21,7 @@ class ReviewController extends BaseController
         $directory = $request->name ?? '';
         $keyword = $request->keyword ?? '';
        
-        $query = Review::select('reviews.id AS id','reviews.author_name AS author_name','reviews.rating AS rating','reviews.created_at AS created_at','reviews.text AS text','directories.name AS name','directories.address AS address')->join('directories', 'reviews.directory_id', 'directories.id')->where('reviews.status',1);
+        $query = Review::select('reviews.id AS id','reviews.author_name AS author_name','reviews.rating AS rating','reviews.created_at AS created_at','reviews.text AS text','directories.name AS name','directories.slug AS slug','directories.address AS address')->join('directories', 'reviews.directory_id', 'directories.id')->where('reviews.status',1);
       
     
         $query->when($directory, function($query) use ($directory) {

@@ -409,7 +409,7 @@
                             <div class="col-6 col-md-3 mb-2 mb-sm-4 mb-lg-3">
                                 <div class="card directory-single-review">
                                     <div class="card-body">
-                                        <h5>{{ $data->author_name }}</h5>
+                                        <h5>{{ ucwords($data->author_name) }}</h5>
 
                                         <div class="rating">
                                             @php
@@ -431,10 +431,10 @@
                                         <p>{{date('d/m/Y', strtotime($data->created_at)) }}</p>
                                         @endif
                                         <div class="desc">
-                                            @if(strlen($data->text) > 200)
-                                                <p>{{ substr($data->text,0,200) }}<small class="text text-lt showMore" style="cursor: pointer">...Read more</small></p>
+                                            @if(strlen($data->text) > 100)
+                                                <p>{{ substr($data->text, 0, 100) }}<span class="text text-lt showMore" style="cursor: pointer">...Read more</span></p>
 
-                                                <p style="display: none">{{$data->text}} <small class="text text-lt showLess" style="cursor: pointer">Read less</small></p>
+                                                <p style="display: none">{{$data->text}} <span class="text text-lt showLess" style="cursor: pointer">Read less</span></p>
                                             @else
                                                 <p>{{$data->text}}</p>
                                             @endif
