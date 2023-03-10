@@ -2,22 +2,13 @@
 @section('title')Reviews @endsection
 
 @section('description')@endsection
-<style>
-    /* div.desc {
-        margin-bottom: 15px;
-    }
-    .job-desc{
-        height: 300px;
-        overflow: hidden;
-    } */
-</style>
 @section('content')
-    <section class="inner_banner articles_inbanner"
-        style="background: url({{ asset('site/images/banner') }}-image.jpg) no-repeat center center; background-size:cover;">
+    <section class="inner_banner articles_inbanner" style="background: url({{ asset('site/images/banner') }}-image.jpg) no-repeat center center; background-size:cover;">
         <div class="container position-relative">
             <div class="row m-0 mb-4">
                 <h1>Reviews</h1>
             </div>
+
             <div class="page-search-block filterSearchBoxWraper" style="bottom: -83px;">
                 <div class="filterSearchBox">
                     <form action="" id="checkout-form">
@@ -60,6 +51,7 @@
                                         <label for="searchbykeyword" placeholder="Nom">Search by Directory</label>
                                     </div>
                                 </div>
+
                                 <div class="col-md-3">
                                     <select name="orderBy" id="orderBy" class="form-control form-control-sm">
                                         <option value="" hidden selected>Sort by</option>
@@ -70,10 +62,11 @@
                                     </select>
                                     {{-- <label for="searchbykeyword" placeholder="Nom">Sort by</label> --}}
                                 </div>
+
                                 <div class="col-auto col-sm-auto">
-                                    <a href="javascript:void(0);" id="btnFilter"
-                                        class="w-100 btn btn-blue text-center ml-auto"><img
-                                            src="{{ asset('front/img/search.svg') }}"></a>
+                                    <a href="javascript:void(0);" id="btnFilter" class="w-100 btn btn-blue text-center ml-auto">
+                                        <img src="{{ asset('front/img/search.svg') }}">
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -224,7 +217,6 @@
             </div>
         </div>
     </section>
-
 @endsection
 
 @push('scripts')
