@@ -76,26 +76,28 @@ class TestController extends Controller {
 			$result = curl_exec($ch);
 			curl_close($ch);
 
-			$decoded_result = json_decode($result);
+			if ($result) {
+				$decoded_result = json_decode($result);
 
-			foreach ($decoded_result as $key => $value) {
-				DB::table('jobs')->insert([
-					'title' => $value->title,
-					'slug' => slugGenerate($value->title, 'jobs'),
-					'company_name' => $value->company,
-					'link' => $value->link,
-					'location' => $value->job_details->location,
-					'address' => $value->job_details->location,
-					'category' => $value->job_details->category,
-					'salary' => $value->job_details->salary,
-					'employment_type' => $value->job_details->job_type,
-					'description' => $value->job_details->description,
-					'postcode' => $suburb->pin_code,
-					'suburb' => $suburb->name,
-					'state' => $suburb->state,
-					'short_state' => $suburb->short_state,
-					'status' => 1,
-				]);
+				foreach ($decoded_result as $key => $value) {
+					DB::table('jobs')->insert([
+						'title' => $value->title,
+						'slug' => slugGenerate($value->title, 'jobs'),
+						'company_name' => $value->company,
+						'link' => $value->link,
+						'location' => $value->job_details ? $value->job_details->location : '',
+						'address' => $value->job_details ? $value->job_details->location : '',
+						'category' => $value->job_details ? $value->job_details->category : '',
+						'salary' => $value->job_details ? $value->job_details->salary : '',
+						'employment_type' => $value->job_details ? $value->job_details->job_type : '',
+						'description' => $value->job_details ? $value->job_details->description : '',
+						'postcode' => $suburb->pin_code ?? '',
+						'suburb' => $suburb->name ?? '',
+						'state' => $suburb->state ?? '',
+						'short_state' => $suburb->short_state ?? '',
+						'status' => 1,
+					]);
+				}
 			}
 
 			// dd(count($decoded_result) . ' jobs done for ' . $suburb->name);
