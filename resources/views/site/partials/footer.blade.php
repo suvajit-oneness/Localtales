@@ -83,6 +83,10 @@
                         <li><a href="{!! URL::to('contact-us') !!}">Contact Us</a></li>
                         <li><a href="{!! URL::to('help') !!}">Help</a></li>
                         <li><a href="{!! URL::to('jobs') !!}">Jobs</a></li>
+                        <li><a href="{!! URL::to('news') !!}">News</a></li>
+                        <li><a href="{{route('property')}}">Property</a></li>
+                        <li><a href="{!! URL::to('schools') !!}">Schools</a></li>
+                        <li><a href="{{route('doctors')}}">Doctors & Hospitals</a></li>
                     </ul>
                 </div>
             </div>

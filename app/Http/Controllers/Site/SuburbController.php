@@ -30,6 +30,8 @@ use Auth;
 use Symfony\Component\Console\Input\Input;
 use App\Models\News;
 use App\Models\Property;
+use App\Models\School;
+use App\Models\DoctorHospital;
 class SuburbController extends BaseController
 {
     protected $AboutRepository;
@@ -154,7 +156,11 @@ class SuburbController extends BaseController
         $news = News::where('suburb', 'LIKE', '%'.$data->name)->orderby('id','desc')->take(4)->get();
         //property
         $properties = Property::where('suburb', 'LIKE', '%'.$data->name)->orderby('id','desc')->take(4)->get();
-        return view('site.suburb.detail', compact('data', 'directories', 'similarPlaces','jobs','reviews','news','properties'));
+        //school
+        $schools = School::where('suburb', 'LIKE', '%'.$data->name)->orderby('id','desc')->take(4)->get();
+        //doctor hospital
+         $doctors = DoctorHospital::where('suburb', 'LIKE', '%'.$data->name)->orderby('id','desc')->take(4)->get();
+        return view('site.suburb.detail', compact('data', 'directories', 'similarPlaces','jobs','reviews','news','properties','schools','doctors'));
     }
 
     public function latLngUpdate(Request $request)

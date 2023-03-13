@@ -1,5 +1,5 @@
 @extends('site.app')
-@section('title'){{ $news->title }}@endsection
+@section('title'){{ $schoolList->title }}@endsection
 @section('description')
 
 @section('content')
@@ -14,23 +14,34 @@
                             <li>/</li>
                             <li><a href="{!! URL::to('news') !!}">News</a></li>
                             <li>/</li>
-                            <li>{{ $news->title }}</li>
+                            <li>{{ $schoolList->title }}</li>
                         </ul>
                     </div>
                 </div>
 
-                {{-- {{dd( $news)}} --}}
+                {{-- {{dd( $schoolList)}} --}}
 
                 <div class="col-12 col-md-6">
                     <div class="job__details pt-0">
-                        <img src="{{URL::to('/').'/front'.'/'.'img/'}}{{$news->image}}" height="100" width="500">
-                        <h1 class="">{{  $news->title }}</h1>
+                        <h1 class="">{{  $schoolList->title }}</h1>
                         <div class="job-details-heading">
                             <div class="job-details-heading-left mb-2">
+                                <h4 class="company-name">{{$schoolList->type}} School</h4>
+
+                                @if( $schoolList->contact_number != '' &&  $schoolList->contact_information)
+                                    <p><b>Contact Number: </b> <span class="jobsearch-JobDescription-phone-number"><a href="tel:{{ $schoolList->contact_number}}">{{ $schoolList->contact_number}}</a></span> ({{ $schoolList->contact_information}})</p>
+                                @endif
+
+                                @if( $schoolList->company_website != '')
+                                    <p><b>Company Website: </b> <a href="{{ $schoolList->company_website}}">{{ $schoolList->company_website}}</a></p>
+                                @endif
+
+                                @if( $schoolList->company_desc != '' )
+                                    <div>{{ $schoolList->company_desc}}</div>
+                                @endif
                             </div>
                         </div>
                         <div class="row align-items-center">
-                            
                             <div class="col-auto">
                                 <ul class="articlecat">
                                     <li>
@@ -38,7 +49,7 @@
                                             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                                             <circle cx="12" cy="10" r="3"></circle>
                                         </svg>
-                                        {{ $news->postcode ?  $news->postcode : ''}}{{ $news->suburb ? ', '. $news->suburb : ''}}{{ $news->state ? ', '. $news->state : ''}}
+                                        {{ $schoolList->postcode ?  $schoolList->postcode : ''}}{{ $schoolList->suburb ? ', '. $schoolList->suburb : ''}}{{ $schoolList->state ? ', '. $schoolList->state : ''}}
                                     </li>
                                     <li>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -50,7 +61,7 @@
                                             <line x1="8" y1="2" x2="8" y2="6"></line>
                                             <line x1="3" y1="10" x2="21" y2="10"></line>
                                         </svg>
-                                        {{  $news->created_at->format('d M Y') }}
+                                        {{  $schoolList->created_at->format('d M Y') }}
                                     </li>
                                     <li>
                                         <div class="share-btns ml-3">
@@ -93,7 +104,7 @@
                         </div>
                     </div>
                 </div>
-                
+               
             </div>
         </div>
     </section>
@@ -102,18 +113,104 @@
     <section class="py-2 py-sm-4 job-details-sec">
         <div class="container">
            <div class="row">
+               
+                <div class="col-md-12">
+                    <div class="job-details job_right_sidebar border-0 pl-0">
+
+                        <ul class="job__types">
+                           
+                    
+                            @if( $schoolList->grade != '')
+                                
+                            <h4>Grade</h4> <p>{{ $schoolList->grade}}</p>
+                            @endif
+
+                            @if( $schoolList->contact)
+                                <h4>Contact information</h4> 
+                                <p>{{ $schoolList->contact}}</p>
+                            @endif
+                            
+                          
+                        </ul>
+                    </div>
+                </div>
                 <div class="col-12">
+                    <hr>
                     <div class="full-job-desc">
                         <h3 class="job-desc-heading"></h3>
-                        <p>{!!  $news->description ?  $news->description : 'NA' !!}</p>
+                        <p>{!!  $schoolList->description ?  $schoolList->description : 'NA' !!}</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <section class="py-2 py-sm-4 art-dtls">
+        <div class="container">
+            <div class="row">
+                <!-- <div class="col-12">
+                    <h2 class="company__name">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-briefcase"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>{!!  $schoolList->company_name !!}<h2>
+                </div> -->
+                <!-- <p class="col-12">{{  $schoolList->short_description }}
+                    <hr class="w-100">
+                <div class="col-lg-12 mb-4 mb-lg-0 article_content">
+                    {!!  $schoolList->description !!}
+                </div> -->
+                <!-- @if (!empty($jobApplied))
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <div class="text-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50"
+                                    viewBox="0 0 24 24" fill="none" stroke="#95C800" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-check">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
+
+                            <h5 class="text-center mb-2">Thanks for your application</h5>
+
+                            <p class="text-muted small" style="font-size: 13px;line-height: 20px;">You have successfully
+                                applied for this job. Please stay put till you hear from us.</p>
+                        </div>
+                    </div>
+                @else
+                    <div class="col-12">
+                        <a href="{{ route('front.job.apply.index',  $schoolList->slug) }}"
+                            class="btn main-btn mt-4">Apply</a>
+                    </div>
+                @endif -->
+            </div>
+        </div>
+    </section>
+
 @endsection
 
 @push('scripts')
     <script async src="https://static.addtoany.com/menu/page.js"></script>
-    
+    <script>
+        // job bookmark/ save/ wishlist
+        function jobBookmark(jobId) {
+            $.ajax({
+                url: '{{ route('front.job.save') }}',
+                method: 'post',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    id: jobId,
+                },
+                success: function(result) {
+                    // alert(result);
+                    if (result.type == 'add') {
+                        // toastr.success(result.message);
+                        toastFire("success", result.message);
+                        $('#saveBtn_' + jobId).attr('fill', '#fff');
+                    } else {
+                        toastFire("warning", result.message);
+                        // toastr.error(result.message);
+                        $('#saveBtn_' + jobId).attr('fill', 'none');
+                    }
+                }
+            });
+        }
+    </script>
 @endpush

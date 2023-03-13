@@ -184,7 +184,7 @@
                     @endif
 				@endif
             </div>
-
+            {{--directory--}}
             <div id="tab-contents">
                 <div class="tab-content smallGapGrid" id="grid">
                     <div class="row Bestdeals">
@@ -234,7 +234,7 @@
             </div>
         </div>
     </section>
-
+    {{--review---}}
     @if (count($reviews)>0)
     <section class="py-2 py-sm-4 py-lg-5 similar_postcode more-collection">
         <div class="container">
@@ -354,6 +354,7 @@
         </div>
     </section>
     @endif
+    {{--jobs--}}
     @if (count($jobs)>0)
     <section class="py-2 py-sm-4 py-lg-5 similar_postcode more-collection">
         <div class="container">
@@ -397,6 +398,49 @@
         </div>
     </section>
     @endif
+    {{--- school ---}}
+    @if (count($schools)>0)
+    <section class="py-2 py-sm-4 py-lg-5 similar_postcode more-collection">
+        <div class="container">
+            <div class="row mb-0 mb-sm-4 justify-content-center">
+                <div class="page_title text-center">
+                    <h2 class="mb-2"><a href="{{route('schools')}}" class="location_btn">Local Schools</a></h2>
+                </div>
+            </div>
+            <div class="row">
+            @foreach ($schools as $key => $school)
+            <div class="col-6 col-md-3 mb-2 mb-sm-4 mb-lg-3">
+                <div class="card directory-single-review">
+                    <div class="card-body">
+                        <h3>{{ $school->title }}</h3>
+                        <p>{{ $school->street_address.', '.$school->suburb.', '.$school->state.', '.$school->postcode }}</p>
+                        <p>Type : {{ $school->type }} </p>
+                        <p>{{ $school->grade }} Grade</p>
+                        
+                        <div class="desc">
+                            @if(strlen($school->description) > 200)
+                                <p>{{ substr($school->description,0,200) }} <small class="text text-primary More" style="cursor: pointer">...Read more</small></p>
+
+                                <p style="display: none">{{$school->descriptions}}<small class="text text-primary Less" style="cursor: pointer">Read less</small></p>
+                            @else
+                                <p>{{$school->description}}</p>
+                            @endif
+                           
+                        </div>
+                        <p>{{ $school->contact }}</p>
+                        <a type="button" class="job__list__btn text-right" style="font-size: 16px"
+                        href="{!! URL::to('schools/' . $school->slug) !!}">
+                        Learn More
+                        </a>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+        </div>
+    </section>
+    @endif
+    {{--news--}}
     @if (count($news)>0)
     <section class="py-2 py-sm-4 py-lg-5 similar_postcode more-collection">
         <div class="container">
@@ -436,6 +480,51 @@
         </div>
     </section>
     @endif
+     {{--doctor hospital--}}
+     @if (count($doctors)>0)
+     <section class="py-2 py-sm-4 py-lg-5 similar_postcode more-collection">
+         <div class="container">
+             <div class="row mb-0 mb-sm-4 justify-content-center">
+                 <div class="page_title text-center">
+                     <h2 class="mb-2"><a href="{{route('doctors')}}" class="location_btn">Local Doctors & Hospitals
+                     </a></h2>
+                 </div>
+             </div>
+             <div class="row">
+             @foreach ($doctors as $key => $doctor)
+             <div class="col-6 col-md-3 mb-2 mb-sm-4 mb-lg-3">
+                 <div class="card directory-single-review">
+                     <div class="card-body">
+                         <h3>{{ $doctor->title }}</h3>
+                         <p>{{ $doctor->street_address.', '.$doctor->suburb.', '.$doctor->state.', '.$doctor->postcode }}</p>
+                        
+                         <p>{{ $doctor->type }} </p>
+                         <div class="desc">
+                             class="desc">
+                             @if(strlen($doctor->description) > 200)
+                                 <p>{{ substr($doctor->description,0,200) }} <small class="text text-primary More" style="cursor: pointer">...Read more</small></p>
+ 
+                                 <p style="display: none">{{$doctor->descriptions}}<small class="text text-primary Less" style="cursor: pointer">Read less</small></p>
+                             @else
+                                 <p>{{$doctor->description}}</p>
+                             @endif
+                            
+                         </div>
+                         <p>{! $doctor->contact !}</p>
+                         <a type="button" class="job__list__btn text-right" style="font-size: 16px"
+                         href="{!! URL::to('doctors/' . $doctor->slug) !!}">
+                         Learn More
+                         </a>
+                         
+                     </div>
+                 </div>
+             </div>
+             @endforeach
+         </div>
+         </div>
+     </section>
+     @endif
+    {{--property---}}
     @if (count($properties)>0)
     <section class="py-2 py-sm-4 py-lg-5 similar_postcode more-collection">
         <div class="container">
@@ -450,7 +539,7 @@
                 <div class="card directory-single-review">
                     <div class="card-body">
                         @if($property->image)<img src="{{URL::to('/').'/front'.'/'.'img/'}}{{$property->image}}" height="100" width="250">@endif
-                        
+                        <h3>{{ $property->title }}</h3>
                         <p>{{ $property->street_address.', '.$property->suburb.', '.$property->state.', '.$property->postcode }}</p>
                         <p>{{ $property->bedroom }} bedroom {{ $property->bathroom }} bathroom</p>
                         <p>{{ $property->type }} </p>
@@ -458,7 +547,7 @@
                         <p>{{date('d/m/Y', strtotime($property->created_at)) }}</p>
                         <div class="desc">
                             <a type="button" class="job__list__btn text-right" style="font-size: 16px"
-                            href="{!! URL::to('jobs/' . $property->slug) !!}">
+                            href="{{route('property.detail',$property->slug)}}">
                             Learn More
                             </a>
                         </div>
@@ -470,6 +559,9 @@
         </div>
     </section>
     @endif
+    
+   
+    {{--suburb---}}
     @if ($suburbs->count() > 0)
         <section class="py-2 py-sm-4 py-lg-5 similar_postcode">
             <div class="container">

@@ -1,5 +1,5 @@
 @extends('site.app')
-@section('title'){{ $news->title }}@endsection
+@section('title'){{ $propertyList->title }}@endsection
 @section('description')
 
 @section('content')
@@ -12,25 +12,28 @@
                         <ul class="breadcumb_list mb-2 mb-sm-4">
                             <li><a href="{!! URL::to('') !!}">Home</a></li>
                             <li>/</li>
-                            <li><a href="{!! URL::to('news') !!}">News</a></li>
+                            <li><a href="{!! URL::to('property') !!}">Properties</a></li>
                             <li>/</li>
-                            <li>{{ $news->title }}</li>
+                            <li>{{ $propertyList->title }}</li>
                         </ul>
                     </div>
                 </div>
 
-                {{-- {{dd( $news)}} --}}
+                {{-- {{dd( $propertyList)}} --}}
 
                 <div class="col-12 col-md-6">
                     <div class="job__details pt-0">
-                        <img src="{{URL::to('/').'/front'.'/'.'img/'}}{{$news->image}}" height="100" width="500">
-                        <h1 class="">{{  $news->title }}</h1>
+                        <img src="{{URL::to('/').'/front'.'/'.'img/'}}{{$propertyList->image}}" height="100" width="500">
+                        <h1 class="">{{  $propertyList->title }}</h1>
                         <div class="job-details-heading">
                             <div class="job-details-heading-left mb-2">
+                                <h4 class="company-name">{{ $propertyList->price}}</h4>
+
+
                             </div>
                         </div>
                         <div class="row align-items-center">
-                            
+                           
                             <div class="col-auto">
                                 <ul class="articlecat">
                                     <li>
@@ -38,7 +41,7 @@
                                             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                                             <circle cx="12" cy="10" r="3"></circle>
                                         </svg>
-                                        {{ $news->postcode ?  $news->postcode : ''}}{{ $news->suburb ? ', '. $news->suburb : ''}}{{ $news->state ? ', '. $news->state : ''}}
+                                        {{ $propertyList->postcode ?  $propertyList->postcode : ''}}{{ $propertyList->suburb ? ', '. $propertyList->suburb : ''}}{{ $propertyList->state ? ', '. $propertyList->state : ''}}
                                     </li>
                                     <li>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -50,7 +53,7 @@
                                             <line x1="8" y1="2" x2="8" y2="6"></line>
                                             <line x1="3" y1="10" x2="21" y2="10"></line>
                                         </svg>
-                                        {{  $news->created_at->format('d M Y') }}
+                                        {{  $propertyList->created_at->format('d M Y') }}
                                     </li>
                                     <li>
                                         <div class="share-btns ml-3">
@@ -93,7 +96,7 @@
                         </div>
                     </div>
                 </div>
-                
+              
             </div>
         </div>
     </section>
@@ -102,18 +105,56 @@
     <section class="py-2 py-sm-4 job-details-sec">
         <div class="container">
            <div class="row">
+             
+                <div class="col-md-12">
+                    <div class="job-details job_right_sidebar border-0 pl-0">
+                        <h3 class="job-detail-heading"> Details</h3>
+
+                        <ul class="job__types">
+                            @if (!empty( $propertyList->type))
+                                <li>
+                                    <p>Type : {{ $propertyList->type}}</p>
+                                </li>
+                            @else
+                                <li>
+                                    <p>Type : NA</p>
+                                </li>
+                            @endif
+                            @if(!empty( $propertyList->bedroom))
+                                <li>
+                                    <p>{{ $propertyList->bedroom}} Bedroom</p>
+                                    
+                                </li>
+                            @endif
+                            @if(!empty( $propertyList->bathroom))
+                                <li>
+                                    <p>{{ $propertyList->bathroom}} Bathroom</p>
+                                </li>
+                            @endif
+                            
+                           
+                            
+                        </ul>
+                    </div>
+                </div>
                 <div class="col-12">
+                    <hr>
                     <div class="full-job-desc">
                         <h3 class="job-desc-heading"></h3>
-                        <p>{!!  $news->description ?  $news->description : 'NA' !!}</p>
+                        <p>{!!  $propertyList->description ?  $propertyList->description : 'NA' !!}</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+   
+
 @endsection
 
 @push('scripts')
     <script async src="https://static.addtoany.com/menu/page.js"></script>
-    
+    <script>
+       
+    </script>
 @endpush

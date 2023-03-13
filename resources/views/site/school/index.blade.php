@@ -1,5 +1,5 @@
 @extends('site.app')
-@section('title')Reviews @endsection
+@section('title')Schools @endsection
 @section('description')
 @endsection
 <style>
@@ -16,7 +16,7 @@
         style="background: url({{ asset('site/images/banner') }}-image.jpg) no-repeat center center; background-size:cover;">
         <div class="container position-relative">
             <div class="row m-0 mb-4">
-                <h1>News</h1>
+                <h1>Schools</h1>
             </div>
             <div class="page-search-block filterSearchBoxWraper" style="bottom: -83px;">
                 <div class="filterSearchBox">
@@ -60,15 +60,15 @@
             <ul class="breadcumb_list mb-4">
                 <li><a href="{!! URL::to('/') !!}">Home</a></li>
                 <li>/</li>
-                <li class="active">News</li>
+                <li class="active">Schools</li>
             </ul>
 
             <div class="">
 				@if (!empty(request()->input('keyword'))|| !empty(request()->input('name')))
-				    @if ($newsList->count() > 0)
-                        <h2 class="mb-2 mb-sm-3">News found</h2>
+				    @if ($schoolList->count() > 0)
+                        <h2 class="mb-2 mb-sm-3">Schools found</h2>
 				    @else
-                        <h2 class="mb-2 mb-sm-3">No News found</h2>
+                        <h2 class="mb-2 mb-sm-3">No Schools found</h2>
 
 				        <p class="mb-2 mb-sm-3 text-muted">Please try again with different  filter</p>
 				    @endif
@@ -76,31 +76,34 @@
                     <h2>No Job found</h2> --}}
 				@endif
             </div>
-            @if (count($newsList) > 0)
+            @if (count($schoolList) > 0)
             <section class="py-2 py-sm-2 py-lg-2 similar_postcode">
                 <div class="row">
-                    @foreach ($newsList as $key => $data)
+                    @foreach ($schoolList as $key => $school)
                     <div class="col-6 col-md-3 mb-2 mb-sm-4 mb-lg-3">
                         <div class="card directory-single-review">
                             <div class="card-body">
-                                <img src="{{URL::to('/').'/front'.'/'.'img/'}}{{$data->image}}" height="100" width="250">
-                                <h5>{{ $data->title }}</h5>
-                                <p>{{ $data->state }}</p>
-        
-                                <p>{{date('d/m/Y', strtotime($data->created_at)) }}</p>
+                                <h3>{{ $school->title }}</h3>
+                                <p>{{ $school->street_address.', '.$school->suburb.', '.$school->state.', '.$school->postcode }}</p>
+                                <p>Type : {{ $school->type }} </p>
+                                <p>{{ $school->grade }} Grade</p>
+                                
                                 <div class="desc">
-                                    @if(strlen($data->description) > 200)
-                                        <p>{{ substr($data->description,0,200) }} <small class="text text-primary More" style="cursor: pointer">...Read more</small></p>
-        
-                                        <p style="display: none">{{$data->descriptions}}<small class="text text-primary Less" style="cursor: pointer">Read less</small></p>
+                                    
+                                    @if(strlen($school->description) > 200)
+                                        <p>{{ substr($school->description,0,200) }} <small class="text text-primary More" style="cursor: pointer">...Read more</small></p>
+            
+                                        <p style="display: none">{{$school->descriptions}}<small class="text text-primary Less" style="cursor: pointer">Read less</small></p>
                                     @else
-                                        <p>{{$data->description}}</p>
+                                        <p>{{$school->description}}</p>
                                     @endif
+                                   
                                 </div>
+                                <p>{{ $school->contact }}</p>
                                 <a type="button" class="job__list__btn text-right" style="font-size: 16px"
-                                    href="{{route('news.detail',$data->slug)}}">
-                                    Learn More
-                                    </a>
+                                href="{!! URL::to('schools/' . $school->slug) !!}">
+                                Learn More
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -110,7 +113,7 @@
 
             @endif
             <div class="d-flex justify-content-center mt-4">
-                {{ $newsList->appends($_GET)->links() }}
+                {{ $schoolList->appends($_GET)->links() }}
             </div>
         </div>
     </section>

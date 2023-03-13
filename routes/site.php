@@ -138,10 +138,16 @@ Route::group(['middleware' => ['auth:user']], function () {
 });
 //news
 Route::get('/news', 'Site\NewsController@index')->name('news');
-Route::get('/news/slug', 'Site\NewsController@detail')->name('news.detail');
+Route::get('/news/{slug}', 'Site\NewsController@detail')->name('news.detail');
 //property
-Route::get('/property', 'Site\PropertyController@index')->name('property');
-Route::get('/property/slug', 'Site\PropertyController@detal')->name('property.detail');
+Route::get('/properties', 'Site\PropertyController@index')->name('property');
+Route::get('/properties/{slug}', 'Site\PropertyController@detail')->name('property.detail');
+//school
+Route::get('/schools', 'Site\SchoolController@index')->name('schools');
+Route::get('/schools/{slug}', 'Site\SchoolController@detail')->name('schools.detail');
+//doctor-hospital
+Route::get('/doctors-hospital', 'Site\HospitalController@index')->name('doctors');
+Route::get('/doctors-hospital/{slug}', 'Site\HospitalController@detail')->name('doctors.detail');
 // help
 Route::name('front.help.')->prefix('help')->group(function() {
 	Route::get('/', 'Front\HelpController@index')->name('index');

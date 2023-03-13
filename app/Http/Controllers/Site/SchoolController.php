@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Property;
+use App\Models\School;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
-class PropertyController extends BaseController
+class SchoolController extends BaseController
 {
     public function index(Request $request)
     {
@@ -19,7 +19,7 @@ class PropertyController extends BaseController
         $title = $request->name ?? '';
         $keyword = $request->keyword ?? '';
        
-        $query = Property::select('*')->where('status',1);
+        $query = School::select('*')->where('status',1);
     
         $query->when($title, function($query) use ($title) {
             $query->where('title', 'like', '%' . $title . '%');
@@ -29,15 +29,15 @@ class PropertyController extends BaseController
         });
         
         
-        $propertyList = $query->orderBy('id','desc')->paginate(12);
+        $schoolList = $query->orderBy('id','desc')->paginate(12);
 
-        return view('site.property.index', compact('propertyList','request'));
+        return view('site.school.index', compact('schoolList','request'));
     }
 
     public function detail(Request $request,$slug)
     {
-        $propertyList = Property::where('slug',$slug)->first();
+        $schoolList = School::where('slug',$slug)->first();
        
-        return view('site.property.detail',compact('propertyList'));
+        return view('site.school.detail',compact('schoolList'));
     }
 }
