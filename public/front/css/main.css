@@ -5699,7 +5699,7 @@ div.desc {
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
-.job__desc p, .job__desc span, .job__desc h1, .job__desc h2, .job__desc h1, .job__desc h3, .job__desc h4, .job__desc h5, .job__desc h6, .job__desc ul li, .job__desc strong, .job__desc b {
+.job__desc p, .job__desc span, .job__desc h1, .job__desc h2, .job__desc h1, .job__desc h3, .job__desc h4, .job__desc h5, .job__desc h6, .job__desc ul li, .job__desc strong, .job__desc b, .job__desc i {
     font-size: 16px;
     font-weight: 300;
     margin-bottom: 0;
