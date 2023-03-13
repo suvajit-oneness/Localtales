@@ -98,13 +98,15 @@
                                             {{ $data->title ?? ''}}
                                         </a>
                                     </h4>
+
                                     <h4 class="job__location">{{ $data->company_name?? '' }}</h4>
+
                                     <p class="job__adress" title="{{$data->postcode ? $data->postcode : ''}}{{$data->suburb ? ', '.$data->suburb : ''}}{{$data->state ? ', '.$data->state : ''}}">
                                         <i class="fas fa-map-marker-alt"></i>
                                         {{$data->postcode ? $data->postcode : ''}}{{$data->suburb ? ', '.$data->suburb : ''}}{{$data->state ? ', '.$data->state : ''}}
                                     </p>
 
-                                    {{-- <span class="badge jobType">Full Time</span> --}}
+                                    {{-- <span class="badge jobType">{{ $data->employment_type }}</span> --}}
 
                                     <div class="desc job__desc">
                                         <p>{!! $data->description ?? '' !!}</p>

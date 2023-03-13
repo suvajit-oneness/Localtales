@@ -372,13 +372,15 @@
                                     {{ $job->title ?? ''}}
                                 </a>
                             </h4>
+
                             <h4 class="job__location">{{ $job->company_name?? '' }}</h4>
+
                             <p class="job__adress" title="{{$job->postcode ? $job->postcode : ''}}{{$job->suburb ? ', '.$job->suburb : ''}}{{$job->state ? ', '.$job->state : ''}}">
                                 <i class="fas fa-map-marker-alt"></i>
                                 {{$job->postcode ? $job->postcode : ''}}{{$job->suburb ? ', '.$job->suburb : ''}}{{$job->state ? ', '.$job->state : ''}}
                             </p>
 
-                            {{-- <span class="badge jobType" style="margin-top: 8px;">Full Time</span> --}}
+                            {{-- <span class="badge jobType">{{ $data->employment_type }}</span> --}}
 
                             <div class="desc job__desc">
                                 <p>{!! $job->description ?? '' !!}</p>
