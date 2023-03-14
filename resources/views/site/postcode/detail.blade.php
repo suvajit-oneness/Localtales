@@ -501,7 +501,7 @@
                         
                          <p>{{ $doctor->type }} </p>
                          <div class="desc">
-                             class="desc">
+                            
                              @if(strlen($doctor->description) > 200)
                                  <p>{{ substr($doctor->description,0,200) }} <small class="text text-primary More" style="cursor: pointer">...Read more</small></p>
  
@@ -511,9 +511,9 @@
                              @endif
                             
                          </div>
-                         <p>{! $doctor->contact !}</p>
+                         <p>{{ $doctor->contact }}</p>
                          <a type="button" class="job__list__btn text-right" style="font-size: 16px"
-                         href="{{route('doctors.detail',$data->slug)}}">
+                         href="{{route('doctors.detail',$doctor->slug)}}">
                          Learn More
                          </a>
                          
