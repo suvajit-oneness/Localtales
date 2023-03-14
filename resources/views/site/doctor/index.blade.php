@@ -117,7 +117,7 @@
                                     @endif
                                 </div>
                                 <a type="button" class="job__list__btn text-right" style="font-size: 16px"
-                                    href="{!! URL::to('news/' . $data->slug) !!}">
+                                    href="{{route('doctors.detail',$data->slug)}}">
                                     Learn More
                                     </a>
                             </div>

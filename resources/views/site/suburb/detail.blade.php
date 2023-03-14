@@ -270,6 +270,47 @@
       </div>
   </section>
 @endif
+
+{{--news--}}
+@if (count($news)>0)
+<section class="py-2 py-sm-4 py-lg-5 similar_postcode more-collection">
+    <div class="container">
+        <div class="row mb-0 mb-sm-4 justify-content-center">
+            <div class="page_title text-center">
+                <h2 class="mb-2"><a href="{{route('news')}}" class="location_btn">Local News</a></h2>
+            </div>
+        </div>
+        <div class="row">
+        @foreach ($news as $key => $data)
+        <div class="col-6 col-md-3 mb-2 mb-sm-4 mb-lg-3">
+            <div class="card directory-single-review">
+                <div class="card-body">
+                    <img src="{{URL::to('/').'/front'.'/'.'img/'}}{{$data->image}}" height="100" width="250">
+                    <h5>{{ $data->title }}</h5>
+                    <p>{{ $data->state }}</p>
+
+                    <p>{{date('d/m/Y', strtotime($data->created_at)) }}</p>
+                    <div class="desc">
+                        @if(strlen($data->description) > 200)
+                            <p>{{ substr($data->description,0,200) }} <small class="text text-primary More" style="cursor: pointer">...Read more</small></p>
+
+                            <p style="display: none">{{$data->descriptions}}<small class="text text-primary Less" style="cursor: pointer">Read less</small></p>
+                        @else
+                            <p>{{$data->description}}</p>
+                        @endif
+                    </div>
+                    <a type="button" class="job__list__btn text-right" style="font-size: 16px"
+                        href="{!! URL::to('news/' . $data->slug) !!}">
+                        Learn More
+                        </a>
+                </div>
+            </div>
+        </div>
+        @endforeach
+    </div>
+    </div>
+</section>
+@endif
 {{--- school ---}}
 @if (count($schools)>0)
 <section class="py-2 py-sm-4 py-lg-5 similar_postcode more-collection">
@@ -313,46 +354,6 @@
     </div>
 </section>
 @endif
-{{--news--}}
-@if (count($news)>0)
-<section class="py-2 py-sm-4 py-lg-5 similar_postcode more-collection">
-    <div class="container">
-        <div class="row mb-0 mb-sm-4 justify-content-center">
-            <div class="page_title text-center">
-                <h2 class="mb-2"><a href="{{route('news')}}" class="location_btn">Local News</a></h2>
-            </div>
-        </div>
-        <div class="row">
-        @foreach ($news as $key => $data)
-        <div class="col-6 col-md-3 mb-2 mb-sm-4 mb-lg-3">
-            <div class="card directory-single-review">
-                <div class="card-body">
-                    <img src="{{URL::to('/').'/front'.'/'.'img/'}}{{$data->image}}" height="100" width="250">
-                    <h5>{{ $data->title }}</h5>
-                    <p>{{ $data->state }}</p>
-
-                    <p>{{date('d/m/Y', strtotime($data->created_at)) }}</p>
-                    <div class="desc">
-                        @if(strlen($data->description) > 200)
-                            <p>{{ substr($data->description,0,200) }} <small class="text text-primary More" style="cursor: pointer">...Read more</small></p>
-
-                            <p style="display: none">{{$data->descriptions}}<small class="text text-primary Less" style="cursor: pointer">Read less</small></p>
-                        @else
-                            <p>{{$data->description}}</p>
-                        @endif
-                    </div>
-                    <a type="button" class="job__list__btn text-right" style="font-size: 16px"
-                        href="{!! URL::to('news/' . $data->slug) !!}">
-                        Learn More
-                        </a>
-                </div>
-            </div>
-        </div>
-        @endforeach
-    </div>
-    </div>
-</section>
-@endif
  {{--doctor hospital--}}
  @if (count($doctors)>0)
  <section class="py-2 py-sm-4 py-lg-5 similar_postcode more-collection">
@@ -385,7 +386,7 @@
                      </div>
                      <p>{! $doctor->contact !}</p>
                      <a type="button" class="job__list__btn text-right" style="font-size: 16px"
-                     href="{!! URL::to('doctors/' . $doctor->slug) !!}">
+                     href="{{route('doctors.detail',$data->slug)}}">
                      Learn More
                      </a>
                      

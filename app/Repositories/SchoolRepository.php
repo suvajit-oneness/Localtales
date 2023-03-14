@@ -1,28 +1,28 @@
 <?php
 namespace App\Repositories;
 
-use App\Models\Property;
+use App\Models\School;
 use App\Traits\UploadAble;
 use Illuminate\Http\UploadedFile;
-use App\Contracts\PropertyContract;
+use App\Contracts\SchoolContract;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
 
 /**
- * Class PropertyRepository
+ * Class SchoolRepository
  *
  * @package \App\Repositories
  */
-class PropertyRepository extends BaseRepository implements PropertyContract
+class SchoolRepository extends BaseRepository implements SchoolContract
 {
     use UploadAble;
 
     /**
-     * PropertyRepository constructor.
-     * @param Property $model
+     * SchoolRepository constructor.
+     * @param School $model
      */
-    public function __construct(Property $model)
+    public function __construct(School $model)
     {
         parent::__construct($model);
         $this->model = $model;
@@ -34,7 +34,7 @@ class PropertyRepository extends BaseRepository implements PropertyContract
      * @param array $columns
      * @return mixed
      */
-    public function listProperties(string $order = 'id', string $sort = 'desc', array $columns = ['*'], int $page = 25)
+    public function listSchool(string $order = 'id', string $sort = 'desc', array $columns = ['*'], int $page = 25)
     {
         return $this->all($columns, $order, $sort ,$page);
     }
@@ -44,7 +44,7 @@ class PropertyRepository extends BaseRepository implements PropertyContract
      * @return mixed
      * @throws ModelNotFoundException
      */
-    public function findPropertyById(int $id)
+    public function findSchoolById(int $id)
     {
         try {
             return $this->findOneOrFail($id);
@@ -57,31 +57,30 @@ class PropertyRepository extends BaseRepository implements PropertyContract
 
     /**
      * @param array $params
-     * @return Property|mixed
+     * @return School|mixed
      */
-    public function createProperty(array $params)
+    public function createSchool(array $params)
     {
         try {
 
             $collection = collect($params);
 
-            $property = new Property;
+            $property = new School;
             $property->title = $collection['title'];
             $property->slug = slugGenerate($params['title'],'properties');
-            $property->street_address = $collection['street_address'] ?? '';
+            $property->street_address = $collection['street_address']?? '';
             if(isset($params['suburb'])){
             $property->suburb = $collection['suburb'];
             }
             $property->postcode = $collection['postcode']?? '';
             $property->state = $collection['state']?? '';
-            $property->bedroom = $collection['bedroom']?? '';
-            $property->bathroom = $collection['bathroom']?? '';
-            $property->price = $collection['price']?? '';
+            $property->contact = $collection['contact']?? '';
+            $property->grade = $collection['grade']?? '';
             $property->type = $collection['type']?? '';
             $property->description = $collection['description']?? '';
-            if(isset($params['image'])){
-            $property->image = imageUpload($params['image'],'Property');
-            }
+
+            //$property->image = imageUpload($params['image'],'Property');
+            
             $property->save();
 
             return $property;
@@ -95,14 +94,14 @@ class PropertyRepository extends BaseRepository implements PropertyContract
      * @param array $params
      * @return mixed
      */
-    public function updateProperty(array $params)
+    public function updateSchool(array $params)
     {
         $property = $this->findOneOrFail($params['id']); 
         $collection = collect($params)->except('_token'); 
 
         $property->title = $collection['title'];
         if($property->title != $params['title']){
-            $property->slug = slugGenerate($params['title'],'properties');
+            $property->slug = slugGenerate($params['title'],'schools');
         }
         $property->street_address = $collection['street_address'] ?? '';
         if(isset($params['suburb'])){
@@ -110,14 +109,13 @@ class PropertyRepository extends BaseRepository implements PropertyContract
         }
         $property->postcode = $collection['postcode'] ?? '';
         $property->state = $collection['state'] ?? '';
-        $property->bedroom = $collection['bedroom'] ?? '';
-        $property->bathroom = $collection['bathroom'];
-        $property->price = $collection['price']?? '';
+        $property->contact = $collection['contact'] ?? '';
+        $property->grade = $collection['grade']?? '';
         $property->type = $collection['type']?? '';
         $property->description = $collection['description']?? '';
-        if(isset($params['image'])){
-            $property->image = imageUpload($params['image'],'Property');
-        }
+        // if(isset($params['image'])){
+        //     $property->image = imageUpload($params['image'],'Property');
+        // }
         $property->save();
 
         return $property;
@@ -127,7 +125,7 @@ class PropertyRepository extends BaseRepository implements PropertyContract
      * @param $id
      * @return bool|mixed
      */
-    public function deleteProperty($id)
+    public function deleteSchool($id)
     {
         $property = $this->findOneOrFail($id);
         $property->delete();
@@ -138,7 +136,7 @@ class PropertyRepository extends BaseRepository implements PropertyContract
      * @param array $params
      * @return mixed
      */
-    public function updatePropertyStatus(array $params){
+    public function updateSchoolStatus(array $params){
         $property = $this->findOneOrFail($params['id']);
         $collection = collect($params)->except('_token');
         $property->status = $collection['check_status'];
@@ -151,9 +149,9 @@ class PropertyRepository extends BaseRepository implements PropertyContract
      * @param $id
      * @return mixed
      */
-    public function detailsProperty($id)
+    public function detailsSchool($id)
     {
-        $properties = Property::where('id',$id)->get();
+        $properties = School::where('id',$id)->get();
         
         return $properties;
     }
@@ -162,9 +160,9 @@ class PropertyRepository extends BaseRepository implements PropertyContract
      * @param $term
      * @return mixed
      */
-    public function getSearchProperties($term)
+    public function getSearchSchool($term)
     {
-        return Property::where([['title', 'LIKE', '%' . $term . '%']])
+        return School::where([['title', 'LIKE', '%' . $term . '%']])
         ->paginate(25);
     }
 }

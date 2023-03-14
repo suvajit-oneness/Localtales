@@ -15,7 +15,7 @@
                     </span>
                 </h3>
                 <hr>
-                <form action="{{ route('admin.properties.store') }}" method="POST" role="form" enctype="multipart/form-data">
+                <form action="{{ route('admin.school.store') }}" method="POST" role="form" enctype="multipart/form-data">
                     @csrf
                     <div class="tile-body">
                         <div class="form-group">
@@ -29,8 +29,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label" for="name">Price <span class="m-l-5 text-muted">(optional)</span></label>
-                            <input class="form-control @error('price') is-invalid @enderror" type="text" name="price" id="price" value="{{ old('price') }}"/>
+                            <label class="control-label" for="name">Grade <span class="m-l-5 text-muted">(optional)</span></label>
+                            <input class="form-control @error('grade') is-invalid @enderror" type="text" name="grade" id="grade" value="{{ old('grade') }}"/>
                         </div>
                        
                         <div class="form-group">
@@ -90,13 +90,10 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label" for="bedroom">Bedroom <span class="m-l-5 text-muted">(optional)</span></label>
-                            <input class="form-control @error('bedroom') is-invalid @enderror" type="text" name="bedroom" id="bedroom" value="{{ old('bedroom') }}"/>
+                            <label class="control-label" for="bedroom">Contact <span class="m-l-5 text-muted">(optional)</span></label>
+                            <input class="form-control @error('contact') is-invalid @enderror" type="text" name="contact" id="contact" value="{{ old('contact') }}"/>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label" for="bathroom">Bathroom <span class="m-l-5 text-muted">(optional)</span></label>
-                            <input class="form-control @error('bathroom') is-invalid @enderror" type="text" name="bathroom" id="bathroom" value="{{ old('bathroom') }}"/>
-                        </div>
+                        
                         <div class="form-group">
                             <label class="control-label" for="overview">Overview<span class="m-l-5 text-muted">(optional)</span></label>
                             <textarea class="form-control" rows="4" name="description" id="description">{{ old('description') }}</textarea>
@@ -110,9 +107,9 @@
                         </div>
                     </div>
                     <div class="tile-footer">
-                        <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save Property</button>
+                        <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>
                         &nbsp;&nbsp;&nbsp;
-                        <a class="btn btn-secondary" href="{{ route('admin.properties.index') }}"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
+                        <a class="btn btn-secondary" href="{{ route('admin.school.index') }}"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
                     </div>
                 </form>
             </div>

@@ -21,15 +21,7 @@
                 <div class="col">
                     <ul>
                         <li class="active">Total Number of Articles <span class="count">({{$blogs->total()}})</span></a></li>
-                        {{-- @php
-                            $activeCount = $inactiveCount = 0;
-                            foreach ($data as $catKey => $catVal) {
-                                if ($catVal->status == 1) $activeCount++;
-                                else $inactiveCount++;
-                            }
-                        @endphp
-                        <li><a href="{{ route('admin.directory.index', ['status' => 'active'])}}">Active <span class="count">({{$activeCount}})</span></a></li>
-                        <li><a href="{{ route('admin.directory.index', ['status' => 'inactive'])}}">Inactive <span class="count">({{$inactiveCount}})</span></a></li> --}}
+                       
                     </ul>
                 </div>
                 <div class="col-auto">

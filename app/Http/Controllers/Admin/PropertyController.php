@@ -4,30 +4,25 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Contracts\PropertyContract;
-use App\Contracts\BusinessContract;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController;
-
+use App\Models\Property;
+use App\Models\State;
+use App\Models\PinCode;
 class PropertyController extends BaseController
 {
     /**
      * @var PropertyContract
      */
     protected $propertyRepository;
-    /**
-     * @var BusinessContract
-     */
-    protected $businessRepository;
-
 
     /**
      * PageController constructor.
      * @param PropertyContract $propertyRepository
      */
-    public function __construct(PropertyContract $propertyRepository,BusinessContract $businessRepository)
+    public function __construct(PropertyContract $propertyRepository)
     {
         $this->propertyRepository = $propertyRepository;
-        $this->businessRepository = $businessRepository;
         
     }
 
@@ -35,10 +30,13 @@ class PropertyController extends BaseController
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
 
-    public function index()
+    public function index(Request $request)
     {
-        $properties = $this->propertyRepository->listProperties();
-
+        if (!empty($request->term)) {
+            $properties = $this->propertyRepository->getSearchProperties($request->term);
+        } else {
+            $properties = Property::latest('id')->paginate(25);
+        }
         $this->setPageTitle('Property', 'List of all properties');
         return view('admin.property.index', compact('properties'));
     }
@@ -48,10 +46,10 @@ class PropertyController extends BaseController
      */
     public function create()
     {
-        $businesses = $this->businessRepository->listBusinesss();
-
+        $state=State::orderby('name')->get();
+        $pin=PinCode::orderby('pin')->get();
         $this->setPageTitle('Property', 'Create Property');
-        return view('admin.property.create', compact('businesses'));
+        return view('admin.property.create',compact('pin','state'));
     }
 
     /**
@@ -63,7 +61,7 @@ class PropertyController extends BaseController
     {
         $this->validate($request, [
             'title'      =>  'required|max:191',
-            'image'     =>  'required|mimes:jpg,jpeg,png|max:1000',
+            
         ]);
 
         $params = $request->except('_token');
@@ -73,7 +71,7 @@ class PropertyController extends BaseController
         if (!$property) {
             return $this->responseRedirectBack('Error occurred while creating property.', 'error', true, true);
         }
-        return $this->responseRedirect('admin.property.index', 'Property has been added successfully' ,'success',false, false);
+        return $this->responseRedirect('admin.properties.index', 'Property has been added successfully' ,'success',false, false);
     }
 
     /**
@@ -83,10 +81,10 @@ class PropertyController extends BaseController
     public function edit($id)
     {
         $targetProperty = $this->propertyRepository->findPropertyById($id);
-        $businesses = $this->businessRepository->listBusinesss();
-        
+        $state=State::orderby('name')->get();
+        $pin=PinCode::orderby('pin')->get();
         $this->setPageTitle('Property', 'Edit Property : '.$targetProperty->title);
-        return view('admin.property.edit', compact('targetProperty','businesses'));
+        return view('admin.property.edit', compact('targetProperty','pin','state'));
     }
 
     /**
@@ -121,7 +119,7 @@ class PropertyController extends BaseController
         if (!$property) {
             return $this->responseRedirectBack('Error occurred while deleting property.', 'error', true, true);
         }
-        return $this->responseRedirect('admin.property.index', 'Property has been deleted successfully' ,'success',false, false);
+        return $this->responseRedirect('admin.properties.index', 'Property has been deleted successfully' ,'success',false, false);
     }
 
     /**

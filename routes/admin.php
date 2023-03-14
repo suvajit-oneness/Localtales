@@ -672,6 +672,55 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/{id}/details', 'Admin\ReviewController@details')->name('admin.review.details');
         });
 
+        // news
+        Route::group(['prefix'  =>   'news'], function () {
+               Route::get('/', 'Admin\NewsController@index')->name('admin.news.index');
+               Route::get('/create', 'Admin\NewsController@create')->name('admin.news.create');
+               Route::post('/store', 'Admin\NewsController@store')->name('admin.news.store');
+               Route::get('/{id}/edit', 'Admin\NewsController@edit')->name('admin.news.edit');
+               Route::post('/update', 'Admin\NewsController@update')->name('admin.news.update');
+               Route::get('/{id}/delete', 'Admin\NewsController@delete')->name('admin.news.delete');
+               Route::post('updateStatus', 'Admin\NewsController@updateStatus')->name('admin.news.updateStatus');
+               Route::get('/{id}/details', 'Admin\NewsController@details')->name('admin.news.details');
+               Route::get('/export', 'Admin\NewsController@export')->name('admin.news.data.csv.export');
+        });
+        // property
+        Route::group(['prefix'  =>   'properties'], function () {
+            Route::get('/', 'Admin\PropertyController@index')->name('admin.properties.index');
+            Route::get('/create', 'Admin\PropertyController@create')->name('admin.properties.create');
+            Route::post('/store', 'Admin\PropertyController@store')->name('admin.properties.store');
+            Route::get('/{id}/edit', 'Admin\PropertyController@edit')->name('admin.properties.edit');
+            Route::post('/update', 'Admin\PropertyController@update')->name('admin.properties.update');
+            Route::get('/{id}/delete', 'Admin\PropertyController@delete')->name('admin.properties.delete');
+            Route::post('updateStatus', 'Admin\PropertyController@updateStatus')->name('admin.properties.updateStatus');
+            Route::get('/{id}/details', 'Admin\PropertyController@details')->name('admin.properties.details');
+            Route::get('/export', 'Admin\PropertyController@export')->name('admin.properties.data.csv.export');
+        });
+        // school
+        Route::group(['prefix'  =>   'schools'], function () {
+            Route::get('/', 'Admin\SchoolController@index')->name('admin.school.index');
+            Route::get('/create', 'Admin\SchoolController@create')->name('admin.school.create');
+            Route::post('/store', 'Admin\SchoolController@store')->name('admin.school.store');
+            Route::get('/{id}/edit', 'Admin\SchoolController@edit')->name('admin.school.edit');
+            Route::post('/update', 'Admin\SchoolController@update')->name('admin.school.update');
+            Route::get('/{id}/delete', 'Admin\SchoolController@delete')->name('admin.school.delete');
+            Route::post('updateStatus', 'Admin\SchoolController@updateStatus')->name('admin.school.updateStatus');
+            Route::get('/{id}/details', 'Admin\SchoolController@details')->name('admin.school.details');
+            Route::get('/export', 'Admin\SchoolController@export')->name('admin.school.data.csv.export');
+        });
+        // doctor
+        Route::group(['prefix'  =>   'doctors'], function () {
+            Route::get('/', 'Admin\DoctorController@index')->name('admin.doctor.index');
+            Route::get('/create', 'Admin\DoctorController@create')->name('admin.doctor.create');
+            Route::post('/store', 'Admin\DoctorController@store')->name('admin.doctor.store');
+            Route::get('/{id}/edit', 'Admin\DoctorController@edit')->name('admin.doctor.edit');
+            Route::post('/update', 'Admin\DoctorController@update')->name('admin.doctor.update');
+            Route::get('/{id}/delete', 'Admin\DoctorController@delete')->name('admin.doctor.delete');
+            Route::post('updateStatus', 'Admin\DoctorController@updateStatus')->name('admin.doctor.updateStatus');
+            Route::get('/{id}/details', 'Admin\DoctorController@details')->name('admin.doctor.details');
+            Route::get('/export', 'Admin\DoctorController@export')->name('admin.doctor.data.csv.export');
+        });
+
     });
 });
 

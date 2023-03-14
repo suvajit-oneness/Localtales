@@ -72,7 +72,30 @@ if (!function_exists('imageResizeAndSave')) {
         } else { return false; }
     }
 }
+if (!function_exists('randomGenerator')) {
+    function randomGenerator() {
+        return uniqid().''.date('y-m-d-h-i-s');
+    }
+}
 
+if (!function_exists('imageUpload')) {
+    function imageUpload($image, $folder = 'image') {
+        $imageName = randomGenerator();
+        $imageExtension = $image->getClientOriginalExtension();
+        $uploadPath = URL::to('/').'/'.'uploads/'.$folder.'/';
+        $image->move(public_path($uploadPath), $imageName.'.'.$imageExtension);
+        $imagePath = $uploadPath.$imageName.'.'.$imageExtension;
+        return $imagePath;
+    }
+}
+if (!function_exists('slugGenerate')) {
+    function slugGenerate($title, $table) {
+        $slug = Str::slug($title, '-');
+        $slugExistCount = DB::table($table)->where('title', $title)->count();
+        if ($slugExistCount > 0) $slug = $slug . '-' . ($slugExistCount + 1);
+        return $slug;
+    }
+}
 if(!function_exists('directoryRatingHtml')) {
     function directoryRatingHtml($rating = null) {
         if ($rating == 0) {

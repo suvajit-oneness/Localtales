@@ -99,7 +99,7 @@
                         <div class="form-group">
                             <label class="control-label" for="suburb_id"> Suburb </label>
                             <select class="form-control" name="suburb_id" disabled>
-                                        <option value="" selected disabled>Select Postcode first</option>
+                             <option value="" selected disabled>Select Postcode first</option>
                             </select>
                             @error('suburb_id')
                                 <p class="small text-danger">{{ $message }}</p>

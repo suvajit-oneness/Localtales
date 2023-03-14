@@ -6,7 +6,7 @@
             <h1><i class="fa fa-file"></i> {{ $pageTitle }}</h1>
             <p>{{ $subTitle }}</p>
         </div>
-        <a href="{{ route('admin.properties.create') }}" class="btn btn-primary pull-right">Add New</a>
+        <a href="{{ route('admin.school.create') }}" class="btn btn-primary pull-right">Add New</a>
     </div>
     @include('admin.partials.flash')
     <div class="row">
@@ -14,12 +14,12 @@
             <div class="row align-items-center justify-content-between">
                 <div class="col">
                     <ul>
-                        <li class="active">Total Number of records <span class="count">({{$properties->total()}})</span></a></li>
+                        <li class="active">Total Number of records <span class="count">({{$schools->total()}})</span></a></li>
                        
                     </ul>
                 </div>
                 <div class="col-auto">
-                    <form action="{{ route('admin.properties.index') }}">
+                    <form action="{{ route('admin.school.index') }}">
                         <div class="row g-3 align-items-center">
                             <div class="col-auto">
                             <input type="search" name="term" id="term" class="form-control" placeholder="Search here.." value="{{app('request')->input('term')}}" autocomplete="off">
@@ -38,34 +38,34 @@
                             <tr>
                                 <th>Id</th>
                                 <th> Title </th>
-                                <th> Image </th>
+                                {{-- <th> Image </th> --}}
                                 <th> Address </th>
                                 <th> Type </th>
-                                <th> Price </th>
-                                <th> Room Details</th>
+                                <th> Grade </th>
+                               
                                 <th> Status </th>
                                 <th style="width:100px; min-width:100px;" class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($properties as $key => $property)
+                            @foreach($schools as $key => $school)
                                 <tr>
                                     <td>{{ $key+1 }}</td>
-                                    <td>{{ $property->title }}</td>
-                                    <td>
-                                        @if($property->image!='')
-                                        <img style="width: 150px;height: 100px;" src="{{asset($property->image)}}">
+                                    <td>{{ $school->title }}</td>
+                                    {{-- <td>
+                                        @if($school->image!='')
+                                        <img style="width: 50px;height: 50px;" src="{{asset($school->image)}}">
                                         @endif
-                                    </td>
-                                    <td>{{ $property->street_address.', '.$property->suburb.', '.$property->state.', '.$property->postcode }}</td>
-                                    <td>{{ $property->type }}</td>
-                                    <td>{{ $property->price }}</td>
-                                    <td>{{ $property->bedroom }} Bedroom <br><span>{{$property->bathroom}} Bathroom</span></td>
+                                    </td> --}}
+                                    <td>{{ $school->street_address.', '.$school->suburb.', '.$school->state.', '.$school->postcode }}</td>
+                                    <td>{{ $school->type }}</td>
+                                    <td>{{ $school->grade }}</td>
+                                    
                                     <td class="text-center">
                                     <div class="toggle-button-cover margin-auto">
                                         <div class="button-cover">
                                             <div class="button-togglr b2" id="button-11">
-                                                <input id="toggle-block" type="checkbox" name="status" class="checkbox" data-property_id="{{ $property['id'] }}" {{ $property['status'] == 1 ? 'checked' : '' }}>
+                                                <input id="toggle-block" type="checkbox" name="status" class="checkbox" data-property_id="{{ $school['id'] }}" {{ $school['status'] == 1 ? 'checked' : '' }}>
                                                 <div class="knobs"><span>Inactive</span></div>
                                                 <div class="layer"></div>
                                             </div>
@@ -74,16 +74,16 @@
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group" role="group" aria-label="Second group">
-                                        <a href="{{ route('admin.properties.edit', $property['id']) }}" class="btn btn-sm btn-primary edit-btn"><i class="fa fa-edit"></i></a>
-                                        <a href="{{ route('admin.properties.details', $property['id']) }}" class="btn btn-sm btn-primary edit-btn"><i class="fa fa-eye"></i></a>
-                                        <a href="#" data-id="{{$property['id']}}" class="sa-remove btn btn-sm btn-danger edit-btn"><i class="fa fa-trash"></i></a>
+                                        <a href="{{ route('admin.school.edit', $school['id']) }}" class="btn btn-sm btn-primary edit-btn"><i class="fa fa-edit"></i></a>
+                                        <a href="{{ route('admin.school.details', $school['id']) }}" class="btn btn-sm btn-primary edit-btn"><i class="fa fa-eye"></i></a>
+                                        <a href="#" data-id="{{$school['id']}}" class="sa-remove btn btn-sm btn-danger edit-btn"><i class="fa fa-trash"></i></a>
                                     </div>
                                 </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
-                    {!! $properties->appends($_GET)->links() !!}
+                    {!! $schools->appends($_GET)->links() !!}
                 </div>
             </div>
         </div>
@@ -109,7 +109,7 @@
         },
         function(isConfirm){
           if (isConfirm) {
-            window.location.href = "properties/"+propertyid+"/delete";
+            window.location.href = "schools/"+propertyid+"/delete";
             } else {
               swal("Cancelled", "Record is safe", "error");
             }
@@ -129,7 +129,7 @@
           $.ajax({
                 type:'POST',
                 dataType:'JSON',
-                url:"{{route('admin.properties.updateStatus')}}",
+                url:"{{route('admin.school.updateStatus')}}",
                 data:{ _token: CSRF_TOKEN, id:property_id, check_status:check_status},
                 success:function(response)
                 {

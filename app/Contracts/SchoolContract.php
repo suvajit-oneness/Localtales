@@ -3,10 +3,10 @@
 namespace App\Contracts;
 
 /**
- * Interface PropertyContract
+ * Interface SchoolContract
  * @package App\Contracts
  */
-interface PropertyContract
+interface SchoolContract
 {
     /**
      * @param string $order
@@ -14,41 +14,41 @@ interface PropertyContract
      * @param array $columns
      * @return mixed
      */
-    public function listProperties(string $order = 'id', string $sort = 'desc', array $columns = ['*']);
+    public function listSchool(string $order = 'id', string $sort = 'desc', array $columns = ['*']);
 
     /**
      * @param int $id
      * @return mixed
      */
-    public function findPropertyById(int $id);
+    public function findSchoolById(int $id);
 
     /**
      * @param array $params
      * @return mixed
      */
-    public function createProperty(array $params);
+    public function createSchool(array $params);
 
     /**
      * @param array $params
      * @return mixed
      */
-    public function updateProperty(array $params);
+    public function updateSchool(array $params);
 
     /**
      * @param $id
      * @return bool
      */
-    public function deleteProperty($id);
+    public function deleteSchool($id);
 
     /**
      * @param $id
      * @return mixed
      */
-    public function detailsProperty($id);
+    public function detailsSchool($id);
 
     /**
      * @param $term
      * @return mixed
      */
-    public function getSearchProperties($term);
+    public function getSearchSchool($term);
 }

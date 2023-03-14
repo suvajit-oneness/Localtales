@@ -1,28 +1,28 @@
 <?php
 namespace App\Repositories;
 
-use App\Models\Property;
+use App\Models\News;
 use App\Traits\UploadAble;
 use Illuminate\Http\UploadedFile;
-use App\Contracts\PropertyContract;
+use App\Contracts\NewsContract;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
 
 /**
- * Class PropertyRepository
+ * Class NewsRepository
  *
  * @package \App\Repositories
  */
-class PropertyRepository extends BaseRepository implements PropertyContract
+class NewsRepository extends BaseRepository implements NewsContract
 {
     use UploadAble;
 
     /**
-     * PropertyRepository constructor.
-     * @param Property $model
+     * NewsRepository constructor.
+     * @param News $model
      */
-    public function __construct(Property $model)
+    public function __construct(News $model)
     {
         parent::__construct($model);
         $this->model = $model;
@@ -34,7 +34,7 @@ class PropertyRepository extends BaseRepository implements PropertyContract
      * @param array $columns
      * @return mixed
      */
-    public function listProperties(string $order = 'id', string $sort = 'desc', array $columns = ['*'], int $page = 25)
+    public function listNews(string $order = 'id', string $sort = 'desc', array $columns = ['*'], int $page = 25)
     {
         return $this->all($columns, $order, $sort ,$page);
     }
@@ -44,7 +44,7 @@ class PropertyRepository extends BaseRepository implements PropertyContract
      * @return mixed
      * @throws ModelNotFoundException
      */
-    public function findPropertyById(int $id)
+    public function findNewsById(int $id)
     {
         try {
             return $this->findOneOrFail($id);
@@ -59,28 +59,23 @@ class PropertyRepository extends BaseRepository implements PropertyContract
      * @param array $params
      * @return Property|mixed
      */
-    public function createProperty(array $params)
+    public function createNews(array $params)
     {
         try {
 
             $collection = collect($params);
 
-            $property = new Property;
+            $property = new News;
             $property->title = $collection['title'];
-            $property->slug = slugGenerate($params['title'],'properties');
-            $property->street_address = $collection['street_address'] ?? '';
+            $property->slug = slugGenerate($params['title'],'news');
             if(isset($params['suburb'])){
             $property->suburb = $collection['suburb'];
             }
             $property->postcode = $collection['postcode']?? '';
             $property->state = $collection['state']?? '';
-            $property->bedroom = $collection['bedroom']?? '';
-            $property->bathroom = $collection['bathroom']?? '';
-            $property->price = $collection['price']?? '';
-            $property->type = $collection['type']?? '';
             $property->description = $collection['description']?? '';
             if(isset($params['image'])){
-            $property->image = imageUpload($params['image'],'Property');
+            $property->image = imageUpload($params['image'],'News');
             }
             $property->save();
 
@@ -95,28 +90,24 @@ class PropertyRepository extends BaseRepository implements PropertyContract
      * @param array $params
      * @return mixed
      */
-    public function updateProperty(array $params)
+    public function updateNews(array $params)
     {
         $property = $this->findOneOrFail($params['id']); 
         $collection = collect($params)->except('_token'); 
 
         $property->title = $collection['title'];
         if($property->title != $params['title']){
-            $property->slug = slugGenerate($params['title'],'properties');
+            $property->slug = slugGenerate($params['title'],'news');
         }
-        $property->street_address = $collection['street_address'] ?? '';
+        
         if(isset($params['suburb'])){
         $property->suburb = $collection['suburb'] ?? '';
         }
         $property->postcode = $collection['postcode'] ?? '';
         $property->state = $collection['state'] ?? '';
-        $property->bedroom = $collection['bedroom'] ?? '';
-        $property->bathroom = $collection['bathroom'];
-        $property->price = $collection['price']?? '';
-        $property->type = $collection['type']?? '';
-        $property->description = $collection['description']?? '';
+        $property->description = $collection['description'] ?? '';
         if(isset($params['image'])){
-            $property->image = imageUpload($params['image'],'Property');
+            $property->image = imageUpload($params['image'],'News');
         }
         $property->save();
 
@@ -127,7 +118,7 @@ class PropertyRepository extends BaseRepository implements PropertyContract
      * @param $id
      * @return bool|mixed
      */
-    public function deleteProperty($id)
+    public function deleteNews($id)
     {
         $property = $this->findOneOrFail($id);
         $property->delete();
@@ -138,7 +129,7 @@ class PropertyRepository extends BaseRepository implements PropertyContract
      * @param array $params
      * @return mixed
      */
-    public function updatePropertyStatus(array $params){
+    public function updateNewsStatus(array $params){
         $property = $this->findOneOrFail($params['id']);
         $collection = collect($params)->except('_token');
         $property->status = $collection['check_status'];
@@ -151,9 +142,9 @@ class PropertyRepository extends BaseRepository implements PropertyContract
      * @param $id
      * @return mixed
      */
-    public function detailsProperty($id)
+    public function detailsNews($id)
     {
-        $properties = Property::where('id',$id)->get();
+        $properties = News::where('id',$id)->get();
         
         return $properties;
     }
@@ -162,9 +153,9 @@ class PropertyRepository extends BaseRepository implements PropertyContract
      * @param $term
      * @return mixed
      */
-    public function getSearchProperties($term)
+    public function getSearchNews($term)
     {
-        return Property::where([['title', 'LIKE', '%' . $term . '%']])
+        return News::where([['title', 'LIKE', '%' . $term . '%']])
         ->paginate(25);
     }
 }

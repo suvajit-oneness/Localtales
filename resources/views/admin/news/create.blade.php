@@ -15,7 +15,7 @@
                     </span>
                 </h3>
                 <hr>
-                <form action="{{ route('admin.properties.store') }}" method="POST" role="form" enctype="multipart/form-data">
+                <form action="{{ route('admin.news.store') }}" method="POST" role="form" enctype="multipart/form-data">
                     @csrf
                     <div class="tile-body">
                         <div class="form-group">
@@ -23,20 +23,7 @@
                             <input class="form-control @error('title') is-invalid @enderror" type="text" name="title" id="title" value="{{ old('title') }}"/>
                             @error('title') {{ $message ?? '' }} @enderror
                         </div>
-                        <div class="form-group">
-                            <label class="control-label" for="name">Type <span class="m-l-5 text-muted">(optional)</span></label>
-                            <input class="form-control @error('type') is-invalid @enderror" type="text" name="type" id="type" value="{{ old('type') }}"/>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="control-label" for="name">Price <span class="m-l-5 text-muted">(optional)</span></label>
-                            <input class="form-control @error('price') is-invalid @enderror" type="text" name="price" id="price" value="{{ old('price') }}"/>
-                        </div>
-                       
-                        <div class="form-group">
-                            <label class="control-label" for="name">Street Address <span class="m-l-5 text-muted">(optional)</span></label>
-                            <input class="form-control @error('street_address') is-invalid @enderror" type="text" name="street_address" id="street_address" value="{{ old('street_address') }}"/>
-                        </div>
+                        
                         <div class="form-group">
                             <div class="page-search-block filterSearchBoxWraper" style="bottom: -83px;">
                                 <div class="filterSearchBox">
@@ -89,14 +76,7 @@
                                 @error('suburb') <p class="small text-danger">{{ $message }}</p> @enderror
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label" for="bedroom">Bedroom <span class="m-l-5 text-muted">(optional)</span></label>
-                            <input class="form-control @error('bedroom') is-invalid @enderror" type="text" name="bedroom" id="bedroom" value="{{ old('bedroom') }}"/>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label" for="bathroom">Bathroom <span class="m-l-5 text-muted">(optional)</span></label>
-                            <input class="form-control @error('bathroom') is-invalid @enderror" type="text" name="bathroom" id="bathroom" value="{{ old('bathroom') }}"/>
-                        </div>
+                        
                         <div class="form-group">
                             <label class="control-label" for="overview">Overview<span class="m-l-5 text-muted">(optional)</span></label>
                             <textarea class="form-control" rows="4" name="description" id="description">{{ old('description') }}</textarea>
@@ -110,9 +90,9 @@
                         </div>
                     </div>
                     <div class="tile-footer">
-                        <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save Property</button>
+                        <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>
                         &nbsp;&nbsp;&nbsp;
-                        <a class="btn btn-secondary" href="{{ route('admin.properties.index') }}"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
+                        <a class="btn btn-secondary" href="{{ route('admin.news.index') }}"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
                     </div>
                 </form>
             </div>

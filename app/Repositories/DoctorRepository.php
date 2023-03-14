@@ -1,28 +1,28 @@
 <?php
 namespace App\Repositories;
 
-use App\Models\Property;
+use App\Models\DoctorHospital;
 use App\Traits\UploadAble;
 use Illuminate\Http\UploadedFile;
-use App\Contracts\PropertyContract;
+use App\Contracts\DoctorContract;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
 
 /**
- * Class PropertyRepository
+ * Class DoctorRepository
  *
  * @package \App\Repositories
  */
-class PropertyRepository extends BaseRepository implements PropertyContract
+class DoctorRepository extends BaseRepository implements DoctorContract
 {
     use UploadAble;
 
     /**
-     * PropertyRepository constructor.
-     * @param Property $model
+     * DoctorRepository constructor.
+     * @param DoctorHospital $model
      */
-    public function __construct(Property $model)
+    public function __construct(DoctorHospital $model)
     {
         parent::__construct($model);
         $this->model = $model;
@@ -34,7 +34,7 @@ class PropertyRepository extends BaseRepository implements PropertyContract
      * @param array $columns
      * @return mixed
      */
-    public function listProperties(string $order = 'id', string $sort = 'desc', array $columns = ['*'], int $page = 25)
+    public function listDoctor(string $order = 'id', string $sort = 'desc', array $columns = ['*'], int $page = 25)
     {
         return $this->all($columns, $order, $sort ,$page);
     }
@@ -44,7 +44,7 @@ class PropertyRepository extends BaseRepository implements PropertyContract
      * @return mixed
      * @throws ModelNotFoundException
      */
-    public function findPropertyById(int $id)
+    public function findDoctorById(int $id)
     {
         try {
             return $this->findOneOrFail($id);
@@ -57,31 +57,31 @@ class PropertyRepository extends BaseRepository implements PropertyContract
 
     /**
      * @param array $params
-     * @return Property|mixed
+     * @return DoctorHospital|mixed
      */
-    public function createProperty(array $params)
+    public function createDoctor(array $params)
     {
         try {
 
             $collection = collect($params);
 
-            $property = new Property;
+            $property = new DoctorHospital;
             $property->title = $collection['title'];
-            $property->slug = slugGenerate($params['title'],'properties');
+            $property->slug = slugGenerate($params['title'],'doctor_hospitals');
             $property->street_address = $collection['street_address'] ?? '';
             if(isset($params['suburb'])){
-            $property->suburb = $collection['suburb'];
+                $property->suburb = $collection['suburb'];
             }
-            $property->postcode = $collection['postcode']?? '';
-            $property->state = $collection['state']?? '';
-            $property->bedroom = $collection['bedroom']?? '';
-            $property->bathroom = $collection['bathroom']?? '';
-            $property->price = $collection['price']?? '';
-            $property->type = $collection['type']?? '';
-            $property->description = $collection['description']?? '';
-            if(isset($params['image'])){
-            $property->image = imageUpload($params['image'],'Property');
-            }
+            $property->postcode = $collection['postcode'] ?? '';
+            $property->state = $collection['state'] ?? '';
+            $property->contact = $collection['contact'] ?? '';
+            $property->email = $collection['email'] ?? '';
+            $property->website = $collection['website'] ?? '';
+            $property->type = $collection['type'] ?? '';
+            $property->description = $collection['description'] ?? '';
+
+            //$property->image = imageUpload($params['image'],'Property');
+            
             $property->save();
 
             return $property;
@@ -95,14 +95,14 @@ class PropertyRepository extends BaseRepository implements PropertyContract
      * @param array $params
      * @return mixed
      */
-    public function updateProperty(array $params)
+    public function updateDoctor(array $params)
     {
         $property = $this->findOneOrFail($params['id']); 
         $collection = collect($params)->except('_token'); 
 
         $property->title = $collection['title'];
         if($property->title != $params['title']){
-            $property->slug = slugGenerate($params['title'],'properties');
+            $property->slug = slugGenerate($params['title'],'doctor_hospitals');
         }
         $property->street_address = $collection['street_address'] ?? '';
         if(isset($params['suburb'])){
@@ -110,14 +110,14 @@ class PropertyRepository extends BaseRepository implements PropertyContract
         }
         $property->postcode = $collection['postcode'] ?? '';
         $property->state = $collection['state'] ?? '';
-        $property->bedroom = $collection['bedroom'] ?? '';
-        $property->bathroom = $collection['bathroom'];
-        $property->price = $collection['price']?? '';
-        $property->type = $collection['type']?? '';
-        $property->description = $collection['description']?? '';
-        if(isset($params['image'])){
-            $property->image = imageUpload($params['image'],'Property');
-        }
+        $property->contact = $collection['contact'] ?? '';
+        $property->email = $collection['email'] ?? '';
+        $property->website = $collection['website'] ?? '';
+        $property->type = $collection['type'] ?? '';
+        $property->description = $collection['description'] ?? '';
+        // if(isset($params['image'])){
+        //     $property->image = imageUpload($params['image'],'Property');
+        // }
         $property->save();
 
         return $property;
@@ -127,7 +127,7 @@ class PropertyRepository extends BaseRepository implements PropertyContract
      * @param $id
      * @return bool|mixed
      */
-    public function deleteProperty($id)
+    public function deleteDoctor($id)
     {
         $property = $this->findOneOrFail($id);
         $property->delete();
@@ -138,7 +138,7 @@ class PropertyRepository extends BaseRepository implements PropertyContract
      * @param array $params
      * @return mixed
      */
-    public function updatePropertyStatus(array $params){
+    public function updateDoctorStatus(array $params){
         $property = $this->findOneOrFail($params['id']);
         $collection = collect($params)->except('_token');
         $property->status = $collection['check_status'];
@@ -151,9 +151,9 @@ class PropertyRepository extends BaseRepository implements PropertyContract
      * @param $id
      * @return mixed
      */
-    public function detailsProperty($id)
+    public function detailsDoctor($id)
     {
-        $properties = Property::where('id',$id)->get();
+        $properties = DoctorHospital::where('id',$id)->get();
         
         return $properties;
     }
@@ -162,9 +162,9 @@ class PropertyRepository extends BaseRepository implements PropertyContract
      * @param $term
      * @return mixed
      */
-    public function getSearchProperties($term)
+    public function getSearchDoctor($term)
     {
-        return Property::where([['title', 'LIKE', '%' . $term . '%']])
+        return DoctorHospital::where([['title', 'LIKE', '%' . $term . '%']])
         ->paginate(25);
     }
 }

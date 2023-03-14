@@ -96,6 +96,12 @@ use App\Contracts\JobCategoryContract;
 use App\Repositories\JobCategoryRepository;
 use App\Contracts\JobContract;
 use App\Repositories\JobRepository;
+use App\Contracts\NewsContract;
+use App\Repositories\NewsRepository;
+use App\Contracts\SchoolContract;
+use App\Repositories\SchoolRepository;
+use App\Contracts\DoctorContract;
+use App\Repositories\DoctorRepository;
 use App\Contracts\JobEmploymentTypeContract;
 use App\Repositories\JobEmploymentTypeRepository;
 class RepositoryServiceProvider extends ServiceProvider
@@ -141,13 +147,16 @@ class RepositoryServiceProvider extends ServiceProvider
         BlogFaqSubCatContract::class       =>       BlogFaqSubCatRepository::class,
         BlogFaqCatContract::class          =>       BlogFaqCatRepository::class,
         DemoImageContract::class           =>       DemoImageRepository::class,
-         CategoryFaqContract::class        =>       CategoryFaqRepository::class,
-         DirectorySubCategoryContract::class =>     DirectorySubCategoryRepository::class,
-         AdvocateRegistrationContract::class =>     AdvocateRegistrationRepository::class,
-         EventRegistrationContract::class    =>     EventRegistrationRepository::class,
-         JobCategoryContract::class          =>     JobCategoryRepository::class,
-         JobContract::class                  =>     JobRepository::class,
-         JobEmploymentTypeContract::class    =>     JobEmploymentTypeRepository::class,
+        CategoryFaqContract::class         =>       CategoryFaqRepository::class,
+        DirectorySubCategoryContract::class =>     DirectorySubCategoryRepository::class,
+        AdvocateRegistrationContract::class =>     AdvocateRegistrationRepository::class,
+        EventRegistrationContract::class    =>     EventRegistrationRepository::class,
+        JobCategoryContract::class          =>     JobCategoryRepository::class,
+        JobContract::class                  =>     JobRepository::class,
+        JobEmploymentTypeContract::class    =>     JobEmploymentTypeRepository::class,
+        NewsContract::class                 =>     NewsRepository::class,
+        SchoolContract::class               =>     SchoolRepository::class,
+        DoctorContract::class               =>     DoctorRepository::class,
     ];
 
     /**

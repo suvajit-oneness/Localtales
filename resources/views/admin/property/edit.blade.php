@@ -12,68 +12,159 @@
             <div class="tile">
                 <h3 class="tile-title">{{ $subTitle }}</h3>
                 <hr>
-                <form action="{{ route('admin.property.update') }}" method="POST" role="form" enctype="multipart/form-data">
+                <form action="{{ route('admin.properties.update') }}" method="POST" role="form" enctype="multipart/form-data">
                 	<input type="hidden" name="id" value="{{ $targetProperty->id }}">
                     @csrf
                     <div class="tile-body">
-                        <div class="form-group">
-                            <label class="control-label" for="business_id">Business</label>
-                            <select name="business_id" id="business_id" class="form-control @error('business_id') is-invalid @enderror">
-                                <option value="">Select a Business</option>
-                                @foreach($businesses as $business)
-                                    <option value="{{ $business->id }}" @if($targetProperty->business_id){{"selected"}}@endif >{{ $business->business_name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
                         <div class="form-group">
                             <label class="control-label" for="name">Title <span class="m-l-5 text-danger"> *</span></label>
                             <input class="form-control @error('title') is-invalid @enderror" type="text" name="title" id="title" value="{{ old('title', $targetProperty->title) }}"/>
                             @error('title') {{ $message ?? '' }} @enderror
                         </div>
                         <div class="form-group">
-                            <label class="control-label" for="overview">Overview</label>
-                            <textarea class="form-control" rows="4" name="overview" id="overview">{{ old('overview', $targetProperty->overview) }}</textarea>
+                            <label class="control-label" for="name">Type <span class="m-l-5 text-muted">(optional)</span></label>
+                            <input class="form-control @error('type') is-invalid @enderror" type="text" name="type" id="type" value="{{ old('type', $targetProperty->type) }}"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="name">Price <span class="m-l-5 text-muted">(optional)</span></label>
+                            <input class="form-control @error('price') is-invalid @enderror" type="text" name="price" id="price" value="{{ old('price', $targetProperty->price) }}"/>
+                        </div>
+                       
+                        <div class="form-group">
+                            <label class="control-label" for="name">Street Address <span class="m-l-5 text-muted">(optional)</span></label>
+                            <input class="form-control @error('street_address') is-invalid @enderror" type="text" name="street_address" id="street_address" value="{{ old('street_address', $targetProperty->street_address) }}"/>
                         </div>
                         <div class="form-group">
-                            <label class="control-label" for="amenities">Amenities</label>
-                            <textarea class="form-control" rows="4" name="amenities" id="amenities">{{ old('amenities', $targetProperty->amenities) }}</textarea>
+                            <div class="page-search-block filterSearchBoxWraper" style="bottom: -83px;">
+                                <div class="filterSearchBox">
+                                    <div class="row">
+                                        <div class="mb-sm-0 col col-lg fcontrol position-relative filter_selectWrap filter_selectWrap2">
+                                            <div class="select-floating-admin">
+                                                <label class="control-label" for="state">  State<span class="m-l-5 text-muted">(optional)</span></label>
+                                                <select class="filter_select form-control" name="state">
+                                                    <option value="" hidden selected>Select State</option>
+                                                    @foreach ($state as $index => $item)
+                                                    <option value="{{$item->name}}" {{ ($item->name == $targetProperty->state) ? 'selected' : '' }}>{{ $item->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('state')
+                                                    <p class="small text-danger">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="page-search-block filterSearchBoxWraper" style="bottom: -83px;">
+                            <div class="filterSearchBox">
+                                <div class="row">
+                                    <div class="mb-sm-0 col col-lg fcontrol position-relative filter_selectWrap filter_selectWrap2">
+                                        <div class="select-floating-admin">
+                                            <label class="control-label" for="postcode"> Postcode<span class="m-l-5 text-muted">(optional)</span></label>
+                                            <select class="filter_select form-control" name="postcode">
+                                                <option value="" hidden selected>Select Postcode</option>
+                                                @foreach ($pin as $index => $item)
+                                                <option value="{{$item->pin}}" {{ ($item->pin == $targetProperty->postcode) ? 'selected' : '' }}>{{ $item->pin }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('postcode')
+                                                <p class="small text-danger">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile-body">
+                            <div class="form-group">
+                                <div class="select-floating-admin">
+                                    <label class="control-label" for="suburb"> Suburb<span class="m-l-5 text-muted">(optional)</span></label>
+                                    <select class="form-control" name="suburb" disabled>
+                                    <option value="">None</option>
+                                    <option value="" {{ ($targetProperty->suburb) ? 'selected' : '' }}>{{$targetProperty->suburb ?? ''}}</option>
+                                    </select>
+                                </div>
+                                @error('suburb') <p class="small text-danger">{{ $message }}</p> @enderror
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label" for="near_by">Near By</label>
-                            <textarea class="form-control" rows="4" name="near_by" id="near_by">{{ old('near_by', $targetProperty->near_by) }}</textarea>
+                            <label class="control-label" for="bedroom">Bedroom <span class="m-l-5 text-muted">(optional)</span></label>
+                            <input class="form-control @error('bedroom') is-invalid @enderror" type="text" name="bedroom" id="bedroom" value="{{ old('bedroom', $targetProperty->bedroom) }}"/>
                         </div>
                         <div class="form-group">
-                            <label class="control-label" for="name">Address <span class="m-l-5 text-danger"> *</span></label>
-                            <input class="form-control @error('address') is-invalid @enderror" type="text" name="address" id="address" value="{{ old('address', $targetProperty->address) }}"/>
+                            <label class="control-label" for="bathroom">Bathroom <span class="m-l-5 text-muted">(optional)</span></label>
+                            <input class="form-control @error('bathroom') is-invalid @enderror" type="text" name="bathroom" id="bathroom" value="{{ old('bathroom', $targetProperty->bathroom) }}"/>
                         </div>
                         <div class="form-group">
-                            <label class="control-label" for="name">Latitude <span class="m-l-5 text-danger"> *</span></label>
-                            <input class="form-control @error('lat') is-invalid @enderror" type="text" name="lat" id="lat" value="{{ old('lat', $targetProperty->lat) }}"/>
+                            <label class="control-label" for="overview">Overview<span class="m-l-5 text-muted">(optional)</span></label>
+                            <textarea class="form-control" rows="4" name="description" id="description">{{ old('description', $targetProperty->description) }}</textarea>
                         </div>
                         <div class="form-group">
-                            <label class="control-label" for="name">Longitude <span class="m-l-5 text-danger"> *</span></label>
-                            <input class="form-control @error('lon') is-invalid @enderror" type="text" name="lon" id="lon" value="{{ old('lon', $targetProperty->lon) }}"/>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label" for="name">Contact Person <span class="m-l-5 text-danger"> *</span></label>
-                            <input class="form-control @error('contact_person') is-invalid @enderror" type="text" name="contact_person" id="contact_person" value="{{ old('contact_person', $targetProperty->contact_person) }}"/>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label" for="name">Contact Email Id <span class="m-l-5 text-danger"> *</span></label>
-                            <input class="form-control @error('contact_email') is-invalid @enderror" type="text" name="contact_email" id="contact_email" value="{{ old('contact_email', $targetProperty->contact_email) }}"/>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label" for="name">Contact Phone No <span class="m-l-5 text-danger"> *</span></label>
-                            <input class="form-control @error('contact_phone') is-invalid @enderror" type="text" name="contact_phone" id="contact_phone" value="{{ old('contact_phone', $targetProperty->contact_phone) }}"/>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    @if ($targetProperty->image != null)
+                                        <figure class="mt-2" style="width: 80px; height: auto;">
+                                            <img src="{{ $targetProperty->image }}" id="blogImage" class="img-fluid" alt="img">
+                                        </figure>
+                                    @endif
+                                </div>
+                                <div class="col-md-10">
+                                    <label class="control-label">Image <span class="m-l-5 text-muted">(optional)</span></label>
+                                    <p class="small text-danger mb-2">Size must be less than 200kb</p>
+                                    <input class="form-control @error('image') is-invalid @enderror" type="file" id="image" name="image"/>
+                                    @error('image') {{ $message }} @enderror
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="tile-footer">
                         <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Update Property</button>
                         &nbsp;&nbsp;&nbsp;
-                        <a class="btn btn-secondary" href="{{ route('admin.banner.index') }}"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
+                        <a class="btn btn-secondary" href="{{ route('admin.properties.index') }}"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 @endsection
+@push('scripts')
+<script>
+	
+
+        $('select[name="postcode"]').on('change', (event) => {
+			var value = $('select[name="postcode"]').val();
+
+			$.ajax({
+				url: '{{url("/")}}/api/postcode-suburb/'+value,
+                method: 'GET',
+                success: function(result) {
+					var content = '';
+					var slectTag = 'select[name="suburb"]';
+					var displayCollection = (result.data.postcode == "all") ? "All postcode" : " Select";
+
+					content += '<option value="" selected>'+displayCollection+'</option>';
+					$.each(result.data.suburb, (key, value) => {
+						content += '<option value="'+value.suburb_title+'">'+value.suburb_title+'</option>';
+					});
+					$(slectTag).html(content).attr('disabled', false);
+                }
+			});
+		});
+    </script>
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+<script type="text/javascript">
+    $('#summernote_content').summernote({
+        height: 400
+    });
+    $('#summernote_meta_description').summernote({
+        height: 400
+    });
+    $('#summernote_sticky_content').summernote({
+        height: 400
+    });
+</script>
+
+@endpush

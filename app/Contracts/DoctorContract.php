@@ -3,10 +3,10 @@
 namespace App\Contracts;
 
 /**
- * Interface PropertyContract
+ * Interface DoctorContract
  * @package App\Contracts
  */
-interface PropertyContract
+interface DoctorContract
 {
     /**
      * @param string $order
@@ -14,41 +14,41 @@ interface PropertyContract
      * @param array $columns
      * @return mixed
      */
-    public function listProperties(string $order = 'id', string $sort = 'desc', array $columns = ['*']);
+    public function listDoctor(string $order = 'id', string $sort = 'desc', array $columns = ['*']);
 
     /**
      * @param int $id
      * @return mixed
      */
-    public function findPropertyById(int $id);
+    public function findDoctorById(int $id);
 
     /**
      * @param array $params
      * @return mixed
      */
-    public function createProperty(array $params);
+    public function createDoctor(array $params);
 
     /**
      * @param array $params
      * @return mixed
      */
-    public function updateProperty(array $params);
+    public function updateDoctor(array $params);
 
     /**
      * @param $id
      * @return bool
      */
-    public function deleteProperty($id);
+    public function deleteDoctor($id);
 
     /**
      * @param $id
      * @return mixed
      */
-    public function detailsProperty($id);
+    public function detailsDoctor($id);
 
     /**
      * @param $term
      * @return mixed
      */
-    public function getSearchProperties($term);
+    public function getSearchDoctor($term);
 }

@@ -225,6 +225,30 @@
             <span class="app-menu__label">Review</span>
             </a>
         </li>
+        {{--news--}}
+        <li>
+            <a class="app-menu__item {{ request()->is('admin/news*') ? 'active' : '' }} {{ sidebar_open(['admin.news']) }}" href="{{ route('admin.news.index') }}"><i class="app-menu__icon fas fa-newspaper"></i>
+            <span class="app-menu__label">News</span>
+            </a>
+        </li>
+        {{--property--}}
+        <li>
+            <a class="app-menu__item {{ request()->is('admin/properties*') ? 'active' : '' }} {{ sidebar_open(['admin.properties']) }}" href="{{ route('admin.properties.index') }}"><i class="app-menu__icon fas fa-building"></i>
+            <span class="app-menu__label">Properties</span>
+            </a>
+        </li>
+        {{--school--}}
+        <li>
+            <a class="app-menu__item {{ request()->is('admin/schools*') ? 'active' : '' }} {{ sidebar_open(['admin.school']) }}" href="{{ route('admin.school.index') }}"><i class="app-menu__icon fas fa-school"></i>
+            <span class="app-menu__label">Schools</span>
+            </a>
+        </li>
+        {{--doctor--}}
+        <li>
+            <a class="app-menu__item {{ request()->is('admin/doctors*') ? 'active' : '' }} {{ sidebar_open(['admin.doctor']) }}" href="{{ route('admin.doctor.index') }}"><i class="app-menu__icon fas fa-hospital"></i>
+            <span class="app-menu__label">Doctors & Hospitals</span>
+            </a>
+        </li>
          <li>
             <a class="app-menu__item {{ sidebar_open(['admin.csv']) }}"
                 href="{{ route('admin.csv-activity.index') }}"><i class="app-menu__icon fa fa-group"></i>

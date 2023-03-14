@@ -15,7 +15,7 @@
                     </span>
                 </h3>
                 <hr>
-                <form action="{{ route('admin.properties.store') }}" method="POST" role="form" enctype="multipart/form-data">
+                <form action="{{ route('admin.doctor.store') }}" method="POST" role="form" enctype="multipart/form-data">
                     @csrf
                     <div class="tile-body">
                         <div class="form-group">
@@ -26,11 +26,6 @@
                         <div class="form-group">
                             <label class="control-label" for="name">Type <span class="m-l-5 text-muted">(optional)</span></label>
                             <input class="form-control @error('type') is-invalid @enderror" type="text" name="type" id="type" value="{{ old('type') }}"/>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="control-label" for="name">Price <span class="m-l-5 text-muted">(optional)</span></label>
-                            <input class="form-control @error('price') is-invalid @enderror" type="text" name="price" id="price" value="{{ old('price') }}"/>
                         </div>
                        
                         <div class="form-group">
@@ -81,38 +76,54 @@
                         </div>
                         <div class="tile-body">
                             <div class="form-group">
-                                <label class="control-label" for="suburb"> Suburb<span class="m-l-5 text-muted">(optional)</span></label>
-                                <select class="form-control" name="suburb" disabled>
-                                <option value="">None</option>
-                                <option value="" selected disabled>Select Postcode first</option>
-                                </select>
+                                <div class="select-floating-admin">
+                                    <label class="control-label" for="suburb"> Suburb<span class="m-l-5 text-muted">(optional)</span></label>
+                                    <select class="form-control" name="suburb" disabled>
+                                        <option value="">None</option>
+                                        <option value="" selected disabled>Select Postcode first</option>
+                                    </select>
+                                </div>
                                 @error('suburb') <p class="small text-danger">{{ $message }}</p> @enderror
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label" for="bedroom">Bedroom <span class="m-l-5 text-muted">(optional)</span></label>
-                            <input class="form-control @error('bedroom') is-invalid @enderror" type="text" name="bedroom" id="bedroom" value="{{ old('bedroom') }}"/>
+                            <label class="control-label" for="bedroom">Contact <span class="m-l-5 text-muted">(optional)</span></label>
+                            <input class="form-control @error('contact') is-invalid @enderror" type="text" name="contact" id="contact" value="{{ old('contact') }}"/>
                         </div>
                         <div class="form-group">
-                            <label class="control-label" for="bathroom">Bathroom <span class="m-l-5 text-muted">(optional)</span></label>
-                            <input class="form-control @error('bathroom') is-invalid @enderror" type="text" name="bathroom" id="bathroom" value="{{ old('bathroom') }}"/>
+                            <label class="control-label" for="email">Email <span class="m-l-5 text-muted">(optional)</span></label>
+                            <input class="form-control @error('email') is-invalid @enderror" type="text" name="email" id="email" value="{{ old('email') }}"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="bathroom">Website <span class="m-l-5 text-muted">(optional)</span></label>
+                            <input class="form-control @error('website') is-invalid @enderror" type="text" name="website" id="website" value="{{ old('website') }}"/>
                         </div>
                         <div class="form-group">
                             <label class="control-label" for="overview">Overview<span class="m-l-5 text-muted">(optional)</span></label>
                             <textarea class="form-control" rows="4" name="description" id="description">{{ old('description') }}</textarea>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label">Image <span class="m-l-5 text-muted">(optional)</span></label>
-                            <p class="small text-danger mb-2">Size must be less than 200kb</p>
-                            <input class="form-control @error('image') is-invalid @enderror" type="file" id="image" name="image"/>
-                            @error('image') {{ $message }} @enderror
-                               
-                        </div>
+                        {{-- <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    @if ($targetDoctor->image != null)
+                                        <figure class="mt-2" style="width: 80px; height: auto;">
+                                            <img src="{{ $targetDoctor->image }}" id="blogImage" class="img-fluid" alt="img">
+                                        </figure>
+                                    @endif
+                                </div>
+                                <div class="col-md-10">
+                                    <label class="control-label">Image <span class="m-l-5 text-danger"> *</span></label>
+                                    <p class="small text-danger mb-2">Size must be less than 200kb</p>
+                                    <input class="form-control @error('image') is-invalid @enderror" type="file" id="image" name="image"/>
+                                    @error('image') {{ $message }} @enderror
+                                </div>
+                            </div>
+                        </div> --}}
                     </div>
                     <div class="tile-footer">
-                        <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save Property</button>
+                        <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>
                         &nbsp;&nbsp;&nbsp;
-                        <a class="btn btn-secondary" href="{{ route('admin.properties.index') }}"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
+                        <a class="btn btn-secondary" href="{{ route('admin.doctor.index') }}"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
                     </div>
                 </form>
             </div>
