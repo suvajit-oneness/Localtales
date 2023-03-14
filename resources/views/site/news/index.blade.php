@@ -83,7 +83,7 @@
                     <div class="col-6 col-md-3 mb-2 mb-sm-4 mb-lg-3">
                         <div class="card directory-single-review">
                             <div class="card-body">
-                                <img src="{{URL::to('/').'/front'.'/'.'img/'}}{{$data->image}}" height="100" width="250">
+                                <img src="{{$data->image}}" height="100" width="250">
                                 <h5>{{ $data->title }}</h5>
                                 <p>{{ $data->state }}</p>
         
@@ -92,7 +92,7 @@
                                     @if(strlen($data->description) > 200)
                                         <p>{{ substr($data->description,0,200) }} <small class="text text-primary More" style="cursor: pointer">...Read more</small></p>
         
-                                        <p style="display: none">{{$data->descriptions}}<small class="text text-primary Less" style="cursor: pointer">Read less</small></p>
+                                        <p style="display: none">{{$data->description}}<small class="text text-primary Less" style="cursor: pointer">Read less</small></p>
                                     @else
                                         <p>{{$data->description}}</p>
                                     @endif
@@ -120,11 +120,11 @@
 @push('scripts')
 <script async src="https://static.addtoany.com/menu/page.js"></script>
 <script>
-    $('.showMore').click(function(){
+    $('.More').click(function(){
         $(this).parent().hide();
         $(this).parent().next().show();
     })    
-    $('.showLess').click(function(){
+    $('.Less').click(function(){
         $(this).parent().hide();
         $(this).parent().prev().show();
     })    

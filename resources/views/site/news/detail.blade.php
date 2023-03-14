@@ -23,7 +23,7 @@
 
                 <div class="col-12 col-md-6">
                     <div class="job__details pt-0">
-                        <img src="{{URL::to('/').'/front'.'/'.'img/'}}{{$news->image}}" height="100" width="500">
+                        <img src="{{$news->image}}" height="100" width="500">
                         <h1 class="">{{  $news->title }}</h1>
                         <div class="job-details-heading">
                             <div class="job-details-heading-left mb-2">

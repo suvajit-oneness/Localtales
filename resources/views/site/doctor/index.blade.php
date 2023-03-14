@@ -111,7 +111,7 @@
                                     @if(strlen($data->description) > 200)
                                         <p>{{ substr($data->description,0,200) }} <small class="text text-primary More" style="cursor: pointer">...Read more</small></p>
         
-                                        <p style="display: none">{{$data->descriptions}}<small class="text text-primary Less" style="cursor: pointer">Read less</small></p>
+                                        <p style="display: none">{{$data->description}}<small class="text text-primary Less" style="cursor: pointer">Read less</small></p>
                                     @else
                                         <p>{{$data->description}}</p>
                                     @endif
@@ -139,11 +139,11 @@
 @push('scripts')
 <script async src="https://static.addtoany.com/menu/page.js"></script>
 <script>
-    $('.showMore').click(function(){
+    $('.More').click(function(){
         $(this).parent().hide();
         $(this).parent().next().show();
     })    
-    $('.showLess').click(function(){
+    $('.Less').click(function(){
         $(this).parent().hide();
         $(this).parent().prev().show();
     })    

@@ -51,7 +51,7 @@
                                     <td>{{ $data->title }}</td>
                                     <td>
                                         @if($data->image!='')
-                                        <img style="width: 150px;height: 100px;" src="{{asset($data->image)}}">
+                                        <img style="width: 150px;height: 100px;" src="{{$data->image}}">
                                         @endif
                                     </td>
                                     <td>{{ $data->suburb.', '.$data->state.', '.$data->postcode }}</td>

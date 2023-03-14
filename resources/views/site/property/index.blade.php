@@ -82,7 +82,7 @@
                     <div class="col-6 col-md-3 mb-2 mb-sm-4 mb-lg-3">
                         <div class="card directory-single-review">
                             <div class="card-body">
-                                @if($property->image)<img src="{{URL::to('/').'/front'.'/'.'img/'}}{{$property->image}}" height="100" width="250">@endif
+                                @if($property->image)<img src="{{$property->image}}" height="100" width="250">@endif
                                 <h3>{{ $property->title }}</h3>
                                 <p>{{ $property->street_address.', '.$property->suburb.', '.$property->state.', '.$property->postcode }}</p>
                                 <p>{{ $property->bedroom }} bedroom {{ $property->bathroom }} bathroom</p>

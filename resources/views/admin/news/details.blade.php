@@ -20,7 +20,7 @@
                         <tr>
                             <td> Image</td>
                             <td>@if($data->image!='')
-                                <img style="width: 150px;height: 100px;" src="{{asset($data->image)}}">
+                                <img style="width: 150px;height: 100px;" src="{{$data->image}}">
                                 @endif</td>
                         </tr>
                         <tr>

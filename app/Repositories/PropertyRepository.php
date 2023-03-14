@@ -8,7 +8,7 @@ use App\Contracts\PropertyContract;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
-
+use Illuminate\Support\Facades\URL;
 /**
  * Class PropertyRepository
  *
@@ -80,7 +80,13 @@ class PropertyRepository extends BaseRepository implements PropertyContract
             $property->type = $collection['type']?? '';
             $property->description = $collection['description']?? '';
             if(isset($params['image'])){
-            $property->image = imageUpload($params['image'],'Property');
+           // $property->image = imageUpload($params['image'],'Property');
+           $profile_image = $collection['image'];
+           $imageName = mt_rand().'-'.time().".".$profile_image->getClientOriginalExtension();
+           $profile_image->move("uploads/Property/",$imageName);
+           $imageUrl= URL::to('/').'/'.'uploads/Property/'.$imageName;
+           $uploadedImage = $imageUrl;
+           $property->image = $uploadedImage;
             }
             $property->save();
 
@@ -116,7 +122,13 @@ class PropertyRepository extends BaseRepository implements PropertyContract
         $property->type = $collection['type']?? '';
         $property->description = $collection['description']?? '';
         if(isset($params['image'])){
-            $property->image = imageUpload($params['image'],'Property');
+            //$property->image = imageUpload($params['image'],'Property');
+            $profile_image = $collection['image'];
+            $imageName = mt_rand().'-'.time().".".$profile_image->getClientOriginalExtension();
+            $profile_image->move("uploads/Property/",$imageName);
+            $imageUrl= URL::to('/').'/'.'uploads/Property/'.$imageName;
+            $uploadedImage = $imageUrl;
+            $property->image = $uploadedImage;
         }
         $property->save();
 

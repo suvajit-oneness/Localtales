@@ -20,7 +20,7 @@
                         <tr>
                             <td>Property Image</td>
                             <td>@if($property->image!='')
-                                <img style="width: 150px;height: 100px;" src="{{asset($property->image)}}">
+                                <img style="width: 150px;height: 100px;" src="{{$property->image}}">
                                 @endif</td>
                         </tr>
                         <tr>

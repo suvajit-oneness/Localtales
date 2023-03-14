@@ -72,9 +72,9 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
 
-    <script>
+    {{-- <script>
         feather.replace()
-    </script>
+    </script> --}}
 
     <script>
         $('[data-fancybox]').fancybox({

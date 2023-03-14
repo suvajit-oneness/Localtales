@@ -413,7 +413,7 @@
             <div class="col-6 col-md-3 mb-2 mb-sm-4 mb-lg-3">
                 <div class="card directory-single-review">
                     <div class="card-body">
-                        <img src="{{URL::to('/').'/front'.'/'.'img/'}}{{$data->image}}" height="100" width="250">
+                        <img src="{{$data->image}}" height="100" width="250">
                         <h5>{{ $data->title }}</h5>
                         <p>{{ $data->state }}</p>
 
@@ -422,7 +422,7 @@
                             @if(strlen($data->description) > 200)
                                 <p>{{ substr($data->description,0,200) }} <small class="text text-primary More" style="cursor: pointer">...Read more</small></p>
 
-                                <p style="display: none">{{$data->descriptions}}<small class="text text-primary Less" style="cursor: pointer">Read less</small></p>
+                                <p style="display: none">{{$data->description}}<small class="text text-primary Less" style="cursor: pointer">Read less</small></p>
                             @else
                                 <p>{{$data->description}}</p>
                             @endif
@@ -462,7 +462,7 @@
                             @if(strlen($school->description) > 200)
                                 <p>{{ substr($school->description,0,200) }} <small class="text text-primary More" style="cursor: pointer">...Read more</small></p>
 
-                                <p style="display: none">{{$school->descriptions}}<small class="text text-primary Less" style="cursor: pointer">Read less</small></p>
+                                <p style="display: none">{{$school->description}}<small class="text text-primary Less" style="cursor: pointer">Read less</small></p>
                             @else
                                 <p>{{$school->description}}</p>
                             @endif
@@ -505,7 +505,7 @@
                              @if(strlen($doctor->description) > 200)
                                  <p>{{ substr($doctor->description,0,200) }} <small class="text text-primary More" style="cursor: pointer">...Read more</small></p>
  
-                                 <p style="display: none">{{$doctor->descriptions}}<small class="text text-primary Less" style="cursor: pointer">Read less</small></p>
+                                 <p style="display: none">{{$doctor->description}}<small class="text text-primary Less" style="cursor: pointer">Read less</small></p>
                              @else
                                  <p>{{$doctor->description}}</p>
                              @endif
@@ -539,7 +539,7 @@
             <div class="col-6 col-md-3 mb-2 mb-sm-4 mb-lg-3">
                 <div class="card directory-single-review">
                     <div class="card-body">
-                        @if($property->image)<img src="{{URL::to('/').'/front'.'/'.'img/'}}{{$property->image}}" height="100" width="250">@endif
+                        @if($property->image)<img src="{{$property->image}}" height="100" width="250">@endif
                         <h3>{{ $property->title }}</h3>
                         <p>{{ $property->street_address.', '.$property->suburb.', '.$property->state.', '.$property->postcode }}</p>
                         <p>{{ $property->bedroom }} bedroom {{ $property->bathroom }} bathroom</p>

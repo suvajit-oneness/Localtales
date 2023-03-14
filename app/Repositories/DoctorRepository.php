@@ -8,7 +8,7 @@ use App\Contracts\DoctorContract;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
-
+use Illuminate\Support\Facades\URL;
 /**
  * Class DoctorRepository
  *

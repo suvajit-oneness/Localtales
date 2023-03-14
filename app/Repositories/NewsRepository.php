@@ -8,7 +8,7 @@ use App\Contracts\NewsContract;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
-
+use Illuminate\Support\Facades\URL;
 /**
  * Class NewsRepository
  *
@@ -75,7 +75,13 @@ class NewsRepository extends BaseRepository implements NewsContract
             $property->state = $collection['state']?? '';
             $property->description = $collection['description']?? '';
             if(isset($params['image'])){
-            $property->image = imageUpload($params['image'],'News');
+            //$property->image = imageUpload($params['image'],'News');
+            $profile_image = $collection['image'];
+            $imageName = mt_rand().'-'.time().".".$profile_image->getClientOriginalExtension();
+            $profile_image->move("uploads/News/",$imageName);
+            $imageUrl= URL::to('/').'/'.'uploads/News/'.$imageName;
+            $uploadedImage = $imageUrl;
+            $property->image = $uploadedImage;
             }
             $property->save();
 
@@ -107,7 +113,13 @@ class NewsRepository extends BaseRepository implements NewsContract
         $property->state = $collection['state'] ?? '';
         $property->description = $collection['description'] ?? '';
         if(isset($params['image'])){
-            $property->image = imageUpload($params['image'],'News');
+            //$property->image = imageUpload($params['image'],'News');
+            $profile_image = $collection['image'];
+            $imageName = mt_rand().'-'.time().".".$profile_image->getClientOriginalExtension();
+            $profile_image->move("uploads/News/",$imageName);
+            $imageUrl= URL::to('/').'/'.'uploads/News/'.$imageName;
+            $uploadedImage = $imageUrl;
+            $property->image = $uploadedImage;
         }
         $property->save();
 
